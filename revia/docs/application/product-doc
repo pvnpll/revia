@@ -1,0 +1,142 @@
+# Roles
+
+## Personal User
+
+The first version of Revia is designed primarily for personal use.
+
+A user can:
+
+* Create decks
+* Create lessons
+* Create cards
+* Review cards
+* Track learning progress
+* Import learning content
+* Export learning content
+
+No sharing or collaboration is included in Version 1.
+
+---
+
+## Admin
+
+Initially, the admin is simply the application owner.
+
+The admin has all user capabilities, along with the ability to:
+
+* Manage application settings
+* Import sample content
+* Maintain default decks
+* Manage future platform features
+
+The system should be designed so additional roles can be added later without changing the core architecture.
+
+Possible future roles:
+
+* Creator
+* Moderator
+* Public Deck Publisher
+
+These are intentionally outside the scope of Version 1.
+
+---
+
+# Content Import
+
+Version 1 supports importing learning content through a JSON file.
+
+The import system should be generic so that the same format works for any subject.
+
+Future versions may also support:
+
+* CSV
+* Excel
+* Markdown
+* PDF (AI-assisted)
+* Custom `.revia` package format
+
+JSON is the only required import format for the first release.
+
+---
+
+# JSON Structure
+
+```json
+{
+  "deck": {
+    "title": "Kannada Basics",
+    "description": "Beginner vocabulary and phrases",
+    "tags": ["language", "beginner"]
+  },
+  "lessons": [
+    {
+      "title": "Greetings",
+      "description": "Basic greetings",
+      "cards": [
+        {
+          "front": "Hello",
+          "back": "ನಮಸ್ಕಾರ",
+          "pronunciation": "Namaskara",
+          "example": "ನಮಸ್ಕಾರ, ಹೇಗಿದ್ದೀರ?",
+          "notes": "Formal greeting",
+          "tags": ["greeting", "beginner"]
+        },
+        {
+          "front": "Thank you",
+          "back": "ಧನ್ಯವಾದ",
+          "pronunciation": "Dhanyavada",
+          "example": "ತುಂಬ ಧನ್ಯವಾದ",
+          "notes": "",
+          "tags": ["polite"]
+        }
+      ]
+    }
+  ]
+}
+```
+
+Only the following fields are required:
+
+* Deck title
+* Lesson title
+* Card front
+* Card back
+
+All other fields are optional.
+
+---
+
+# Design Philosophy
+
+Revia is built as a **mobile-first web application**.
+
+Every screen should be designed for a phone before being enhanced for larger displays.
+
+The primary experience should feel natural on a mobile browser, with:
+
+* Large touch targets
+* Comfortable spacing
+* Minimal navigation
+* Fast loading
+* One-handed usability
+* Responsive layouts
+
+Desktop support is important but secondary.
+
+The desktop interface should enhance the mobile experience rather than define it.
+
+---
+
+# Version 1 Scope
+
+The first version should allow a user to:
+
+1. Import a JSON deck.
+2. Create or edit decks manually.
+3. Organize decks into lessons.
+4. Add and edit cards.
+5. Complete daily review sessions.
+6. Track review progress.
+7. Access the application from any modern browser on mobile or desktop after deployment.
+
+The objective is to create a stable, enjoyable personal learning tool that can be used every day before expanding it into a broader learning platform.

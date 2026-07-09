@@ -1,0 +1,193 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Identity ───────────────────────────────────────────────
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  decks          Deck[]
+  tags           Tag[]
+  reviewSessions ReviewSession[]
+  reviewLogs     ReviewLog[]
+
+  @@map("users")
+}
+
+// ─── Content ──────────────────────────────────────────────────
+
+model Deck {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  title       String
+  description String?
+  subject     String?
+  color       String?  @default("#6366f1")
+  isArchived  Boolean  @default(false) @map("is_archived")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessons        Lesson[]
+  cards          Card[]
+  deckTags       DeckTag[]
+  reviewSessions ReviewSession[]
+
+  @@index([userId])
+  @@index([userId, isArchived])
+  @@map("decks")
+}
+
+model Lesson {
+  id        String   @id @default(uuid())
+  deckId    String   @map("deck_id")
+  title     String
+  sortOrder Int      @default(0) @map("sort_order")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  deck  Deck   @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  cards Card[]
+
+  @@index([deckId, sortOrder])
+  @@map("lessons")
+}
+
+model Card {
+  id              String   @id @default(uuid())
+  deckId          String   @map("deck_id")
+  lessonId        String?  @map("lesson_id")
+  front           String
+  back            String
+  pronunciation   String?
+  exampleSentence String?  @map("example_sentence")
+  notes           String?
+  imageUrl        String?  @map("image_url")
+  audioUrl        String?  @map("audio_url")
+  isSuspended     Boolean  @default(false) @map("is_suspended")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  deck            Deck                 @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  lesson          Lesson?              @relation(fields: [lessonId], references: [id], onDelete: SetNull)
+  schedulingState CardSchedulingState?
+  reviewLogs      ReviewLog[]
+  cardTags        CardTag[]
+
+  @@index([deckId])
+  @@index([lessonId])
+  @@index([deckId, isSuspended])
+  @@map("cards")
+}
+
+model Tag {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  name      String
+  color     String?  @default("#94a3b8")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cardTags CardTag[]
+  deckTags DeckTag[]
+
+  @@unique([userId, name])
+  @@map("tags")
+}
+
+model CardTag {
+  cardId String @map("card_id")
+  tagId  String @map("tag_id")
+
+  card Card @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  tag  Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([cardId, tagId])
+  @@map("card_tags")
+}
+
+model DeckTag {
+  deckId String @map("deck_id")
+  tagId  String @map("tag_id")
+
+  deck Deck @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  tag  Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([deckId, tagId])
+  @@map("deck_tags")
+}
+
+// ─── Scheduling ───────────────────────────────────────────────
+
+model CardSchedulingState {
+  id               String    @id @default(uuid())
+  cardId           String    @unique @map("card_id")
+  dueAt            DateTime  @map("due_at")
+  intervalDays     Int       @default(0) @map("interval_days")
+  easeFactor       Float     @default(2.5) @map("ease_factor")
+  repetitions      Int       @default(0)
+  lapses           Int       @default(0)
+  lastReviewedAt   DateTime? @map("last_reviewed_at")
+  algorithmVersion String    @default("simple-v1") @map("algorithm_version")
+  algorithmState   Json?     @map("algorithm_state")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  card Card @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  @@index([dueAt])
+  @@index([cardId, dueAt])
+  @@map("card_scheduling_states")
+}
+
+model ReviewLog {
+  id               String   @id @default(uuid())
+  cardId           String   @map("card_id")
+  userId           String   @map("user_id")
+  sessionId        String?  @map("session_id")
+  rating           Int
+  intervalBefore   Int      @map("interval_before")
+  intervalAfter    Int      @map("interval_after")
+  easeBefore       Float    @map("ease_before")
+  easeAfter        Float    @map("ease_after")
+  reviewedAt       DateTime @default(now()) @map("reviewed_at")
+  durationMs       Int?     @map("duration_ms")
+  algorithmVersion String   @map("algorithm_version")
+
+  card    Card           @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  user    User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  session ReviewSession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+
+  @@index([cardId, reviewedAt])
+  @@index([userId, reviewedAt])
+  @@index([sessionId])
+  @@map("review_logs")
+}
+
+model ReviewSession {
+  id            String    @id @default(uuid())
+  userId        String    @map("user_id")
+  deckId        String?   @map("deck_id")
+  startedAt     DateTime  @default(now()) @map("started_at")
+  completedAt   DateTime? @map("completed_at")
+  cardsReviewed Int       @default(0) @map("cards_reviewed")
+  newCards      Int       @default(0) @map("new_cards")
+  reviewCards   Int       @default(0) @map("review_cards")
+
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deck       Deck?       @relation(fields: [deckId], references: [id], onDelete: SetNull)
+  reviewLogs ReviewLog[]
+
+  @@index([userId, startedAt])
+  @@map("review_sessions")
+}
