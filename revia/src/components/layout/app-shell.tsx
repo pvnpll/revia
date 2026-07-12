@@ -1,4 +1,4 @@
-import { AppSidebar } from "@/components/layout/app-sidebar";
+import { AppShellClient } from "@/components/layout/app-shell-client";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
@@ -12,12 +12,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </div>
       </div>
 
-      <div className="min-h-screen bg-background md:hidden">
-        <AppSidebar />
-        <main className="pb-24 pt-16">
-          <div className="px-4 py-5">{children}</div>
-        </main>
-      </div>
+      <AppShellClient>{children}</AppShellClient>
     </>
   );
 }

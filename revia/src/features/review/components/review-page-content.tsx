@@ -2,152 +2,169 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { CheckCircle2, RotateCcw } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { ArrowLeft, BookOpen, Sparkles } from "lucide-react";
 
+import { StudyCardViewer } from "@/features/study/components/study-card-viewer";
+import type { StudyCardItem } from "@/features/study/types";
 import { useDueReviewCards, useSubmitReview } from "@/features/review/hooks/use-review";
-import { RATING_LABELS, RATING_SHORT_LABELS } from "@/lib/constants/rating-labels";
 import type { RatingValue } from "@/lib/scheduler";
-import { Badge } from "@/components/ui/badge";
+import type { DueReviewCard } from "@/types/review";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
-const ratings: RatingValue[] = [1, 2, 3, 4, 5];
+function toStudyCard(card: DueReviewCard): StudyCardItem {
+  return {
+    id: card.id,
+    front: card.front,
+    back: card.back,
+    pronunciation: card.pronunciation,
+    exampleSentence: card.exampleSentence,
+    notes: card.notes,
+    lessonTitle: card.lesson?.title ?? null,
+    reviewCount: card.schedulingState?.repetitions ?? 0,
+  };
+}
 
-function formatNextDue(value: string) {
-  return new Intl.DateTimeFormat(undefined, { dateStyle: "medium" }).format(new Date(value));
+function ReviewState({
+  children,
+  onBack,
+}: {
+  children: React.ReactNode;
+  onBack: () => void;
+}) {
+  return (
+    <div className="fixed inset-0 z-[100] flex flex-col bg-background">
+      <header className="flex h-14 shrink-0 items-center px-4">
+        <Button variant="ghost" size="icon" onClick={onBack} className="h-10 w-10" aria-label="Back">
+          <ArrowLeft className="h-5 w-5" />
+        </Button>
+      </header>
+      <div className="flex flex-1 flex-col items-center justify-center px-8 text-center">{children}</div>
+    </div>
+  );
 }
 
 export function ReviewPageContent() {
+  const router = useRouter();
   const { data, isLoading, isError, error, refetch } = useDueReviewCards();
   const submitReview = useSubmitReview();
+  const [queue, setQueue] = useState<DueReviewCard[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [completedCount, setCompletedCount] = useState(0);
-  const [revealed, setRevealed] = useState(false);
   const [startedAt, setStartedAt] = useState(() => Date.now());
-  const [lastResult, setLastResult] = useState<string | null>(null);
+  const [sessionComplete, setSessionComplete] = useState(false);
 
-  const cards = useMemo(() => data?.cards ?? [], [data?.cards]);
-  const current = cards[0];
+  function exitReview() {
+    router.push("/dashboard");
+  }
 
   useEffect(() => {
-    setRevealed(false);
+    if (data?.cards) {
+      setQueue(data.cards);
+      setCurrentIndex(0);
+      setSessionComplete(false);
+      setStartedAt(Date.now());
+    }
+  }, [data?.cards]);
+
+  const studyCards = useMemo(() => queue.map(toStudyCard), [queue]);
+  const current = queue[currentIndex];
+
+  useEffect(() => {
     setStartedAt(Date.now());
   }, [current?.id]);
 
   async function handleRating(rating: RatingValue) {
     if (!current) return;
-    const result = await submitReview.mutateAsync({
+
+    await submitReview.mutateAsync({
       cardId: current.id,
       rating,
       durationMs: Date.now() - startedAt,
     });
+
     setCompletedCount((count) => count + 1);
-    setLastResult(`Next review: ${formatNextDue(result.nextDueAt)}`);
-    await refetch();
+
+    if (currentIndex + 1 >= queue.length) {
+      const refreshed = await refetch();
+      const remaining = refreshed.data?.cards ?? [];
+      if (remaining.length > 0) {
+        setQueue(remaining);
+        setCurrentIndex(0);
+        setStartedAt(Date.now());
+      } else {
+        setSessionComplete(true);
+      }
+    } else {
+      setCurrentIndex((index) => index + 1);
+    }
   }
 
-  if (isLoading) return <p className="text-muted-foreground">Loading due cards...</p>;
+  if (isLoading) {
+    return (
+      <ReviewState onBack={exitReview}>
+        <div className="h-10 w-10 animate-pulse rounded-full bg-muted" />
+        <p className="mt-6 text-lg font-medium text-muted-foreground">Loading cards...</p>
+      </ReviewState>
+    );
+  }
 
   if (isError) {
     return (
-      <p className="text-destructive">
-        {error instanceof Error ? error.message : "Failed to load review cards"}
-      </p>
+      <ReviewState onBack={exitReview}>
+        <p className="text-lg font-semibold">Something went wrong</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          {error instanceof Error ? error.message : "Failed to load review cards"}
+        </p>
+        <Button className="mt-8" onClick={() => refetch()}>
+          Try again
+        </Button>
+      </ReviewState>
     );
   }
 
-  if (!current) {
+  if (sessionComplete || queue.length === 0) {
     return (
-      <Card>
-        <CardContent className="flex flex-col items-center gap-4 py-12 text-center">
-          <CheckCircle2 className="h-12 w-12 text-primary" />
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">All caught up</h1>
-            <p className="mt-2 text-sm text-muted-foreground">
-              {completedCount > 0
-                ? `You reviewed ${completedCount} card${completedCount === 1 ? "" : "s"} today.`
-                : "No cards are due right now."}
-            </p>
-          </div>
-          <Button asChild className="w-full">
-            <Link href="/decks">Add or browse cards</Link>
-          </Button>
-        </CardContent>
-      </Card>
+      <ReviewState onBack={exitReview}>
+        <div className="rounded-full bg-muted p-5">
+          <Sparkles className="h-12 w-12 text-primary" />
+        </div>
+        <h1 className="mt-6 text-3xl font-bold">All caught up</h1>
+        <p className="mt-3 max-w-xs text-sm text-muted-foreground">
+          {completedCount > 0
+            ? `You reviewed ${completedCount} card${completedCount === 1 ? "" : "s"} this session.`
+            : "No cards are due right now. Add some decks to get started."}
+        </p>
+        <Button asChild className="mt-8 h-12 px-8 text-base">
+          <Link href="/decks">
+            <BookOpen className="h-4 w-4" />
+            Browse decks
+          </Link>
+        </Button>
+      </ReviewState>
     );
   }
 
-  const totalDue = data?.totalDue ?? cards.length;
-  const progressLabel = `${completedCount + 1} of ${completedCount + totalDue}`;
+  const totalDue = data?.totalDue ?? queue.length;
 
   return (
-    <div className="space-y-5">
-      <div>
-        <div className="flex items-center justify-between gap-3">
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">Daily Review</h1>
-            <p className="mt-1 text-sm text-muted-foreground">Review cards due now.</p>
-          </div>
-          <Badge variant="secondary">{progressLabel}</Badge>
-        </div>
-        {lastResult && <p className="mt-2 text-xs text-muted-foreground">{lastResult}</p>}
-      </div>
-
-      <Card className="min-h-[360px]">
-        <CardHeader>
-          <div className="flex flex-wrap gap-2">
-            {current.lesson ? <Badge variant="secondary">{current.lesson.title}</Badge> : <Badge variant="outline">No lesson</Badge>}
-            <Badge variant="outline">{current.schedulingState?.repetitions ?? 0} reviews</Badge>
-          </div>
-          <CardDescription>Front</CardDescription>
-          <CardTitle className="whitespace-pre-wrap text-2xl leading-snug">{current.front}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-5">
-          {revealed ? (
-            <div className="space-y-4 rounded-2xl bg-muted p-4">
-              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Back</p>
-              <p className="whitespace-pre-wrap text-lg font-medium">{current.back}</p>
-              {current.pronunciation && <p className="text-sm text-muted-foreground">Pronunciation: {current.pronunciation}</p>}
-              {current.exampleSentence && <p className="text-sm text-muted-foreground">Example: {current.exampleSentence}</p>}
-              {current.notes && <p className="text-sm text-muted-foreground">Notes: {current.notes}</p>}
-            </div>
-          ) : (
-            <Button size="lg" className="h-14 w-full text-base" onClick={() => setRevealed(true)}>
-              Reveal Answer
-            </Button>
-          )}
-        </CardContent>
-      </Card>
-
-      {revealed && (
-        <div className="space-y-3">
-          <p className="text-center text-sm font-medium">How well did you remember it?</p>
-          <div className="grid grid-cols-1 gap-2">
-            {ratings.map((rating) => (
-              <Button
-                key={rating}
-                variant={rating <= 2 ? "secondary" : "default"}
-                disabled={submitReview.isPending}
-                className="h-12 justify-between"
-                onClick={() => handleRating(rating)}
-              >
-                <span>{RATING_LABELS[rating]}</span>
-                <span className="text-xs opacity-80">{RATING_SHORT_LABELS[rating]}</span>
-              </Button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {submitReview.isError && (
-        <p className="text-sm text-destructive">
-          {submitReview.error instanceof Error ? submitReview.error.message : "Failed to submit review"}
-        </p>
-      )}
-
-      <Button variant="ghost" className="w-full" onClick={() => refetch()}>
-        <RotateCcw className="h-4 w-4" />
-        Refresh due cards
-      </Button>
-    </div>
+    <StudyCardViewer
+      cards={studyCards}
+      currentIndex={currentIndex}
+      title="Daily Review"
+      subtitle={`${completedCount + 1} of ${completedCount + totalDue} due`}
+      onIndexChange={setCurrentIndex}
+      onRate={handleRating}
+      onClose={exitReview}
+      fullscreen
+      isSubmitting={submitReview.isPending}
+      errorMessage={
+        submitReview.isError
+          ? submitReview.error instanceof Error
+            ? submitReview.error.message
+            : "Failed to submit review"
+          : null
+      }
+    />
   );
 }

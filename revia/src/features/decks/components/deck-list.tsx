@@ -31,15 +31,14 @@ export function DeckList({ decks, isLoading }: DeckListProps) {
 
   return (
     <div className="grid gap-4 sm:grid-cols-2">
-      {decks.flatMap((deck) => [
-        <DeckListCard key={deck.id} deck={deck} />,
-        <DeckListCard key={`${deck.id}-reverse`} deck={deck} reverse />,
-      ])}
+      {decks.map((deck) => (
+        <DeckListCard key={deck.id} deck={deck} />
+      ))}
     </div>
   );
 }
 
-function DeckListCard({ deck, reverse = false }: { deck: DeckWithStats; reverse?: boolean }) {
+function DeckListCard({ deck }: { deck: DeckWithStats }) {
   return (
     <Card className="group relative">
       <CardHeader className="pb-3">
@@ -51,23 +50,18 @@ function DeckListCard({ deck, reverse = false }: { deck: DeckWithStats; reverse?
             />
             <div>
               <CardTitle className="text-lg">
-                <Link
-                  href={`/decks/${deck.id}${reverse ? "?mode=reverse" : ""}`}
-                  className="hover:underline"
-                >
+                <Link href={`/decks/${deck.id}`} className="hover:underline">
                   {deck.title}
-                  {reverse ? " (reverse)" : ""}
                 </Link>
               </CardTitle>
               {deck.subject && <CardDescription>{deck.subject}</CardDescription>}
             </div>
           </div>
-          {!reverse && <DeleteDeckButton deckId={deck.id} />}
+          <DeleteDeckButton deckId={deck.id} />
         </div>
       </CardHeader>
       <CardContent className="flex flex-wrap items-center gap-3">
         <Badge variant="secondary">{deck.cardCount} cards</Badge>
-        {reverse && <Badge variant="outline">Back to front</Badge>}
         {deck.dueCount > 0 && (
           <Badge variant="outline" className="gap-1">
             <Clock className="h-3 w-3" />
