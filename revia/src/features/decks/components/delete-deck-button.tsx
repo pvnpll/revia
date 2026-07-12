@@ -15,14 +15,14 @@ export function DeleteDeckButton({ deckId }: { deckId: string }) {
 
   return (
     <Button
-      variant="destructive"
-      size="sm"
+      variant="ghost"
+      size="icon"
+      className="h-8 w-8 text-destructive hover:bg-destructive/10 hover:text-destructive"
       onClick={handleDelete}
       disabled={deleteDeck.isPending}
       aria-label="Delete deck"
     >
       <Trash2 className="h-4 w-4" />
-      Delete
     </Button>
   );
 }

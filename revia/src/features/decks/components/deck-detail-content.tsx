@@ -3,19 +3,14 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
-import { CardsSection } from "@/features/cards/components/card-list";
+import { CreateCardForm } from "@/features/cards/components/create-card-form";
 import { useDeck } from "@/features/decks/hooks/use-decks";
 import { LessonsSection } from "@/features/lessons/components/lesson-list";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
-export function DeckDetailContent({
-  deckId,
-  reverseMode = false,
-}: {
-  deckId: string;
-  reverseMode?: boolean;
-}) {
+export function DeckDetailContent({ deckId }: { deckId: string }) {
   const { data: deck, isLoading, isError, error } = useDeck(deckId);
 
   if (isLoading) {
@@ -45,10 +40,7 @@ export function DeckDetailContent({
             style={{ backgroundColor: deck.color }}
           />
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">
-              {deck.title}
-              {reverseMode ? " (reverse)" : ""}
-            </h1>
+            <h1 className="text-3xl font-bold tracking-tight">{deck.title}</h1>
             {deck.subject && <p className="text-muted-foreground">{deck.subject}</p>}
             {deck.description && (
               <p className="mt-2 text-sm text-muted-foreground">{deck.description}</p>
@@ -60,9 +52,19 @@ export function DeckDetailContent({
         </div>
       </div>
 
-      <LessonsSection deckId={deckId} reverseMode={reverseMode} />
+      <LessonsSection deckId={deckId} />
 
-      <CardsSection deckId={deckId} />
+      <Card>
+        <CardHeader>
+          <CardTitle>Add Card</CardTitle>
+          <CardDescription>
+            Create a new card for this deck. Study cards by opening a lesson above.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <CreateCardForm deckId={deckId} />
+        </CardContent>
+      </Card>
     </div>
   );
 }

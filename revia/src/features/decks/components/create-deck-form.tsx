@@ -5,11 +5,25 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useCreateDeck } from "@/features/decks/hooks/use-decks";
+import { cn } from "@/lib/utils/cn";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { createDeckSchema, type CreateDeckInput } from "@/lib/validators/deck.schema";
+
+const DECK_COLORS = [
+  "#6366f1",
+  "#3b82f6",
+  "#06b6d4",
+  "#10b981",
+  "#84cc16",
+  "#f59e0b",
+  "#ef4444",
+  "#ec4899",
+  "#8b5cf6",
+  "#64748b",
+] as const;
 
 export function CreateDeckForm() {
   const router = useRouter();
@@ -24,6 +38,8 @@ export function CreateDeckForm() {
       color: "#6366f1",
     },
   });
+
+  const selectedColor = form.watch("color");
 
   async function onSubmit(values: CreateDeckInput) {
     const deck = await createDeck.mutateAsync({
@@ -52,8 +68,26 @@ export function CreateDeckForm() {
         <Textarea id="description" {...form.register("description")} placeholder="Optional" />
       </div>
       <div className="space-y-2">
-        <Label htmlFor="color">Color</Label>
-        <Input id="color" type="color" className="h-10 w-20" {...form.register("color")} />
+        <Label>Color</Label>
+        <div className="flex flex-wrap gap-2.5">
+          {DECK_COLORS.map((color) => (
+            <button
+              key={color}
+              type="button"
+              onClick={() => form.setValue("color", color, { shouldValidate: true })}
+              className={cn(
+                "h-6 w-6 rounded-full border-2 transition-transform active:scale-95",
+                selectedColor === color
+                  ? "border-foreground scale-110"
+                  : "border-transparent",
+              )}
+              style={{ backgroundColor: color }}
+              aria-label={`Select ${color}`}
+              aria-pressed={selectedColor === color}
+            />
+          ))}
+        </div>
+        <input type="hidden" {...form.register("color")} />
       </div>
       {createDeck.isError && (
         <p className="text-sm text-destructive">
