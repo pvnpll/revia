@@ -14,6 +14,7 @@ export function useDecks() {
   return useQuery({
     queryKey: deckQueryKeys.all,
     queryFn: () => deckApi.list(),
+    staleTime: 5 * 60_000,
   });
 }
 
@@ -22,6 +23,7 @@ export function useDeck(deckId: string) {
     queryKey: deckQueryKeys.detail(deckId),
     queryFn: () => deckApi.getById(deckId),
     enabled: Boolean(deckId),
+    staleTime: 2 * 60_000,
   });
 }
 

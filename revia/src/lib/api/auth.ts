@@ -11,15 +11,17 @@ export async function getUserId(): Promise<string> {
 
   const supabase = await createClient();
   const {
-    data: { user },
+    data: { session },
     error,
-  } = await supabase.auth.getUser();
+  } = await supabase.auth.getSession();
+
+  const user = session?.user;
 
   if (error || !user) {
     throw new ApiError(401, "UNAUTHORIZED", "Authentication required");
   }
 
-  await userRepository.ensureUser({
+  await userRepository.syncUserIfNeeded({
     id: user.id,
     email: user.email ?? `${user.id}@unknown.local`,
     name:

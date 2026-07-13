@@ -5,10 +5,12 @@ import { createCardSchema } from "@/lib/validators/card.schema";
 
 type RouteContext = { params: Promise<{ deckId: string }> };
 
-export async function GET(_request: Request, context: RouteContext) {
+export async function GET(request: Request, context: RouteContext) {
   try {
     const { deckId } = await context.params;
-    const cards = await cardService.list(await getUserId(), deckId);
+    const { searchParams } = new URL(request.url);
+    const lessonId = searchParams.get("lessonId") ?? undefined;
+    const cards = await cardService.list(await getUserId(), deckId, { lessonId });
     return jsonResponse(cards);
   } catch (error) {
     return handleApiError(error);

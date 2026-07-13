@@ -16,6 +16,7 @@ export function useLessons(deckId: string) {
     queryKey: lessonQueryKeys.all(deckId),
     queryFn: () => lessonApi.list(deckId),
     enabled: Boolean(deckId),
+    staleTime: 2 * 60_000,
   });
 }
 

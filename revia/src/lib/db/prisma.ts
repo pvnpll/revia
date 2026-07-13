@@ -24,6 +24,5 @@ export const prisma =
     },
   });
 
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
-}
+// Reuse the client across warm serverless invocations (Vercel).
+globalForPrisma.prisma = prisma;

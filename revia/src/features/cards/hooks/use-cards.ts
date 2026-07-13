@@ -25,10 +25,14 @@ function useInvalidateCardDependencies(deckId: string) {
   };
 }
 
-export function useCards(deckId: string) {
+export function useCards(deckId: string, options?: { lessonId?: string }) {
+  const lessonId = options?.lessonId;
+
   return useQuery({
-    queryKey: cardQueryKeys.all(deckId),
-    queryFn: () => cardApi.list(deckId),
+    queryKey: lessonId
+      ? [...cardQueryKeys.all(deckId), "lesson", lessonId]
+      : cardQueryKeys.all(deckId),
+    queryFn: () => cardApi.list(deckId, lessonId ? { lessonId } : undefined),
     enabled: Boolean(deckId),
   });
 }

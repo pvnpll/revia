@@ -7,6 +7,7 @@ import { DeleteDeckButton } from "@/features/decks/components/delete-deck-button
 import type { DeckWithStats } from "@/types/deck";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface DeckListProps {
   decks: DeckWithStats[];
@@ -15,7 +16,13 @@ interface DeckListProps {
 
 export function DeckList({ decks, isLoading }: DeckListProps) {
   if (isLoading) {
-    return <p className="text-sm text-muted-foreground">Loading decks...</p>;
+    return (
+      <div className="grid gap-4 sm:grid-cols-2">
+        {Array.from({ length: 4 }).map((_, index) => (
+          <Skeleton key={index} className="h-32 rounded-2xl" />
+        ))}
+      </div>
+    );
   }
 
   if (decks.length === 0) {
@@ -50,7 +57,11 @@ function DeckListCard({ deck }: { deck: DeckWithStats }) {
             />
             <div>
               <CardTitle className="text-lg">
-                <Link href={`/decks/${deck.id}`} className="hover:underline">
+                <Link
+                  href={`/decks/${deck.id}`}
+                  prefetch
+                  className="hover:underline"
+                >
                   {deck.title}
                 </Link>
               </CardTitle>

@@ -7,12 +7,13 @@ import { useDashboard } from "@/features/dashboard/hooks/use-dashboard";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { PageSkeleton } from "@/components/ui/skeleton";
 
 export function DashboardContent() {
   const { data, isLoading, isError, error } = useDashboard();
 
   if (isLoading) {
-    return <p className="text-muted-foreground">Loading dashboard...</p>;
+    return <PageSkeleton />;
   }
 
   if (isError || !data) {

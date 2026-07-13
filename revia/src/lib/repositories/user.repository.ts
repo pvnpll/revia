@@ -15,4 +15,22 @@ export const userRepository = {
       },
     });
   },
+
+  /** One read on the hot path; writes only when the user row is missing. */
+  async syncUserIfNeeded(input: { id: string; email: string; name?: string | null }) {
+    const existing = await prisma.user.findUnique({
+      where: { id: input.id },
+      select: { id: true },
+    });
+
+    if (existing) return;
+
+    await prisma.user.create({
+      data: {
+        id: input.id,
+        email: input.email,
+        name: input.name ?? undefined,
+      },
+    });
+  },
 };

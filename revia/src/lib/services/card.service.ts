@@ -16,9 +16,13 @@ async function ensureLessonBelongsToDeck(deckId: string, lessonId: string) {
 }
 
 export const cardService = {
-  async list(userId: string, deckId: string): Promise<CardWithScheduling[]> {
+  async list(
+    userId: string,
+    deckId: string,
+    options?: { lessonId?: string },
+  ): Promise<CardWithScheduling[]> {
     await deckService.getById(userId, deckId);
-    return cardRepository.findByDeck(deckId);
+    return cardRepository.findByDeck(deckId, options?.lessonId);
   },
 
   async getById(userId: string, deckId: string, cardId: string): Promise<CardWithScheduling> {

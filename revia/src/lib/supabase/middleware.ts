@@ -11,6 +11,15 @@ export async function updateSession(request: NextRequest) {
 
   let supabaseResponse = NextResponse.next({ request });
 
+  const { pathname } = request.nextUrl;
+  const isApiRoute = pathname.startsWith("/api/");
+
+  // API routes validate auth themselves; skipping middleware auth avoids a
+  // duplicate Supabase round-trip on every data fetch.
+  if (isApiRoute) {
+    return NextResponse.next({ request });
+  }
+
   const supabase = createServerClient(url, anonKey, {
     cookies: {
       getAll() {
@@ -29,18 +38,17 @@ export async function updateSession(request: NextRequest) {
   });
 
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    data: { session },
+  } = await supabase.auth.getSession();
+  const user = session?.user ?? null;
 
-  const { pathname } = request.nextUrl;
   const isAuthRoute =
     pathname.startsWith("/login") ||
     pathname.startsWith("/signup") ||
     pathname.startsWith("/auth/");
-  const isApiRoute = pathname.startsWith("/api/");
   const isPublicRoute = pathname === "/";
 
-  if (!user && !isAuthRoute && !isPublicRoute && !isApiRoute) {
+  if (!user && !isAuthRoute && !isPublicRoute) {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = "/login";
     loginUrl.searchParams.set("redirect", pathname);

@@ -3,8 +3,9 @@ import type { CreateCardInput, UpdateCardInput } from "@/lib/validators/card.sch
 import type { CardWithScheduling } from "@/types/card";
 
 export const cardApi = {
-  list(deckId: string): Promise<CardWithScheduling[]> {
-    return fetchJson<CardWithScheduling[]>(`/api/decks/${deckId}/cards`);
+  list(deckId: string, options?: { lessonId?: string }): Promise<CardWithScheduling[]> {
+    const params = options?.lessonId ? `?lessonId=${encodeURIComponent(options.lessonId)}` : "";
+    return fetchJson<CardWithScheduling[]>(`/api/decks/${deckId}/cards${params}`);
   },
 
   getById(deckId: string, cardId: string): Promise<CardWithScheduling> {

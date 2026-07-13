@@ -4,15 +4,24 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
 import { useDeck } from "@/features/decks/hooks/use-decks";
+import { useLessons } from "@/features/lessons/hooks/use-lessons";
 import { LessonsSection } from "@/features/lessons/components/lesson-list";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function DeckDetailContent({ deckId }: { deckId: string }) {
-  const { data: deck, isLoading, isError, error } = useDeck(deckId);
+  const { data: deck, isLoading: deckLoading, isError, error } = useDeck(deckId);
+  useLessons(deckId);
 
-  if (isLoading) {
-    return <p className="text-muted-foreground">Loading deck...</p>;
+  if (deckLoading) {
+    return (
+      <div className="space-y-8">
+        <Skeleton className="h-8 w-48" />
+        <Skeleton className="h-4 w-full max-w-md" />
+        <Skeleton className="h-64 rounded-2xl" />
+      </div>
+    );
   }
 
   if (isError || !deck) {

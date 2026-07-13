@@ -12,5 +12,6 @@ export function useDashboard() {
   return useQuery({
     queryKey: dashboardQueryKeys.summary,
     queryFn: () => dashboardApi.getSummary(),
+    staleTime: 2 * 60_000,
   });
 }
