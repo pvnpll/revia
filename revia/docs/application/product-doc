@@ -1,61 +1,50 @@
 # Roles
 
-## Personal User
+## Personal User (v1 — implemented)
 
-The first version of Revia is designed primarily for personal use.
+Version 1 is designed for personal use. A signed-in user can:
 
-A user can:
+- Create and delete decks
+- Create and delete lessons
+- Study lessons (swipe card viewer)
+- Complete daily review sessions with ratings
+- Track progress on the dashboard
+- Import learning content (JSON)
+- Search decks, lessons, and cards
+- Configure theme and sign out
 
-* Create decks
-* Create lessons
-* Create cards
-* Review cards
-* Track learning progress
-* Import learning content
-* Export learning content
-
-No sharing or collaboration is included in Version 1.
-
----
-
-## Admin
-
-Initially, the admin is simply the application owner.
-
-The admin has all user capabilities, along with the ability to:
-
-* Manage application settings
-* Import sample content
-* Maintain default decks
-* Manage future platform features
-
-The system should be designed so additional roles can be added later without changing the core architecture.
-
-Possible future roles:
-
-* Creator
-* Moderator
-* Public Deck Publisher
-
-These are intentionally outside the scope of Version 1.
+**Not in v1:** export, statistics charts, card edit UI on deck page, tags UI, sharing.
 
 ---
 
-# Content Import
+## Admin (future)
 
-Version 1 supports importing learning content through a JSON file.
+Initially, the admin is the application owner. Not implemented in v1.
 
-The import system should be generic so that the same format works for any subject.
+Possible future capabilities:
 
-Future versions may also support:
+- Manage application settings
+- Import sample content for all users
+- Maintain default decks
+- Role-based access
 
-* CSV
-* Excel
-* Markdown
-* PDF (AI-assisted)
-* Custom `.revia` package format
+Possible future roles (out of v1 scope):
 
-JSON is the only required import format for the first release.
+- Creator
+- Moderator
+- Public Deck Publisher
+
+---
+
+# Content Import (v1 — implemented)
+
+JSON import is supported via Settings → Import Deck.
+
+- File upload (`.json`, `.txt`) or paste
+- Creates deck, lessons, cards, tags, and initial scheduling state
+- Generic format works for any subject
+
+**Not in v1:** CSV, Excel, Markdown, PDF, `.revia` package export/import.
 
 ---
 
@@ -80,14 +69,6 @@ JSON is the only required import format for the first release.
           "example": "ನಮಸ್ಕಾರ, ಹೇಗಿದ್ದೀರ?",
           "notes": "Formal greeting",
           "tags": ["greeting", "beginner"]
-        },
-        {
-          "front": "Thank you",
-          "back": "ಧನ್ಯವಾದ",
-          "pronunciation": "Dhanyavada",
-          "example": "ತುಂಬ ಧನ್ಯವಾದ",
-          "notes": "",
-          "tags": ["polite"]
         }
       ]
     }
@@ -95,48 +76,37 @@ JSON is the only required import format for the first release.
 }
 ```
 
-Only the following fields are required:
-
-* Deck title
-* Lesson title
-* Card front
-* Card back
-
-All other fields are optional.
+**Required:** deck title, lesson title, card front, card back. All other fields optional.
 
 ---
 
-# Design Philosophy
+# Design Philosophy (v1 — implemented)
 
-Revia is built as a **mobile-first web application**.
+Revia is a **mobile-first web application**.
 
-Every screen should be designed for a phone before being enhanced for larger displays.
-
-The primary experience should feel natural on a mobile browser, with:
-
-* Large touch targets
-* Comfortable spacing
-* Minimal navigation
-* Fast loading
-* One-handed usability
-* Responsive layouts
-
-Desktop support is important but secondary.
-
-The desktop interface should enhance the mobile experience rather than define it.
+- Large touch targets, floating bottom navigation
+- Full-screen study and review viewers
+- Desktop shows "Revia is mobile-first" guidance
+- Optimized for phone browsers; deployed as PWA-ready web app
 
 ---
 
-# Version 1 Scope
+# Version 1 Scope — Achieved
 
-The first version should allow a user to:
+| Goal | v1 Status |
+|------|-----------|
+| Import JSON deck | ✅ |
+| Create decks manually | ✅ |
+| Organize into lessons | ✅ |
+| Study lessons | ✅ |
+| Daily review sessions | ✅ |
+| Track review progress | ✅ (dashboard) |
+| Deploy to browser (mobile) | ✅ |
+| Real user accounts | ✅ (Supabase) |
+| Add/edit cards in UI | ⏳ API only |
+| Export content | ⏳ Planned |
+| Statistics charts | ⏳ Planned |
 
-1. Import a JSON deck.
-2. Create or edit decks manually.
-3. Organize decks into lessons.
-4. Add and edit cards.
-5. Complete daily review sessions.
-6. Track review progress.
-7. Access the application from any modern browser on mobile or desktop after deployment.
+**v1 objective met:** stable personal learning tool usable every day.
 
-The objective is to create a stable, enjoyable personal learning tool that can be used every day before expanding it into a broader learning platform.
+**Next:** See [progress-and-roadmap.md](./progress-and-roadmap.md) for candidate phases.
