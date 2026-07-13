@@ -8,7 +8,7 @@ type RouteContext = { params: Promise<{ deckId: string; cardId: string }> };
 export async function GET(_request: Request, context: RouteContext) {
   try {
     const { deckId, cardId } = await context.params;
-    const card = await cardService.getById(getUserId(), deckId, cardId);
+    const card = await cardService.getById(await getUserId(), deckId, cardId);
     return jsonResponse(card);
   } catch (error) {
     return handleApiError(error);
@@ -19,7 +19,7 @@ export async function PATCH(request: Request, context: RouteContext) {
   try {
     const { deckId, cardId } = await context.params;
     const body = updateCardSchema.parse(await request.json());
-    const card = await cardService.update(getUserId(), deckId, cardId, body);
+    const card = await cardService.update(await getUserId(), deckId, cardId, body);
     return jsonResponse(card);
   } catch (error) {
     return handleApiError(error);
@@ -29,7 +29,7 @@ export async function PATCH(request: Request, context: RouteContext) {
 export async function DELETE(_request: Request, context: RouteContext) {
   try {
     const { deckId, cardId } = await context.params;
-    await cardService.delete(getUserId(), deckId, cardId);
+    await cardService.delete(await getUserId(), deckId, cardId);
     return jsonResponse({ ok: true });
   } catch (error) {
     return handleApiError(error);

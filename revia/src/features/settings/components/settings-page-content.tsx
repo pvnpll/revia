@@ -4,6 +4,7 @@ import Link from "next/link";
 import { BookOpen, Info } from "lucide-react";
 
 import { ThemeSetting } from "@/components/layout/theme-setting";
+import { AccountSettings } from "@/features/auth/components/account-settings";
 import { CreateDeckForm } from "@/features/decks/components/create-deck-form";
 import { ImportDeckForm } from "@/features/import/components/import-deck-form";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,8 @@ export function SettingsPageContent() {
           Manage decks, appearance, and app preferences.
         </p>
       </div>
+
+      <AccountSettings />
 
       <Card>
         <CardHeader>

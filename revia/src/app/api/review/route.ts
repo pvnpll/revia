@@ -6,7 +6,7 @@ import { submitReviewSchema } from "@/lib/validators/review.schema";
 export async function POST(request: Request) {
   try {
     const body = submitReviewSchema.parse(await request.json());
-    const result = await reviewService.submitReview(getUserId(), body);
+    const result = await reviewService.submitReview(await getUserId(), body);
     return jsonResponse(result);
   } catch (error) {
     return handleApiError(error);
