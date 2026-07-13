@@ -6,7 +6,7 @@ Deploy Revia to Vercel with Supabase Auth and Postgres.
 
 1. Push this repo to GitHub: `https://github.com/pvnpll/revia`
 2. Open [vercel.com/new](https://vercel.com/new) → Import the repo
-3. **Root Directory:** `revia` (important — app lives in the `revia/` folder)
+3. **Root Directory:** `revia` ← **required** if your GitHub repo has the app in a `revia/` subfolder (fixes 404 / empty deploys)
 4. Framework: **Next.js** (auto-detected)
 5. Do **not** deploy yet — add env vars first (step 2)
 
@@ -104,4 +104,5 @@ Browser → Vercel (Next.js) → Supabase Auth (sessions)
 | Build fails on Prisma | Ensure `postinstall` runs (`prisma generate` in package.json) |
 | 500 after deploy | Check Vercel env vars; `DATABASE_URL` must use port **6543** |
 | Login redirect fails | Add Vercel URL to Supabase redirect URLs |
-| API returns HTML not JSON | Fixed — API routes bypass page auth redirect |
+| Build shows 0ms / site 404 | Set **Root Directory** to `revia` in Vercel → Settings → General, then redeploy |
+| `DEPLOYMENT_NOT_FOUND` on production URL | Redeploy after fixing Root Directory; remove any `vercel.json` at repo root |
