@@ -6,7 +6,7 @@ import { importDeckRequestSchema } from "@/lib/validators/import.schema";
 export async function POST(request: Request) {
   try {
     const body = importDeckRequestSchema.parse(await request.json());
-    const result = await importService.importDeck(getUserId(), body);
+    const result = await importService.importDeck(await getUserId(), body);
     return jsonResponse(result, 201);
   } catch (error) {
     return handleApiError(error);

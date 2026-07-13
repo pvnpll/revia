@@ -18,6 +18,35 @@ npm run setup    # Docker Postgres + schema + seed
 npm run dev      # http://localhost:3000
 ```
 
+Without Supabase env vars, the app uses the mock user from `.env` (local dev and E2E).
+
+### Supabase Auth (optional)
+
+**Option A — MCP (recommended in Cursor)**
+
+1. Open **Cursor Settings → Tools & MCP** and enable the `supabase` server (configured in `.cursor/mcp.json` at the repo root).
+2. Click **Authenticate** and sign in to Supabase when prompted.
+3. Ask the agent to configure auth for Revia using MCP, or run the connect script manually (Option B).
+
+**Option B — connect script**
+
+```bash
+# Personal access token: https://supabase.com/dashboard/account/tokens
+# Project ref: Dashboard → Project Settings → General → Project ID
+SUPABASE_ACCESS_TOKEN="sbp_..." SUPABASE_PROJECT_REF="your-ref" npm run supabase:connect
+```
+
+This configures auth redirect URLs, enables email auto-confirm for local dev, and writes keys to `.env`.
+
+**Manual setup**
+
+1. Create a [Supabase](https://supabase.com) project.
+2. Copy **Project URL** and **anon public key** into `.env`.
+3. In Supabase → **Authentication → URL Configuration**, add redirect URL `http://localhost:3000/auth/callback`.
+4. Restart the dev server. Unauthenticated visits redirect to `/login`; sign out is in **Settings**.
+
+On first login, the Supabase user is synced into the local `users` table (same UUID as `auth.users.id`).
+
 ## Feature Rollout
 
 | # | Feature | Status |

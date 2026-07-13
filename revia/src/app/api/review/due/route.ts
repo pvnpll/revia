@@ -10,7 +10,7 @@ export async function GET(request: Request) {
       deckId: searchParams.get("deckId") ?? undefined,
       limit: searchParams.get("limit") ?? undefined,
     });
-    const queue = await reviewService.getDueCards(getUserId(), input);
+    const queue = await reviewService.getDueCards(await getUserId(), input);
     return jsonResponse(queue);
   } catch (error) {
     return handleApiError(error);

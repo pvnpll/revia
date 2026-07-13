@@ -8,7 +8,7 @@ type RouteContext = { params: Promise<{ deckId: string }> };
 export async function GET(_request: Request, context: RouteContext) {
   try {
     const { deckId } = await context.params;
-    const lessons = await lessonService.list(getUserId(), deckId);
+    const lessons = await lessonService.list(await getUserId(), deckId);
     return jsonResponse(lessons);
   } catch (error) {
     return handleApiError(error);
@@ -19,7 +19,7 @@ export async function POST(request: Request, context: RouteContext) {
   try {
     const { deckId } = await context.params;
     const body = createLessonSchema.parse(await request.json());
-    const lesson = await lessonService.create(getUserId(), deckId, body);
+    const lesson = await lessonService.create(await getUserId(), deckId, body);
     return jsonResponse(lesson, 201);
   } catch (error) {
     return handleApiError(error);

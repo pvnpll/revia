@@ -4,7 +4,7 @@ import { dashboardService } from "@/lib/services/dashboard.service";
 
 export async function GET() {
   try {
-    const summary = await dashboardService.getSummary(getUserId());
+    const summary = await dashboardService.getSummary(await getUserId());
     return jsonResponse(summary);
   } catch (error) {
     return handleApiError(error);

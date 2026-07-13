@@ -10,7 +10,7 @@ export async function GET(request: Request) {
       q: searchParams.get("q") ?? "",
       limit: searchParams.get("limit") ?? undefined,
     });
-    const results = await searchService.search(getUserId(), input);
+    const results = await searchService.search(await getUserId(), input);
     return jsonResponse(results);
   } catch (error) {
     return handleApiError(error);

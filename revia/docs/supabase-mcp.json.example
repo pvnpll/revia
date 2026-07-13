@@ -1,0 +1,10 @@
+# Supabase MCP — project-scoped config for Revia
+# Update `.cursor/mcp.json` at the repo root with this URL, then re-authenticate in Cursor Settings → Tools & MCP
+
+{
+  "mcpServers": {
+    "supabase": {
+      "url": "https://mcp.supabase.com/mcp?project_ref=ophrrajusdwhuxvnsjrr&features=database,development,debugging,docs"
+    }
+  }
+}
