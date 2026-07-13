@@ -1,0 +1,7 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "cd revia && npm install && npm run build",
+  "devCommand": "cd revia && npm run dev",
+  "installCommand": "cd revia && npm install",
+  "outputDirectory": "revia/.next"
+}

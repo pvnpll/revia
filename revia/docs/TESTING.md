@@ -124,27 +124,24 @@ npm run db:reset
 
 Install [Docker Desktop](https://www.docker.com/products/docker-desktop/), then run `npm run setup` again.
 
-## Deploy to Vercel
+## Deploy to Vercel + Supabase
 
-1. Push the repo to GitHub
-2. Import project in [Vercel](https://vercel.com)
-3. Set environment variables:
+See **[docs/DEPLOY-VERCEL.md](./DEPLOY-VERCEL.md)** for the full guide.
+
+Quick steps:
+
+1. Import repo at [vercel.com/new](https://vercel.com/new) — set **Root Directory** to `revia`
+2. Add environment variables:
 
    | Variable | Value |
    |----------|-------|
-   | `DATABASE_URL` | Your hosted PostgreSQL URL (Neon, Supabase, Railway, etc.) |
-   | `MOCK_USER_ID` | `00000000-0000-0000-0000-000000000001` |
-   | `MOCK_USER_EMAIL` | `demo@decklearning.app` |
+   | `NEXT_PUBLIC_SUPABASE_URL` | `https://[project-ref].supabase.co` |
+   | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase Dashboard → API → anon key |
+   | `DATABASE_URL` | Supabase transaction pooler (port 6543) |
+   | `DIRECT_URL` | Supabase session pooler (port 5432) |
 
-4. Build command: `npm run build` (default)
-5. After first deploy, run schema + seed against your hosted DB:
-
-   ```bash
-   DATABASE_URL="your-url" npm run db:push
-   DATABASE_URL="your-url" npm run db:seed
-   ```
-
-**Recommended DB hosts:** [Neon](https://neon.tech) (free tier), [Supabase](https://supabase.com), [Railway](https://railway.app)
+3. Configure Supabase auth redirects for your Vercel URL (or run `npm run vercel:setup`)
+4. Deploy — schema is already on Supabase via `npm run db:push`
 
 ## Deploy with Docker (self-hosted)
 

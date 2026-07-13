@@ -37,9 +37,10 @@ export async function updateSession(request: NextRequest) {
     pathname.startsWith("/login") ||
     pathname.startsWith("/signup") ||
     pathname.startsWith("/auth/");
-  const isPublicRoute = pathname === "/" || pathname === "/api/health";
+  const isApiRoute = pathname.startsWith("/api/");
+  const isPublicRoute = pathname === "/";
 
-  if (!user && !isAuthRoute && !isPublicRoute) {
+  if (!user && !isAuthRoute && !isPublicRoute && !isApiRoute) {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = "/login";
     loginUrl.searchParams.set("redirect", pathname);
