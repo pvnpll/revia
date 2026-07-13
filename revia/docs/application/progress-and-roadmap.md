@@ -1,20 +1,39 @@
 # Progress and Roadmap
 
-**Last updated:** July 2026 — **v1.0 stable baseline**  
-**Policy:** Incremental changes from here. Review phases below before requesting implementation.
+**Last updated:** July 2026 — **v1.0.0** (first stable release)  
+**Versioning:** [release-versioning.md](./release-versioning.md) — SemVer; every `main` merge = new version  
+**Policy:** Plan features by target release. Implement after you approve. Publish release notes only when you ask.
 
 ---
 
-## v1 Summary
+## Release map (proposed)
 
-Revia v1 is **stable and deployed**. The personal learning loop works:
+| Version | Status | Scope | Roadmap |
+|---------|--------|-------|---------|
+| **v1.0.0** | ✅ Published | Core app + deploy | Phases 0–12 |
+| **v1.0.1** | Open | Patches: bugs, perf, deploy fixes | Ad-hoc |
+| **v1.1.0** | Planned | Content editing UI | Phase A |
+| **v1.2.0** | Planned | JSON export | Phase B |
+| **v1.3.0** | Planned | Statistics / charts | Phase C |
+| **v1.4.0** | Planned | Tags | Phase D |
+| **v1.5.0** | Planned | Image/audio cards | Phase E |
+| **v1.6.0** | Planned | CSV import, review filters | Phase F + G |
+| **v2.0.0** | Future | Breaking changes, roles, native API | Phase H / I |
+
+Release notes: [docs/releases/](../releases/) · Changelog: [CHANGELOG.md](../../CHANGELOG.md)
+
+---
+
+## v1.0.0 Summary
+
+Revia **v1.0.0** is **stable and deployed**. The personal learning loop works:
 
 ```text
 Import or create content → Study lessons → Daily review → Track on dashboard
 ```
 
-| Area | v1 Status |
-|------|-----------|
+| Area | v1.0.0 Status |
+|------|---------------|
 | Auth (Supabase) | ✅ Shipped |
 | Dashboard | ✅ Shipped |
 | Decks | ✅ Shipped |
@@ -26,11 +45,11 @@ Import or create content → Study lessons → Daily review → Track on dashboa
 | Vercel + Supabase deploy | ✅ Shipped |
 | Performance (mobile) | ✅ Optimized |
 
-**Release snapshot:** [v1-release.md](./v1-release.md)
+**Release notes:** [v1.0.0.md](../releases/v1.0.0.md) (**Published**) · [v1-release.md](./v1-release.md) (snapshot)
 
 ---
 
-## Completed Phases (v1)
+## Completed Phases (v1.0.0)
 
 ### Phase 0 — Architecture
 
@@ -126,11 +145,12 @@ These exist in code partially but are **not required for v1 stability**:
 
 ---
 
-## Upcoming Phases (for your review)
+## Upcoming releases (for your review)
 
-> **Not committed.** Review this list, mark what you want, add items, or defer. Implementation only after you approve.
+> Map features to **target versions** below. Adjust scope or merge versions before approving work.  
+> See [release-versioning.md](./release-versioning.md) for MAJOR/MINOR/PATCH rules.
 
-### Phase A — Content editing UI
+### v1.1.0 — Phase A: Content editing UI
 
 **Goal:** Edit content without re-importing JSON.
 
@@ -146,7 +166,7 @@ These exist in code partially but are **not required for v1 stability**:
 
 ---
 
-### Phase B — Export
+### v1.2.0 — Phase B: Export
 
 **Goal:** Portable backup and sharing prep (personal use).
 
@@ -160,7 +180,7 @@ These exist in code partially but are **not required for v1 stability**:
 
 ---
 
-### Phase C — Statistics and progress
+### v1.3.0 — Phase C: Statistics and progress
 
 **Goal:** Visual learning history beyond dashboard counts.
 
@@ -176,7 +196,7 @@ These exist in code partially but are **not required for v1 stability**:
 
 ---
 
-### Phase D — Tags
+### v1.4.0 — Phase D: Tags
 
 **Goal:** Organize and filter content.
 
@@ -191,7 +211,7 @@ These exist in code partially but are **not required for v1 stability**:
 
 ---
 
-### Phase E — Rich cards (media)
+### v1.5.0 — Phase E: Rich cards (media)
 
 **Goal:** Image and audio on flashcards.
 
@@ -206,7 +226,7 @@ These exist in code partially but are **not required for v1 stability**:
 
 ---
 
-### Phase F — Import expansion
+### v1.6.0 — Phase F + G: Import expansion & review enhancements
 
 **Goal:** More ways to get content in.
 
@@ -217,67 +237,49 @@ These exist in code partially but are **not required for v1 stability**:
 | Markdown import | Medium | Low |
 | PDF → cards (AI-assisted) | Large | Low (v2+) |
 
-**Depends on:** Phase A (card UI) helpful but not required.
+### v1.6.0 — Phase F + G: Import expansion & review enhancements
 
----
-
-### Phase G — Review enhancements
-
-**Goal:** Smarter, more flexible review.
+**Goal:** More import options and flexible review.
 
 | Item | Effort | Value |
 |------|--------|-------|
+| CSV import (front, back columns) | Medium | High |
 | Filter review by deck | Small | Medium |
-| Custom daily review limit | Small | Low |
 | "Cram" mode (ignore schedule) | Medium | Medium |
-| Review session history page | Medium | Low |
-| Alternative scheduler algorithms | Large | Low |
+| Anki `.apkg` import | Large | High |
+| Custom daily review limit | Small | Low |
 | Leech detection (cards failed N times) | Medium | Medium |
+| Markdown import | Medium | Low |
 
-**Depends on:** Nothing for deck filter; session page needs UI design.
+**Depends on:** v1.1.0 card UI helpful for import testing.
 
 ---
 
-### Phase H — Platform and admin
+### v2.0.0 — Phase H + I: Platform (future)
 
-**Goal:** Owner tools and future multi-user prep.
+**Goal:** Admin tools, roles, and native mobile clients.
 
 | Item | Effort | Value |
 |------|--------|-------|
 | Role field on User (admin/user) | Small | Low |
-| Admin: seed sample decks | Medium | Low |
-| Admin: view all users (if multi-tenant) | Large | Low (v2+) |
-| Public deck marketplace | Large | Out of scope |
-
-**Depends on:** Product decision on multi-user.
-
----
-
-### Phase I — Mobile native (future)
-
-**Goal:** Android/iOS apps consuming same API.
-
-| Item | Effort | Value |
-|------|--------|-------|
 | OpenAPI spec from existing routes | Medium | High |
+| Admin: seed sample decks | Medium | Low |
 | React Native or Flutter client | Very large | High |
 | Offline review queue | Very large | High |
-| Push notifications (due cards) | Large | Medium |
+| Public deck marketplace | Large | Out of scope |
 
-**Depends on:** v1 API stability (achieved).
+**Depends on:** Product decision on multi-user and native apps.
 
 ---
 
-## Suggested Priority (agent recommendation)
+## Suggested priority (by release)
 
-If you want a sensible default order when you pick items:
-
-1. **Phase A** — Content editing UI (biggest daily-use gap)
-2. **Phase B** — Export (backup + peace of mind)
-3. **Phase C** — Statistics (motivation + insight)
-4. **Phase E** — Media (if visual/audio learning matters)
-5. **Phase D** — Tags (when library grows)
-6. **Phase F/G/H/I** — As needed
+1. **v1.1.0** — Content editing UI
+2. **v1.2.0** — Export
+3. **v1.3.0** — Statistics
+4. **v1.5.0** — Media (if needed)
+5. **v1.4.0** — Tags
+6. **v1.6.0+** / **v2.0.0** — As needed
 
 ---
 
@@ -285,11 +287,11 @@ If you want a sensible default order when you pick items:
 
 When ready, tell the agent something like:
 
-- "Implement Phase A — deck edit and card UI on deck page"
-- "Skip statistics for now; do export only"
-- "Add Phase G cram mode to the roadmap and build it"
+- "Build v1.1.0 — deck edit and card UI"
+- "Skip v1.3.0 for now; ship v1.2.0 export only"
+- "Publish release notes for v1.0.0"
 
-The agent should treat v1 as frozen unless you explicitly approve a phase or item.
+The agent drafts release docs on `main` merges; **publishes only when you ask**.
 
 ---
 
@@ -297,14 +299,15 @@ The agent should treat v1 as frozen unless you explicitly approve a phase or ite
 
 Update this file when:
 
-- A phase is completed (move to Completed section)
-- You approve, defer, or cancel a roadmap item
-- Infrastructure changes (new region, new auth provider, etc.)
+- A release ships (move to Completed, add release notes)
+- You retarget a feature to a different version
+- Infrastructure changes
 
-Related docs to keep in sync:
+Related docs:
 
+- [release-versioning.md](./release-versioning.md)
+- [docs/releases/](../releases/)
+- [CHANGELOG.md](../../CHANGELOG.md)
 - [v1-release.md](./v1-release.md)
 - [layman-guide.md](./layman-guide.md)
 - [technical-reference.md](./technical-reference.md)
-- [README.md](../../README.md)
-- [architecture/README.md](../architecture/README.md)

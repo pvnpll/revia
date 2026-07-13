@@ -20,7 +20,9 @@ A mobile-first, subject-agnostic spaced repetition learning platform.
 | [v1 Release Snapshot](./docs/application/v1-release.md) | Everyone — what's in v1 |
 | [Layman Guide](./docs/application/layman-guide.md) | Non-technical users |
 | [Technical Reference](./docs/application/technical-reference.md) | Developers |
-| [Progress & Roadmap](./docs/application/progress-and-roadmap.md) | What's done + what's next |
+| [Progress & Roadmap](./docs/application/progress-and-roadmap.md) | Features by release version |
+| [Release Versioning](./docs/application/release-versioning.md) | SemVer policy |
+| [CHANGELOG](./CHANGELOG.md) | Shipped versions |
 | [Deploy Guide](./docs/DEPLOY-VERCEL.md) | Vercel + Supabase setup |
 | [Architecture](./docs/architecture/README.md) | System design |
 | [Testing](./docs/TESTING.md) | Local dev and QA |
