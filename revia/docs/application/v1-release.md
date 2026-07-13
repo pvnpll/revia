@@ -1,8 +1,8 @@
-# Revia v1.0 — Release Snapshot
+# Revia v1.0.0 — Release Snapshot
 
-**Status:** Stable baseline (July 2026)  
-**Production:** [https://revialearn.vercel.app](https://revialearn.vercel.app)  
-**From here on:** Incremental changes only — review roadmap items before implementation.
+**Version:** v1.0.0 (see [release-versioning.md](./release-versioning.md))  
+**Status:** **Published** (14 July 2026)  
+**Production:** [https://revialearn.vercel.app](https://revialearn.vercel.app)
 
 ---
 

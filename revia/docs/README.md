@@ -1,15 +1,18 @@
 # Revia Documentation Index
 
-**Version:** 1.0 stable baseline (July 2026)
+**Version:** v1.0.0 (July 2026)
 
 ## Start Here
 
 | Document | Who it's for |
 |----------|--------------|
+| [release-versioning.md](./application/release-versioning.md) | How versions work (SemVer) |
+| [releases/v1.0.0.md](./releases/v1.0.0.md) | First release notes (Draft) |
+| [CHANGELOG.md](../CHANGELOG.md) | All shipped versions |
 | [v1-release.md](./application/v1-release.md) | Snapshot of what's shipped |
 | [layman-guide.md](./application/layman-guide.md) | Non-technical users |
 | [technical-reference.md](./application/technical-reference.md) | Developers |
-| [progress-and-roadmap.md](./application/progress-and-roadmap.md) | What's next (for your review) |
+| [progress-and-roadmap.md](./application/progress-and-roadmap.md) | Features planned by release |
 
 ## Operations
 
@@ -35,4 +38,4 @@
 
 ## Policy
 
-From v1 onward: **incremental changes only**. Review [progress-and-roadmap.md](./application/progress-and-roadmap.md) before requesting new features.
+**Semantic versioning** on every `main` merge. Release notes drafted automatically; **published only when you ask**. Review [progress-and-roadmap.md](./application/progress-and-roadmap.md) before approving new work.
