@@ -22,11 +22,11 @@ export const reviewService = {
       rating: input.rating,
       durationMs: input.durationMs,
       now,
-      calculateNext: (state, reviewHistory) =>
+      calculateNext: (state) =>
         schedulingEngine.submitReview({
           state,
           rating: input.rating,
-          reviewHistory,
+          reviewHistory: [],
           now,
         }),
     });

@@ -1,7 +1,7 @@
 import { Prisma, type Card, type CardSchedulingState } from "@prisma/client";
 
 import { prisma } from "@/lib/db/prisma";
-import type { CardSchedulingState as SchedulerState, ReviewRecord, ScheduleResult } from "@/lib/scheduler";
+import type { CardSchedulingState as SchedulerState, ScheduleResult } from "@/lib/scheduler";
 import type { DueReviewCard, ReviewQueue, SubmitReviewResult } from "@/types/review";
 
 type DueCardRow = Card & {
@@ -97,7 +97,7 @@ export const reviewRepository = {
     rating: 1 | 2 | 3 | 4 | 5;
     durationMs?: number;
     now: Date;
-    calculateNext: (state: SchedulerState, reviewHistory: ReviewRecord[]) => ScheduleResult;
+    calculateNext: (state: SchedulerState) => ScheduleResult;
   }): Promise<SubmitReviewResult | null> {
     return prisma.$transaction(async (tx) => {
       const card = await tx.card.findFirst({
@@ -111,20 +111,8 @@ export const reviewRepository = {
 
       if (!card?.schedulingState) return null;
 
-      const reviewHistoryRows = await tx.reviewLog.findMany({
-        where: { cardId: input.cardId, userId: input.userId },
-        orderBy: { reviewedAt: "desc" },
-        take: 50,
-      });
-
       const stateBefore = toSchedulerState(card.schedulingState);
-      const reviewHistory: ReviewRecord[] = reviewHistoryRows.map((row) => ({
-        rating: row.rating as 1 | 2 | 3 | 4 | 5,
-        reviewedAt: row.reviewedAt,
-        intervalBefore: row.intervalBefore,
-        intervalAfter: row.intervalAfter,
-      }));
-      const next = input.calculateNext(stateBefore, reviewHistory);
+      const next = input.calculateNext(stateBefore);
 
       await tx.cardSchedulingState.update({
         where: { cardId: input.cardId },

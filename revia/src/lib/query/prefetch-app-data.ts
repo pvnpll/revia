@@ -20,9 +20,9 @@ export function prefetchAppData(queryClient: QueryClient) {
     staleTime: 5 * 60_000,
   });
 
-  void queryClient.prefetchQuery({
-    queryKey: reviewQueryKeys.due(),
-    queryFn: () => reviewApi.getDueCards(),
-    staleTime: 30_000,
-  });
+    void queryClient.prefetchQuery({
+      queryKey: reviewQueryKeys.due(),
+      queryFn: () => reviewApi.getDueCards({ limit: 30 }),
+      staleTime: 30_000,
+    });
 }

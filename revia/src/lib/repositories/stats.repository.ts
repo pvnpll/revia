@@ -1,3 +1,5 @@
+import { Prisma } from "@prisma/client";
+
 import { prisma } from "@/lib/db/prisma";
 
 const MATURE_INTERVAL_DAYS = 21;
@@ -20,7 +22,7 @@ export const statsRepository = {
     const streakLookback = new Date(todayStart);
     streakLookback.setDate(streakLookback.getDate() - 90);
 
-    const [deckCount, totalCards, dueToday, reviewedToday, matureCards, reviewLogs] =
+    const [deckCount, totalCards, dueToday, reviewedToday, matureCards, reviewDays] =
       await Promise.all([
         prisma.deck.count({ where: { userId, isArchived: false } }),
         prisma.card.count({
@@ -41,14 +43,16 @@ export const statsRepository = {
             card: { isSuspended: false, deck: { userId, isArchived: false } },
           },
         }),
-        prisma.reviewLog.findMany({
-          where: { userId, reviewedAt: { gte: streakLookback } },
-          select: { reviewedAt: true },
-          orderBy: { reviewedAt: "desc" },
-        }),
+        prisma.$queryRaw<Array<{ day: Date }>>(Prisma.sql`
+          SELECT DISTINCT DATE(reviewed_at) AS day
+          FROM review_logs
+          WHERE user_id = ${userId}
+            AND reviewed_at >= ${streakLookback}
+          ORDER BY day DESC
+        `),
       ]);
 
-    const streak = calculateStreak(reviewLogs.map((l) => l.reviewedAt));
+    const streak = calculateStreak(reviewDays.map((row) => row.day));
 
     return { dueToday, reviewedToday, totalCards, matureCards, deckCount, streak };
   },

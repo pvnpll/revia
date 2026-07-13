@@ -59,6 +59,38 @@ export const deckRepository = {
     }));
   },
 
+  async findRecentByUser(userId: string, limit: number): Promise<DeckWithStats[]> {
+    const now = new Date();
+
+    const [rows, dueCounts] = await Promise.all([
+      prisma.deck.findMany({
+        where: { userId, isArchived: false },
+        orderBy: { updatedAt: "desc" },
+        take: limit,
+        include: {
+          _count: { select: { cards: { where: { isSuspended: false } } } },
+        },
+      }),
+      prisma.card.groupBy({
+        by: ["deckId"],
+        where: {
+          isSuspended: false,
+          deck: { userId, isArchived: false },
+          schedulingState: { dueAt: { lte: now } },
+        },
+        _count: { _all: true },
+      }),
+    ]);
+
+    const dueByDeck = new Map(dueCounts.map((row) => [row.deckId, row._count._all]));
+
+    return rows.map((row) => ({
+      ...toDeck(row),
+      cardCount: row._count.cards,
+      dueCount: dueByDeck.get(row.id) ?? 0,
+    }));
+  },
+
   async create(
     userId: string,
     input: { title: string; description?: string | null; subject?: string | null; color?: string },

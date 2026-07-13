@@ -153,19 +153,27 @@ function LessonCardSession({
     setStartedAt(Date.now());
   }, [current?.id]);
 
-  async function handleRating(rating: RatingValue) {
+  function handleRating(rating: RatingValue) {
     if (!current) return;
-    await submitReview.mutateAsync({
-      cardId: current.id,
-      rating,
-      durationMs: Date.now() - startedAt,
-    });
 
-    if (index + 1 >= cards.length) {
-      onClose();
-    } else {
-      setIndex((value) => value + 1);
+    const cardId = current.id;
+    const durationMs = Date.now() - startedAt;
+    const isLast = index + 1 >= cards.length;
+
+    if (isLast) {
+      submitReview.mutate(
+        { cardId, rating, durationMs },
+        {
+          onSettled: () => {
+            onClose();
+          },
+        },
+      );
+      return;
     }
+
+    setIndex((value) => value + 1);
+    submitReview.mutate({ cardId, rating, durationMs });
   }
 
   if (isLoading) {
@@ -198,7 +206,6 @@ function LessonCardSession({
       onClose={onClose}
       fullscreen
       allowFreeNavigation
-      isSubmitting={submitReview.isPending}
       errorMessage={
         submitReview.isError
           ? submitReview.error instanceof Error
