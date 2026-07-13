@@ -30,24 +30,32 @@ export const deckRepository = {
 
   async findByUser(userId: string): Promise<DeckWithStats[]> {
     const now = new Date();
-    const rows = await prisma.deck.findMany({
-      where: { userId, isArchived: false },
-      orderBy: { updatedAt: "desc" },
-      include: {
-        _count: { select: { cards: { where: { isSuspended: false } } } },
-        cards: {
-          where: { isSuspended: false },
-          select: { schedulingState: { select: { dueAt: true } } },
+
+    const [rows, dueCounts] = await Promise.all([
+      prisma.deck.findMany({
+        where: { userId, isArchived: false },
+        orderBy: { updatedAt: "desc" },
+        include: {
+          _count: { select: { cards: { where: { isSuspended: false } } } },
         },
-      },
-    });
+      }),
+      prisma.card.groupBy({
+        by: ["deckId"],
+        where: {
+          isSuspended: false,
+          deck: { userId, isArchived: false },
+          schedulingState: { dueAt: { lte: now } },
+        },
+        _count: { _all: true },
+      }),
+    ]);
+
+    const dueByDeck = new Map(dueCounts.map((row) => [row.deckId, row._count._all]));
 
     return rows.map((row) => ({
       ...toDeck(row),
       cardCount: row._count.cards,
-      dueCount: row.cards.filter(
-        (c) => c.schedulingState && c.schedulingState.dueAt <= now,
-      ).length,
+      dueCount: dueByDeck.get(row.id) ?? 0,
     }));
   },
 

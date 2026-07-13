@@ -17,6 +17,7 @@
     "check": "npm run typecheck && npm run test && npm run build",
     "setup": "bash scripts/setup.sh",
     "supabase:connect": "tsx scripts/supabase-connect.ts",
+    "vercel:setup": "tsx scripts/vercel-supabase-setup.ts",
     "prod": "bash scripts/prod-local.sh",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",

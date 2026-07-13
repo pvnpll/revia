@@ -16,6 +16,7 @@ import type { LessonWithStats } from "@/types/lesson";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ListSkeleton } from "@/components/ui/skeleton";
 
 interface ActiveLessonSession {
   lesson: LessonWithStats;
@@ -27,7 +28,7 @@ export function LessonList({ deckId }: { deckId: string }) {
   const [activeSession, setActiveSession] = useState<ActiveLessonSession | null>(null);
 
   if (isLoading) {
-    return <p className="text-sm text-muted-foreground">Loading lessons...</p>;
+    return <ListSkeleton rows={3} />;
   }
 
   if (isError) {
@@ -138,19 +139,15 @@ function LessonCardSession({
   reverseMode: boolean;
   onClose: () => void;
 }) {
-  const { data: cards = [], isLoading } = useCards(deckId);
+  const { data: cards = [], isLoading } = useCards(deckId, { lessonId: lesson.id });
   const submitReview = useSubmitReview(deckId);
-  const lessonCards = useMemo(
-    () => cards.filter((card) => card.lessonId === lesson.id && !card.isSuspended),
-    [cards, lesson.id],
-  );
   const studyCards = useMemo(
-    () => lessonCards.map((card) => toLessonStudyCard(card, reverseMode)),
-    [lessonCards, reverseMode],
+    () => cards.map((card) => toLessonStudyCard(card, reverseMode)),
+    [cards, reverseMode],
   );
   const [index, setIndex] = useState(0);
   const [startedAt, setStartedAt] = useState(() => Date.now());
-  const current = lessonCards[index];
+  const current = cards[index];
 
   useEffect(() => {
     setStartedAt(Date.now());
@@ -164,7 +161,7 @@ function LessonCardSession({
       durationMs: Date.now() - startedAt,
     });
 
-    if (index + 1 >= lessonCards.length) {
+    if (index + 1 >= cards.length) {
       onClose();
     } else {
       setIndex((value) => value + 1);

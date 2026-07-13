@@ -16,6 +16,7 @@ export function useDueReviewCards(deckId?: string) {
   return useQuery({
     queryKey: reviewQueryKeys.due(deckId),
     queryFn: () => reviewApi.getDueCards({ deckId, limit: 20 }),
+    staleTime: 30_000,
   });
 }
 

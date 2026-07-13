@@ -51,9 +51,12 @@ const cardInclude = Prisma.validator<Prisma.CardInclude>()({
 });
 
 export const cardRepository = {
-  async findByDeck(deckId: string): Promise<CardWithScheduling[]> {
+  async findByDeck(deckId: string, lessonId?: string): Promise<CardWithScheduling[]> {
     const rows = await prisma.card.findMany({
-      where: { deckId },
+      where: {
+        deckId,
+        ...(lessonId ? { lessonId, isSuspended: false } : {}),
+      },
       orderBy: { createdAt: "desc" },
       include: cardInclude,
     });

@@ -77,6 +77,15 @@ On first login, the Supabase user is synced into the local `users` table (same U
 
 See [`docs/TESTING.md`](./docs/TESTING.md) for full testing guide.
 
+## Deploy to Vercel + Supabase
+
+Full guide: [`docs/DEPLOY-VERCEL.md`](./docs/DEPLOY-VERCEL.md)
+
+1. Import repo on [Vercel](https://vercel.com/new) with **Root Directory: `revia`**
+2. Add env vars (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `DATABASE_URL`, `DIRECT_URL`)
+3. Run `npm run vercel:setup` to configure Supabase auth redirects for your Vercel URL
+4. Deploy — push to `main` or `npx vercel --prod`
+
 ## Tech Stack
 
 Next.js 15 · React · TypeScript · Tailwind · shadcn/ui · Prisma · PostgreSQL · Zod · React Hook Form · TanStack Query

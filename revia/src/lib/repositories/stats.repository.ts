@@ -17,6 +17,9 @@ export const statsRepository = {
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);
 
+    const streakLookback = new Date(todayStart);
+    streakLookback.setDate(streakLookback.getDate() - 90);
+
     const [deckCount, totalCards, dueToday, reviewedToday, matureCards, reviewLogs] =
       await Promise.all([
         prisma.deck.count({ where: { userId, isArchived: false } }),
@@ -39,10 +42,9 @@ export const statsRepository = {
           },
         }),
         prisma.reviewLog.findMany({
-          where: { userId },
+          where: { userId, reviewedAt: { gte: streakLookback } },
           select: { reviewedAt: true },
           orderBy: { reviewedAt: "desc" },
-          take: 500,
         }),
       ]);
 
