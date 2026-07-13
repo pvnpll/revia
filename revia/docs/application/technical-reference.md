@@ -4,244 +4,174 @@
 
 Revia is a subject-agnostic spaced repetition learning platform.
 
-The product model is:
+**Product model:**
 
 ```text
-User -> Deck -> Lesson -> Card -> Scheduling State -> Review History
+User → Deck → Lesson → Card → Scheduling State → Review Log
 ```
 
-The app currently supports the content-management foundation: dashboard, decks, lessons, and cards. The scheduler exists as pure TypeScript and is used to create initial card scheduling state. The full review loop is planned next.
+**v1 status:** Core loop is complete — content management, lesson study, daily review, dashboard, search, import, and Supabase auth are implemented and deployed.
+
+**Architecture pattern:**
+
+```text
+Pages/Components → TanStack Query Hooks → API Route Handlers
+  → Services → Repositories → Prisma → PostgreSQL
+```
 
 ## Tech Stack
 
-- Next.js 15 with App Router and Turbopack development server.
-- React 19.
-- TypeScript.
-- Tailwind CSS 4.
-- shadcn/ui style shared components.
-- React Hook Form for forms.
-- Zod for shared API and form validation.
-- TanStack Query for client-side server state.
-- Prisma ORM.
-- PostgreSQL.
-- Vitest for unit tests.
-- Mock user authentication for MVP development.
+| Layer | Technology |
+|-------|------------|
+| Framework | Next.js 15 (App Router) |
+| UI | React 19, TypeScript, Tailwind CSS 4, shadcn/ui |
+| Forms | React Hook Form + Zod |
+| Client state | TanStack Query |
+| Auth | Supabase (`@supabase/ssr`) |
+| ORM | Prisma 6 |
+| Database | PostgreSQL (local Docker or Supabase) |
+| Scheduler | Pure TypeScript (`src/lib/scheduler/`) |
+| Unit tests | Vitest |
+| E2E tests | Playwright (iPhone 13 viewport) |
+| Deploy | Vercel (`bom1` Mumbai) |
 
-Important package and script references:
-
-- `package.json`
-- `src/lib/api/auth.ts`
-- `src/lib/api/response.ts`
-- `src/components/providers/query-provider.tsx`
-
-## Feature Status
-
-This status is based on the current source code, not only the older architecture docs.
+## Feature Status (v1)
 
 | Feature | Status | Notes |
-|---|---|---|
-| Dashboard | Partial | `/dashboard` and `/api/dashboard` work, but review-dependent stats stay limited until Review exists. |
-| Decks | Complete | API CRUD, deck list UI, create UI, delete UI, detail page. PATCH API exists; edit UI is not yet exposed. |
-| Lessons | Partial | API CRUD, list/create/delete UI in deck detail. Update hook/API exists; edit/reorder UI is not yet exposed. |
-| Cards | Partial | API CRUD, list/create/edit/delete UI, lesson assignment, suspension, initial scheduling state. Tags/media upload are not built. |
-| Review | Planned | Page placeholder only. Scheduler exists, but review sessions and ratings are not wired yet. |
-| Statistics | Planned | Page placeholder only. Dashboard has basic stats queries. |
-| Settings | Planned | Page placeholder only. |
-| Search | Planned | Page placeholder exists, no search API or UI flow yet. |
-| Tags | Planned | Database schema exists, no app feature yet. |
+|---------|--------|-------|
+| Dashboard | Complete | Stats, recent decks, review CTA |
+| Decks | Complete | List, create, delete, detail; PATCH API without edit UI |
+| Lessons | Complete | Create, delete, study viewer; PATCH API without edit UI |
+| Review | Complete | Due queue, ratings, `simple-v1` scheduler, optimistic UI |
+| Search | Complete | API + UI, min 2 chars |
+| Settings | Complete | Theme, import, create deck, account, about |
+| Import | Complete | JSON/text via `POST /api/import/deck` |
+| Auth | Complete | Supabase email/password; mock user fallback locally |
+| Cards CRUD | Partial | Full API; `CardsSection` not mounted on deck page |
+| Tags | Partial | Prisma + import; no UI or tag API routes |
+| Export | Planned | — |
+| Statistics | Planned | Dashboard counts only; no `/statistics` page |
+| Media upload | Planned | `imageUrl`/`audioUrl` on schema only |
+| Admin / roles | Planned | — |
 
 ## Folder Structure
 
-The app uses an API-first, feature-based structure.
-
 ```text
-src/
-  app/              Pages and API route handlers
-  components/       Shared UI, layout, providers
-  features/         Feature UI, hooks, HTTP clients
-  lib/              Services, repositories, validators, scheduler, DB
-  types/            Shared TypeScript response and domain types
+revia/
+  src/
+    app/                    Pages, API routes, auth callback
+      (app)/                Protected app routes (mobile shell)
+      api/                  REST JSON endpoints
+      auth/callback/        Supabase OAuth/code exchange
+    components/             Shared UI, layout, providers
+    features/               Per-feature UI, hooks, API clients
+      auth/                 Login, signup, account settings
+      cards/                Card hooks and forms (not on deck page yet)
+      dashboard/
+      decks/
+      import/
+      lessons/
+      review/
+      search/
+      settings/
+      study/                StudyCardViewer (shared by review + lessons)
+    lib/
+      api/                  auth.ts, response.ts
+      db/                   Prisma client
+      repositories/         Database access
+      services/             Business logic
+      scheduler/            Pure SRS algorithm
+      validators/           Zod schemas
+      supabase/             Client, server, middleware
+      query/                Prefetch helpers
+    types/                  Shared TypeScript types
+  prisma/schema.prisma
+  tests/unit/               Vitest
+  tests/e2e/                Playwright
+  docs/                     All documentation
 ```
-
-Main implementation paths:
-
-- `src/app/(app)/dashboard/page.tsx`
-- `src/app/(app)/decks/page.tsx`
-- `src/app/(app)/decks/[deckId]/page.tsx`
-- `src/features/dashboard/`
-- `src/features/decks/`
-- `src/features/lessons/`
-- `src/features/cards/`
-- `src/lib/services/`
-- `src/lib/repositories/`
-- `src/lib/validators/`
-- `src/lib/scheduler/`
-- `prisma/schema.prisma`
 
 ## User Flows
 
-### Content Creation Flow
+### Content + Study Flow (implemented)
 
 ```mermaid
 flowchart TD
-  A[Open Dashboard] --> B[Go to Decks]
-  B --> C[Create Deck]
-  C --> D[Open Deck Detail]
-  D --> E[Create Lessons]
-  D --> F[Create Cards]
-  E --> F
-  F --> G[Assign Cards to Lessons]
+  A[Dashboard] --> B[Decks]
+  B --> C[Deck Detail]
+  C --> D[Create Lesson]
+  C --> E[Tap Lesson to Study]
+  E --> F[StudyCardViewer]
+  F --> G[Swipe / Rate Cards]
+  A --> H[Settings Import JSON]
+  H --> B
 ```
 
-This flow is implemented today.
-
-### Planned Review Flow
+### Review Flow (implemented)
 
 ```mermaid
 flowchart TD
-  A[Open Review] --> B[Load Due Cards]
+  A[Review Tab] --> B[Load Due Queue]
   B --> C[Show Card Front]
-  C --> D[User Reveals Back]
-  D --> E[User Rates Recall]
-  E --> F[Scheduler Calculates Next Due Date]
-  F --> G[Persist Review Log and Scheduling State]
-  G --> H[Update Dashboard and Statistics]
+  C --> D[Tap to Reveal]
+  D --> E[Rate 1-5]
+  E --> F[Advance Immediately]
+  F --> G[Submit Rating in Background]
+  G --> H{More Due?}
+  H -->|Yes| C
+  H -->|No| I[All Caught Up]
 ```
 
-This is the next core product milestone. The scheduler and database models exist, but the route handlers, service, repository, and UI flow still need implementation.
+Optimistic advance: UI moves to the next card before the API responds. See `review-page-content.tsx`.
 
 ## API Documentation
 
-All implemented API endpoints use the standard response envelope:
+**Response envelope:**
 
 ```json
-{ "data": "..." }
+{ "data": { ... } }
 ```
 
-Errors use:
+**Error envelope:**
 
 ```json
-{ "error": { "code": "VALIDATION", "message": "Message", "field": "optionalField" } }
+{ "error": { "code": "VALIDATION", "message": "...", "field": "optional" } }
 ```
 
-The response helpers live in `src/lib/api/response.ts`.
+All data routes call `getUserId()` from `src/lib/api/auth.ts` (Supabase session or `MOCK_USER_ID`).
 
-### Health
-
-| Method | Path | Purpose |
-|---|---|---|
-| GET | `/api/health` | Checks app and database health. |
-
-### Dashboard
+### Endpoints
 
 | Method | Path | Purpose |
-|---|---|---|
-| GET | `/api/dashboard` | Returns due count, reviewed today, streak, total cards, mature cards, deck count, and recent decks. |
+|--------|------|---------|
+| GET | `/api/health` | App + DB health |
+| GET | `/api/dashboard` | Summary stats + 5 recent decks |
+| GET | `/api/decks` | List decks with card/due counts |
+| POST | `/api/decks` | Create deck |
+| GET/PATCH/DELETE | `/api/decks/:deckId` | Deck CRUD |
+| GET/POST | `/api/decks/:deckId/lessons` | List/create lessons |
+| GET/PATCH/DELETE | `/api/decks/:deckId/lessons/:lessonId` | Lesson CRUD |
+| GET/POST | `/api/decks/:deckId/cards` | List/create cards (`?lessonId=` filter) |
+| GET/PATCH/DELETE | `/api/decks/:deckId/cards/:cardId` | Card CRUD |
+| GET | `/api/review/due` | Due queue (`deckId`, `limit` query) |
+| POST | `/api/review` | Submit rating, update scheduling |
+| GET | `/api/search` | Search (`q`, `limit`) |
+| POST | `/api/import/deck` | Import JSON deck |
+| GET | `/auth/callback` | Supabase session + Prisma user sync |
 
-Implementation:
-
-- Handler: `src/app/api/dashboard/route.ts`
-- Service: `src/lib/services/dashboard.service.ts`
-- Repository: `src/lib/repositories/stats.repository.ts`
-
-### Decks
-
-| Method | Path | Purpose |
-|---|---|---|
-| GET | `/api/decks` | List active decks for the current user. |
-| POST | `/api/decks` | Create a deck. |
-| GET | `/api/decks/:deckId` | Get one deck. |
-| PATCH | `/api/decks/:deckId` | Update one deck. |
-| DELETE | `/api/decks/:deckId` | Delete one deck. |
-
-POST body:
+### Review submit body
 
 ```json
 {
-  "title": "Spanish Basics",
-  "description": "Beginner vocabulary",
-  "subject": "Spanish",
-  "color": "#6366f1"
+  "cardId": "uuid",
+  "rating": 3,
+  "durationMs": 4500
 }
 ```
 
-Implementation:
-
-- Handlers: `src/app/api/decks/route.ts`, `src/app/api/decks/[deckId]/route.ts`
-- Service: `src/lib/services/deck.service.ts`
-- Repository: `src/lib/repositories/deck.repository.ts`
-- Validator: `src/lib/validators/deck.schema.ts`
-
-### Lessons
-
-| Method | Path | Purpose |
-|---|---|---|
-| GET | `/api/decks/:deckId/lessons` | List lessons in a deck. |
-| POST | `/api/decks/:deckId/lessons` | Create a lesson in a deck. |
-| GET | `/api/decks/:deckId/lessons/:lessonId` | Get one lesson. |
-| PATCH | `/api/decks/:deckId/lessons/:lessonId` | Update one lesson. |
-| DELETE | `/api/decks/:deckId/lessons/:lessonId` | Delete one lesson. |
-
-POST body:
-
-```json
-{
-  "title": "Greetings",
-  "sortOrder": 0
-}
-```
-
-Important rule: lesson operations first verify the deck belongs to the current user.
-
-Implementation:
-
-- Handlers: `src/app/api/decks/[deckId]/lessons/route.ts`, `src/app/api/decks/[deckId]/lessons/[lessonId]/route.ts`
-- Service: `src/lib/services/lesson.service.ts`
-- Repository: `src/lib/repositories/lesson.repository.ts`
-- Validator: `src/lib/validators/lesson.schema.ts`
-
-### Cards
-
-| Method | Path | Purpose |
-|---|---|---|
-| GET | `/api/decks/:deckId/cards` | List cards in a deck. |
-| POST | `/api/decks/:deckId/cards` | Create a card and its initial scheduling state. |
-| GET | `/api/decks/:deckId/cards/:cardId` | Get one card. |
-| PATCH | `/api/decks/:deckId/cards/:cardId` | Update one card. |
-| DELETE | `/api/decks/:deckId/cards/:cardId` | Delete one card. |
-
-POST body:
-
-```json
-{
-  "lessonId": "optional-lesson-id",
-  "front": "Hola",
-  "back": "Hello",
-  "pronunciation": "oh-lah",
-  "exampleSentence": "Hola, buenos dias.",
-  "notes": "Common greeting",
-  "imageUrl": null,
-  "audioUrl": null
-}
-```
-
-Important rules:
-
-- Card operations first verify the deck belongs to the current user.
-- If `lessonId` is provided, the lesson must belong to the same deck.
-- Card creation calls `schedulingEngine.createInitialState()` before persistence.
-
-Implementation:
-
-- Handlers: `src/app/api/decks/[deckId]/cards/route.ts`, `src/app/api/decks/[deckId]/cards/[cardId]/route.ts`
-- Service: `src/lib/services/card.service.ts`
-- Repository: `src/lib/repositories/card.repository.ts`
-- Validator: `src/lib/validators/card.schema.ts`
-- Scheduler entry: `src/lib/scheduler/index.ts`
+Ratings: 1 (forgot) through 5 (perfect). Scheduler: `SimpleIntervalAlgorithm` (`simple-v1`).
 
 ## Data Model
-
-The Prisma schema is in `prisma/schema.prisma`.
 
 ```mermaid
 erDiagram
@@ -249,165 +179,134 @@ erDiagram
   User ||--o{ ReviewSession : has
   User ||--o{ ReviewLog : has
   User ||--o{ Tag : creates
-
   Deck ||--o{ Lesson : contains
   Deck ||--o{ Card : contains
   Deck }o--o{ Tag : tagged
-
   Lesson ||--o{ Card : groups
-
   Card ||--|| CardSchedulingState : has
   Card ||--o{ ReviewLog : history
   Card }o--o{ Tag : tagged
-
   ReviewSession ||--o{ ReviewLog : records
 ```
 
-Main entities:
-
-- `User`: owns decks, tags, review sessions, and review logs.
-- `Deck`: top-level study collection.
-- `Lesson`: ordered group inside a deck.
-- `Card`: study item with front and back text plus optional metadata.
-- `CardSchedulingState`: one-to-one scheduling state for each card.
-- `ReviewLog`: record of one review rating and scheduling change.
-- `ReviewSession`: group of review events.
-- `Tag`, `CardTag`, `DeckTag`: tagging schema, planned for future UI.
+Schema: `prisma/schema.prisma`
 
 ## Architecture
 
 ```mermaid
 flowchart LR
-  UI[Pages and Feature Components] --> Hooks[TanStack Query Hooks]
-  Hooks --> ClientAPI[Feature API Clients]
-  ClientAPI --> Routes[Route Handlers]
-  Routes --> Validators[Zod Validators]
-  Routes --> Services[Services]
-  Services --> Repositories[Repositories]
-  Services --> Scheduler[Pure Scheduler]
-  Repositories --> Prisma[Prisma Client]
+  UI[Pages and Components] --> Hooks[TanStack Query]
+  Hooks --> API[API Route Handlers]
+  API --> Auth[getUserId]
+  API --> Services[Services]
+  Services --> Repos[Repositories]
+  Services --> Scheduler[Scheduler]
+  Repos --> Prisma[Prisma]
   Prisma --> DB[(PostgreSQL)]
+  Auth --> Supabase[Supabase Auth]
 ```
 
-Layer rules:
+**Layer rules:**
 
-- Route handlers stay thin: parse params/body, validate, call service, return JSON.
-- Services contain business rules and orchestration.
-- Repositories contain Prisma access and map database dates to ISO strings.
-- Feature services are HTTP clients only.
-- Feature components do not import Prisma or scheduler code.
-- Scheduler is pure TypeScript and does not import React, Next.js, or Prisma.
+- Route handlers: parse, validate (Zod), call service, return JSON
+- Services: business rules, ownership checks
+- Repositories: Prisma only, map dates to ISO strings
+- Scheduler: zero imports from React, Next.js, or Prisma
+- Features: HTTP clients + hooks + UI only
+
+## Auth
+
+| Mode | When | Behavior |
+|------|------|----------|
+| Supabase | `NEXT_PUBLIC_SUPABASE_URL` + anon key set | Email/password; middleware protects pages |
+| Mock user | Supabase env unset | `MOCK_USER_ID` from `.env` |
+
+- Middleware: `getSession()` on pages only; API routes skip middleware auth
+- Callback: `userRepository.ensureUser()` syncs Prisma user on first login
+- API: `getUserId()` uses cached `getSession()` — no DB sync on hot path
 
 ## State Management
 
-Server state is managed with TanStack Query:
+**TanStack Query** (`query-provider.tsx`):
 
-- `src/features/decks/hooks/use-decks.ts`
-- `src/features/lessons/hooks/use-lessons.ts`
-- `src/features/cards/hooks/use-cards.ts`
-- `src/features/dashboard/hooks/use-dashboard.ts`
+- Default `staleTime`: 60s, `gcTime`: 10min
+- Dashboard: 2min, Decks: 5min, Review due: 30s
+- Prefetch on app shell mount and nav tap (`prefetch-app-data.ts`)
 
-The provider is `src/components/providers/query-provider.tsx`.
+**Forms:** React Hook Form + shared Zod schemas from `src/lib/validators/`.
 
-Forms use React Hook Form with Zod schemas shared from `src/lib/validators/`.
+## Deployment
 
-Local UI state is kept close to components. For example, card inline edit mode uses local component state.
+| Setting | Value |
+|---------|-------|
+| Vercel Root Directory | `revia` (required) |
+| Function region | `bom1` (Mumbai) — `vercel.json` |
+| Supabase region | `ap-south-1` |
+| Production URL | `https://revialearn.vercel.app` |
+| Production branch | `main` |
+| Preview branch | `develop` (recommended) |
 
-## Validation
+Full guide: [DEPLOY-VERCEL.md](../DEPLOY-VERCEL.md)
 
-Validation is shared between API routes and forms:
+**Required env vars:**
 
-- `src/lib/validators/deck.schema.ts`
-- `src/lib/validators/lesson.schema.ts`
-- `src/lib/validators/card.schema.ts`
-
-Route handlers parse request bodies with Zod before calling services. Forms use the same schema with `zodResolver`.
-
-## Scheduler
-
-The scheduler lives in `src/lib/scheduler/`.
-
-Current implementation:
-
-- `SchedulingEngine`
-- `SimpleIntervalAlgorithm`
-- Rating values from 1 to 5
-- `createInitialState(cardId, now)`
-- `submitReview(input)`
-
-Current app usage:
-
-- Card creation creates an initial scheduling state.
-- Review submission is not wired yet.
-
-Important design boundary: the scheduler does not know about decks, lessons, subjects, languages, or UI. It only receives scheduling state, review rating, review history, and current time.
+- `DATABASE_URL` — pooler port 6543 + `pgbouncer=true`
+- `DIRECT_URL` — port 5432 for migrations
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 
 ## Local Development
 
-From the project root:
-
 ```bash
-cd /Users/pavan/Build/revia
-npm run setup
-npm run dev
+cd revia
+npm run setup    # Docker Postgres + schema + seed
+npm run dev      # http://localhost:3000
 ```
 
-Open:
+Without Supabase env vars, the app uses the mock user (no login required).
 
-```text
-http://localhost:3000
-```
-
-If Docker is not available, Prisma Dev can be used for local PostgreSQL:
-
-```bash
-npx prisma dev -n revia -d
-npm run db:push
-npm run db:seed
-npm run dev
-```
-
-Useful commands:
+**Useful commands:**
 
 | Command | Purpose |
-|---|---|
-| `npm run setup` | Install dependencies, start local DB, push schema, seed data. |
-| `npm run dev` | Start the development server. |
-| `npm run check` | Run typecheck, unit tests, and production build. |
-| `npm run test` | Run unit tests. |
-| `npm run db:push` | Push Prisma schema to the database. |
-| `npm run db:seed` | Seed demo data. |
-| `npm run db:reset` | Reset and reseed the database. |
-| `npm run db:studio` | Open Prisma Studio. |
+|---------|---------|
+| `npm run check` | typecheck + test + build |
+| `npm run test` | Vitest unit tests |
+| `npm run test:e2e` | Playwright E2E |
+| `npm run db:studio` | Prisma Studio |
+| `npm run supabase:connect` | Configure Supabase auth URLs |
+| `npm run vercel:setup` | Print Vercel + Supabase env template |
 
 ## Testing
 
-Current automated test coverage:
+| Type | Location | Run |
+|------|----------|-----|
+| Unit | `tests/unit/lib/scheduler/` | `npm run test` |
+| E2E | `tests/e2e/*.spec.ts` | `npm run test:e2e` |
+| Full CI | — | `npm run check` |
 
-- `tests/unit/lib/scheduler/simple-interval.test.ts`
+E2E specs: health, navigation, decks, review, theme.
 
-The full verification command is:
+## Performance (v1)
 
-```bash
-npm run check
-```
-
-Current testing gaps:
-
-- API integration tests for decks, lessons, cards, and dashboard.
-- Review-flow tests, once Review is implemented.
-- End-to-end tests for the main learning journey.
-- UI interaction tests for forms and inline card editing.
+- Optimistic review UI (instant card advance)
+- Vercel `bom1` + Supabase `ap-south-1` co-location
+- No review history fetch on submit (algorithm uses state only)
+- Dashboard: 5-deck limit, distinct-day streak SQL
+- Lesson cards: `?lessonId=` scoped fetch
+- Deferred cache invalidation during review sessions
+- Prisma client reused across warm serverless invocations
 
 ## Future Work
 
-Near-term priorities:
+See [progress-and-roadmap.md](./progress-and-roadmap.md) for phased candidates. High-level gaps:
 
-1. Review feature: due-card queue, flip interaction, rating buttons, session tracking, review logs.
-2. Statistics feature: charts and history based on review logs.
-3. Settings feature: user preferences and future scheduler options.
-4. Search feature: search across decks/cards.
-5. Tagging feature: use existing tag schema for deck/card organization.
-6. Auth: replace mock user with real user accounts and authorization.
+1. Card management UI on deck detail page
+2. Deck and lesson edit/reorder UI
+3. Export (JSON)
+4. Statistics / charts page
+5. Tags UI and API
+6. Media upload for cards
+7. Additional import formats
+8. Admin tools and roles (optional)
 
-Also update older status docs such as `README.md` and architecture rollout tables because they still mark some implemented features as planned.
+**Do not implement roadmap items without explicit approval** — v1 is the stable baseline for incremental changes.

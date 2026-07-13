@@ -1,91 +1,97 @@
 # Revia
 
-A generic, subject-agnostic spaced repetition learning platform.
+A mobile-first, subject-agnostic spaced repetition learning platform.
 
-## Architecture (v2)
+**v1.0** — Stable baseline deployed at [revialearn.vercel.app](https://revialearn.vercel.app)
 
-- **API-first:** Business operations via `/app/api` Route Handlers
-- **Business logic:** `src/lib/` (services, repositories, scheduler)
-- **Features:** `src/features/` (UI, hooks, API clients)
-- **Scheduler:** Pure TypeScript in `src/lib/scheduler/` — UI/DB independent
+## What You Can Do
 
-Full docs: [`docs/architecture/README.md`](./docs/architecture/README.md)
+- Create and import decks with lessons and flashcards
+- Study lessons with swipe navigation
+- Complete daily spaced-repetition review sessions
+- Track progress on the dashboard (due count, streak, totals)
+- Search your library
+- Sign in with Supabase Auth
+
+## Documentation
+
+| Doc | Audience |
+|-----|----------|
+| [v1 Release Snapshot](./docs/application/v1-release.md) | Everyone — what's in v1 |
+| [Layman Guide](./docs/application/layman-guide.md) | Non-technical users |
+| [Technical Reference](./docs/application/technical-reference.md) | Developers |
+| [Progress & Roadmap](./docs/application/progress-and-roadmap.md) | What's done + what's next |
+| [Deploy Guide](./docs/DEPLOY-VERCEL.md) | Vercel + Supabase setup |
+| [Architecture](./docs/architecture/README.md) | System design |
+| [Testing](./docs/TESTING.md) | Local dev and QA |
 
 ## Quick Start
 
 ```bash
+cd revia
 npm run setup    # Docker Postgres + schema + seed
 npm run dev      # http://localhost:3000
 ```
 
-Without Supabase env vars, the app uses the mock user from `.env` (local dev and E2E).
+Without Supabase env vars, the app uses a mock user (no login required).
 
-### Supabase Auth (optional)
-
-**Option A — MCP (recommended in Cursor)**
-
-1. Open **Cursor Settings → Tools & MCP** and enable the `supabase` server (configured in `.cursor/mcp.json` at the repo root).
-2. Click **Authenticate** and sign in to Supabase when prompted.
-3. Ask the agent to configure auth for Revia using MCP, or run the connect script manually (Option B).
-
-**Option B — connect script**
+### Supabase Auth
 
 ```bash
-# Personal access token: https://supabase.com/dashboard/account/tokens
-# Project ref: Dashboard → Project Settings → General → Project ID
+# Option A: Cursor MCP (see .cursor/mcp.json at repo root)
+# Option B: Connect script
 SUPABASE_ACCESS_TOKEN="sbp_..." SUPABASE_PROJECT_REF="your-ref" npm run supabase:connect
 ```
 
-This configures auth redirect URLs, enables email auto-confirm for local dev, and writes keys to `.env`.
+Add redirect URL `http://localhost:3000/auth/callback` in Supabase dashboard.
 
-**Manual setup**
+## Feature Status (v1)
 
-1. Create a [Supabase](https://supabase.com) project.
-2. Copy **Project URL** and **anon public key** into `.env`.
-3. In Supabase → **Authentication → URL Configuration**, add redirect URL `http://localhost:3000/auth/callback`.
-4. Restart the dev server. Unauthenticated visits redirect to `/login`; sign out is in **Settings**.
+| Feature | Status |
+|---------|--------|
+| Dashboard | ✅ |
+| Decks | ✅ |
+| Lessons + study | ✅ |
+| Review | ✅ |
+| Search | ✅ |
+| Settings + import | ✅ |
+| Supabase Auth | ✅ |
+| Deck/lesson edit UI | ⏳ API only |
+| Card UI on deck page | ⏳ API only |
+| Export | Planned |
+| Statistics | Planned |
+| Tags UI | Planned |
 
-On first login, the Supabase user is synced into the local `users` table (same UUID as `auth.users.id`).
+See [progress-and-roadmap.md](./docs/application/progress-and-roadmap.md) for upcoming phases.
 
-## Feature Rollout
+## Deploy
 
-| # | Feature | Status |
-|---|---------|--------|
-| 1 | **Decks** | ✅ Complete — review before continuing |
-| 2 | Lessons | Planned |
-| 3 | Cards | Planned |
-| 4 | Review | Planned |
-| 5 | Dashboard | Planned |
-| 6 | Statistics | Planned |
-| 7 | Settings | Planned |
+```bash
+cd revia
+# Vercel Root Directory must be set to "revia"
+npx vercel --prod
+```
 
-## Decks Feature (implemented)
-
-- `GET/POST /api/decks`
-- `GET/PATCH/DELETE /api/decks/:deckId`
-- TanStack Query hooks in `features/decks/hooks/`
-- React Hook Form + Zod in `features/decks/components/create-deck-form.tsx`
+Full guide: [docs/DEPLOY-VERCEL.md](./docs/DEPLOY-VERCEL.md)
 
 ## Scripts
 
 | Command | Description |
 |---------|-------------|
-| `npm run setup` | First-time setup |
-| `npm run dev` | Dev server |
+| `npm run dev` | Dev server (Turbopack) |
 | `npm run check` | typecheck + test + build |
-| `npm run prod` | Production build + start |
-
-See [`docs/TESTING.md`](./docs/TESTING.md) for full testing guide.
-
-## Deploy to Vercel + Supabase
-
-Full guide: [`docs/DEPLOY-VERCEL.md`](./docs/DEPLOY-VERCEL.md)
-
-1. Import repo on [Vercel](https://vercel.com/new) with **Root Directory: `revia`**
-2. Add env vars (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `DATABASE_URL`, `DIRECT_URL`)
-3. Run `npm run vercel:setup` to configure Supabase auth redirects for your Vercel URL
-4. Deploy — push to `main` or `npx vercel --prod`
+| `npm run test` | Unit tests |
+| `npm run test:e2e` | Playwright E2E |
+| `npm run setup` | First-time local setup |
+| `npm run vercel:setup` | Supabase + Vercel env template |
 
 ## Tech Stack
 
-Next.js 15 · React · TypeScript · Tailwind · shadcn/ui · Prisma · PostgreSQL · Zod · React Hook Form · TanStack Query
+Next.js 15 · React 19 · TypeScript · Tailwind · shadcn/ui · Prisma · PostgreSQL · Supabase Auth · TanStack Query · Zod
+
+## Repo Layout
+
+```
+Build/          ← Git root
+  revia/        ← Application (set as Vercel Root Directory)
+```

@@ -169,4 +169,5 @@ If you ever need a different region, create a new Supabase project there, run `n
 | Build shows 0ms / site 404 | Set **Root Directory** to `revia` under [Build and Deployment](https://vercel.com/pvnplls-projects/revia/settings/build-and-deployment), then redeploy |
 | Can't find Root Directory | It's under **Settings → Build and Deployment**, not General |
 | `develop` should not go to production | Set Production branch to `main` and Preview branch tracking to `develop` under [Environments](https://vercel.com/pvnplls-projects/revia/settings/environments) |
-| `DEPLOYMENT_NOT_FOUND` on production URL | Redeploy after fixing Root Directory; remove any `vercel.json` at repo root |
+| Slow API on mobile | Confirm `regions: ["bom1"]` in `vercel.json` is deployed |
+| `DEPLOYMENT_NOT_FOUND` on production URL | Redeploy after fixing Root Directory |

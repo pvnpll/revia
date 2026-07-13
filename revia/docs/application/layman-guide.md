@@ -2,79 +2,67 @@
 
 ## What This App Does
 
-Revia is an app for learning and remembering information with digital flashcards.
+Revia is a mobile-first app for learning and remembering information with digital flashcards.
 
-You create a deck for a topic, split that deck into lessons, and add cards with a front side and a back side. The app is being built to show cards again at the right time, so users can remember more with less repeated effort.
+You organize study material into **decks**, split decks into **lessons**, and add **cards** with a front (question or prompt) and back (answer). The app schedules when each card should come back for review, so you spend time on what you still need to learn.
 
-The app is intentionally subject-neutral. It can be used for languages, school subjects, interview preparation, professional learning, or any topic that can be broken into reviewable cards.
+Revia works for any subject — languages, exams, interview prep, professional knowledge, or anything that fits on a flashcard.
 
 ## Who This Is For
 
-This app is for learners who want a structured way to study over time.
+Personal learners who want a simple daily study habit on their phone:
 
-Examples:
+- Students reviewing definitions or concepts
+- Language learners practicing vocabulary
+- Professionals keeping key facts fresh
+- Anyone who prefers small, focused review sessions over long study blocks
 
-- A student learning biology definitions.
-- A developer preparing for technical interviews.
-- A language learner practicing vocabulary.
-- A professional remembering concepts, policies, or procedures.
-- Anyone who wants to organize knowledge into small review cards.
+Version 1 is for **personal use only** — no sharing, collaboration, or public decks.
 
 ## The Problem It Solves
 
-People forget information when they only read it once. Reviewing everything every day is also tiring and inefficient.
+Reading something once is not enough to remember it. Reviewing everything every day is tiring.
 
-Revia solves this by organizing study material into small cards and preparing the foundation for spaced repetition. Spaced repetition means the app shows cards more often when they are new or difficult, and less often when they become familiar.
+Revia uses **spaced repetition**: cards you find easy appear less often; cards you struggle with come back sooner. You review what matters, when it matters.
 
 ## Main Things You Can Do
 
-Today, the app lets a user:
+In v1 you can:
 
-- View a dashboard with study counts and recent decks.
-- Create decks for different topics.
-- Open a deck and see its details.
-- Add lessons inside a deck.
-- Add cards inside a deck.
-- Assign cards to lessons.
-- Edit or delete cards.
-- See which cards are due for review based on scheduling data.
-
-Some parts are still coming later, especially the actual review session flow where users answer cards and rate how well they remembered them.
+- **Sign up and sign in** with email and password
+- **View your dashboard** — cards due today, streak, decks, recent activity
+- **Create and manage decks** — topic containers with color and subject
+- **Add lessons** inside a deck and **study** them (swipe through cards, normal or reverse mode)
+- **Run daily review** — rate each card 1–5 after revealing the answer
+- **Import decks** from JSON (file upload or paste) in Settings
+- **Search** decks, lessons, and cards
+- **Switch theme** (light/dark) and **sign out** in Settings
 
 ## How The App Works
 
-Think of the app as three simple levels:
+Three levels of organization:
 
-1. Decks are the big topic containers.
-2. Lessons are sections inside a deck.
-3. Cards are the actual things you study.
+1. **Deck** — big topic (e.g. "Spanish Basics")
+2. **Lesson** — section inside a deck (e.g. "Greetings")
+3. **Card** — one item to learn (front: "Hola" → back: "Hello")
 
-For example:
-
-- Deck: Spanish Basics
-- Lesson: Greetings
-- Card front: Hola
-- Card back: Hello
-
-The app stores each card with scheduling information. When the Review feature is completed, that scheduling information will decide when each card should appear again.
+When you rate a card during review, the app updates its schedule. Cards due today appear on the dashboard and in the Review tab.
 
 ## User Journey Diagram
 
-This diagram shows the intended learning journey from opening the app to reviewing and tracking progress.
-
 ```mermaid
 flowchart TD
-  A[Open Revia] --> B[View Dashboard]
-  B --> C[Create or Open a Deck]
-  C --> D[Add Lessons]
-  D --> E[Add Cards]
-  E --> F[Review Due Cards]
-  F --> G[Rate How Well You Remembered]
-  G --> H[App Schedules the Next Review]
-  H --> I[Track Progress on Dashboard and Statistics]
+  A[Open Revia] --> B[Sign In]
+  B --> C[Dashboard]
+  C --> D[Create or Import a Deck]
+  D --> E[Add Lessons and Cards]
+  E --> F[Study a Lesson]
+  C --> G[Daily Review]
+  G --> H[Reveal Card and Rate 1-5]
+  H --> I[Next Card Scheduled]
+  I --> C
+  C --> J[Search Library]
 ```
-
-The first parts of this journey are available now: dashboard, decks, lessons, and cards. Review and detailed statistics are planned next.
 
 ## Feature Map
 
@@ -82,70 +70,54 @@ The first parts of this journey are available now: dashboard, decks, lessons, an
 flowchart LR
   Dashboard[Dashboard] --> Decks[Decks]
   Decks --> Lessons[Lessons]
-  Lessons --> Cards[Cards]
-  Cards --> Review[Review Sessions]
+  Lessons --> Study[Study Session]
+  Dashboard --> Review[Daily Review]
   Review --> Scheduling[Next Review Date]
-  Scheduling --> Statistics[Progress and Statistics]
+  Settings[Settings] --> Import[JSON Import]
+  Search[Search] --> Decks
 ```
-
-The app is built around a simple idea: organize what you want to learn, study it as cards, and let the system help decide when to review again.
 
 ## Important Terms
 
-Deck: A collection for one topic or learning goal.
+| Term | Meaning |
+|------|---------|
+| **Deck** | A collection for one topic or goal |
+| **Lesson** | A section inside a deck |
+| **Card** | A flashcard with front and back |
+| **Due card** | Ready to review today |
+| **Review** | Session where you reveal and rate cards |
+| **Rating (1–5)** | How well you remembered (1 = forgot, 5 = perfect) |
+| **Spaced repetition** | Showing cards at intervals based on difficulty |
+| **Streak** | Consecutive days with at least one review |
 
-Lesson: A smaller section inside a deck.
+## What Is Available Now (v1)
 
-Card: A flashcard with a front and back side.
-
-Front: The question, prompt, word, or clue.
-
-Back: The answer, explanation, or meaning.
-
-Due card: A card that is ready to be reviewed.
-
-Review: The process of answering a card and rating how well you remembered it.
-
-Spaced repetition: A learning method where easier cards appear less often and harder cards appear more often.
-
-Scheduler: The part of the app that decides the next review date for a card.
-
-Suspended card: A card that is kept in the app but temporarily excluded from study.
-
-## What Is Available Now
-
-The following parts are implemented in the app:
-
-- Dashboard page with study summary cards and recent decks.
-- Deck list page.
-- Deck creation.
-- Deck detail page.
-- Lesson creation, listing, and deletion.
-- Card creation, listing, editing, deletion, lesson assignment, and suspension.
-- Automatic initial scheduling state when a card is created.
-- Demo data with a "Getting Started" deck, one lesson, and three cards.
+- Dashboard with due count, reviewed today, streak, deck/card totals
+- Deck list, create, delete, and detail view
+- Lessons: create, delete, tap to study with swipe navigation
+- Daily review with full-screen card viewer and 1–5 ratings
+- JSON deck import (Settings)
+- Search across your library
+- Light/dark theme
+- Account sign-in, sign-up, and sign-out
+- Live deployment at [revialearn.vercel.app](https://revialearn.vercel.app)
 
 ## What Is Coming Later
 
-The next major feature is Review.
+These are **candidates for future versions** — not committed until you review and approve:
 
-Review will let users:
+- Edit deck title, description, and color in the UI
+- Reorder and rename lessons
+- Add and edit cards directly on the deck page (API exists today)
+- Export decks as JSON
+- Statistics page with charts and history
+- Tags for organizing decks and cards
+- Image and audio on cards
+- More import formats (CSV, Markdown, etc.)
+- Optional admin tools and roles
 
-- Start a study session.
-- See due cards one at a time.
-- Flip a card to reveal the answer.
-- Rate memory from "forgot" to "perfect".
-- Let the app calculate the next review date.
-- Update dashboard and statistics based on real review activity.
-
-After Review, planned areas include:
-
-- Statistics charts and learning history.
-- Settings for learning preferences.
-- Search across decks and cards.
-- Tags for organizing decks and cards.
-- Real user accounts instead of the current demo user.
+See [progress-and-roadmap.md](./progress-and-roadmap.md) for the full phased plan.
 
 ## Current App Status In One Sentence
 
-Revia can organize study content today, and the next step is to make the actual review loop usable.
+**Revia v1 is a stable personal learning app: import or build content, study lessons, complete daily reviews, and track progress on your phone.**
