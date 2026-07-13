@@ -1,5 +1,4 @@
-"use client";
-
+import { useCallback } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { cardQueryKeys } from "@/features/cards/hooks/use-cards";
@@ -15,7 +14,7 @@ export const reviewQueryKeys = {
 export function useDueReviewCards(deckId?: string) {
   return useQuery({
     queryKey: reviewQueryKeys.due(deckId),
-    queryFn: () => reviewApi.getDueCards({ deckId, limit: 20 }),
+    queryFn: () => reviewApi.getDueCards({ deckId, limit: 30 }),
     staleTime: 30_000,
   });
 }
@@ -27,13 +26,35 @@ export function useSubmitReview(deckId?: string) {
     mutationFn: (input: { cardId: string; rating: RatingValue; durationMs?: number }) =>
       reviewApi.submitReview(input),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: reviewQueryKeys.due(deckId) });
-      queryClient.invalidateQueries({ queryKey: dashboardQueryKeys.summary });
-      queryClient.invalidateQueries({ queryKey: deckQueryKeys.all });
+      // Mark stale without refetching — avoids competing network calls during review.
+      queryClient.invalidateQueries({
+        queryKey: dashboardQueryKeys.summary,
+        refetchType: "none",
+      });
+      queryClient.invalidateQueries({
+        queryKey: deckQueryKeys.all,
+        refetchType: "none",
+      });
       if (deckId) {
-        queryClient.invalidateQueries({ queryKey: deckQueryKeys.detail(deckId) });
-        queryClient.invalidateQueries({ queryKey: cardQueryKeys.all(deckId) });
+        queryClient.invalidateQueries({
+          queryKey: deckQueryKeys.detail(deckId),
+          refetchType: "none",
+        });
+        queryClient.invalidateQueries({
+          queryKey: cardQueryKeys.all(deckId),
+          refetchType: "none",
+        });
       }
     },
   });
+}
+
+export function useRefreshReviewDependencies() {
+  const queryClient = useQueryClient();
+
+  return useCallback(() => {
+    queryClient.invalidateQueries({ queryKey: reviewQueryKeys.due() });
+    queryClient.invalidateQueries({ queryKey: dashboardQueryKeys.summary });
+    queryClient.invalidateQueries({ queryKey: deckQueryKeys.all });
+  }, [queryClient]);
 }

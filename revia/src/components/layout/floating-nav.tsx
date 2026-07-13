@@ -45,7 +45,7 @@ function prefetchRoute(
   if (key === "review") {
     void queryClient.prefetchQuery({
       queryKey: reviewQueryKeys.due(),
-      queryFn: () => reviewApi.getDueCards({ limit: 20 }),
+      queryFn: () => reviewApi.getDueCards({ limit: 30 }),
       staleTime: 30_000,
     });
   }

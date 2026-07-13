@@ -14,14 +14,14 @@ export interface DashboardSummary {
 
 export const dashboardService = {
   async getSummary(userId: string): Promise<DashboardSummary> {
-    const [summary, decks] = await Promise.all([
+    const [summary, recentDecks] = await Promise.all([
       statsRepository.getDailySummary(userId),
-      deckRepository.findByUser(userId),
+      deckRepository.findRecentByUser(userId, 5),
     ]);
 
     return {
       ...summary,
-      recentDecks: decks.slice(0, 5),
+      recentDecks,
     };
   },
 };

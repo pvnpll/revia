@@ -88,8 +88,8 @@ export function StudyCardViewer({
     }
   }
 
-  async function handleRating(rating: RatingValue) {
-    await onRate(rating);
+  function handleRating(rating: RatingValue) {
+    void onRate(rating);
     if (current) {
       setRevealedIds((prev) => {
         const next = new Set(prev);

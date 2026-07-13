@@ -7,7 +7,7 @@ import { ArrowLeft, BookOpen, Sparkles } from "lucide-react";
 
 import { StudyCardViewer } from "@/features/study/components/study-card-viewer";
 import type { StudyCardItem } from "@/features/study/types";
-import { useDueReviewCards, useSubmitReview } from "@/features/review/hooks/use-review";
+import { useDueReviewCards, useRefreshReviewDependencies, useSubmitReview } from "@/features/review/hooks/use-review";
 import type { RatingValue } from "@/lib/scheduler";
 import type { DueReviewCard } from "@/types/review";
 import { Button } from "@/components/ui/button";
@@ -48,15 +48,24 @@ export function ReviewPageContent() {
   const router = useRouter();
   const { data, isLoading, isError, error, refetch } = useDueReviewCards();
   const submitReview = useSubmitReview();
+  const refreshDependencies = useRefreshReviewDependencies();
   const [queue, setQueue] = useState<DueReviewCard[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [completedCount, setCompletedCount] = useState(0);
   const [startedAt, setStartedAt] = useState(() => Date.now());
   const [sessionComplete, setSessionComplete] = useState(false);
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
 
   function exitReview() {
+    refreshDependencies();
     router.push("/dashboard");
   }
+
+  useEffect(() => {
+    return () => {
+      refreshDependencies();
+    };
+  }, [refreshDependencies]);
 
   useEffect(() => {
     if (data?.cards) {
@@ -74,30 +83,41 @@ export function ReviewPageContent() {
     setStartedAt(Date.now());
   }, [current?.id]);
 
-  async function handleRating(rating: RatingValue) {
+  function handleRating(rating: RatingValue) {
     if (!current) return;
 
-    await submitReview.mutateAsync({
-      cardId: current.id,
-      rating,
-      durationMs: Date.now() - startedAt,
-    });
+    const cardId = current.id;
+    const durationMs = Date.now() - startedAt;
+    const isLastInQueue = currentIndex + 1 >= queue.length;
 
     setCompletedCount((count) => count + 1);
 
-    if (currentIndex + 1 >= queue.length) {
-      const refreshed = await refetch();
-      const remaining = refreshed.data?.cards ?? [];
-      if (remaining.length > 0) {
-        setQueue(remaining);
-        setCurrentIndex(0);
-        setStartedAt(Date.now());
-      } else {
-        setSessionComplete(true);
-      }
-    } else {
-      setCurrentIndex((index) => index + 1);
+    if (isLastInQueue) {
+      setIsFetchingMore(true);
+      submitReview.mutate(
+        { cardId, rating, durationMs },
+        {
+          onSuccess: async () => {
+            const refreshed = await refetch();
+            const remaining = refreshed.data?.cards ?? [];
+            if (remaining.length > 0) {
+              setQueue(remaining);
+              setCurrentIndex(0);
+              setStartedAt(Date.now());
+            } else {
+              setSessionComplete(true);
+            }
+          },
+          onSettled: () => {
+            setIsFetchingMore(false);
+          },
+        },
+      );
+      return;
     }
+
+    setCurrentIndex((index) => index + 1);
+    submitReview.mutate({ cardId, rating, durationMs });
   }
 
   if (isLoading) {
@@ -147,6 +167,15 @@ export function ReviewPageContent() {
 
   const totalDue = data?.totalDue ?? queue.length;
 
+  if (isFetchingMore) {
+    return (
+      <ReviewState onBack={exitReview}>
+        <div className="h-10 w-10 animate-pulse rounded-full bg-muted" />
+        <p className="mt-6 text-lg font-medium text-muted-foreground">Loading more cards...</p>
+      </ReviewState>
+    );
+  }
+
   return (
     <StudyCardViewer
       cards={studyCards}
@@ -157,7 +186,6 @@ export function ReviewPageContent() {
       onRate={handleRating}
       onClose={exitReview}
       fullscreen
-      isSubmitting={submitReview.isPending}
       errorMessage={
         submitReview.isError
           ? submitReview.error instanceof Error
