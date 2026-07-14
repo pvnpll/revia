@@ -1,6 +1,9 @@
-import type { Deck as PrismaDeck } from "@prisma/client";
+import { randomUUID } from "crypto";
+
+import type { Deck as PrismaDeck, Prisma } from "@prisma/client";
 
 import { prisma } from "@/lib/db/prisma";
+import { schedulingEngine } from "@/lib/scheduler";
 import type { Deck, DeckWithStats, PublicDeckSummary } from "@/types/deck";
 
 function toDeck(row: PrismaDeck): Deck {
@@ -13,6 +16,8 @@ function toDeck(row: PrismaDeck): Deck {
     color: row.color ?? "#6366f1",
     isArchived: row.isArchived,
     isPublic: row.isPublic,
+    sourceDeckId: row.sourceDeckId,
+    sourceAuthorUsername: row.sourceAuthorUsername,
     createdAt: row.createdAt.toISOString(),
     updatedAt: row.updatedAt.toISOString(),
   };
@@ -92,11 +97,16 @@ export const deckRepository = {
     }));
   },
 
-  async findPublicById(id: string): Promise<Deck | null> {
+  async findPublicById(id: string): Promise<(Deck & { authorUsername: string }) | null> {
     const row = await prisma.deck.findFirst({
       where: { id, isPublic: true, isArchived: false },
+      include: { user: { select: { username: true } } },
     });
-    return row ? toDeck(row) : null;
+    if (!row) return null;
+    return {
+      ...toDeck(row),
+      authorUsername: row.user.username ?? "learner",
+    };
   },
 
   async findPublicDecks(input: {
@@ -168,6 +178,147 @@ export const deckRepository = {
   ): Promise<Deck> {
     const row = await prisma.deck.update({ where: { id }, data: input });
     return toDeck(row);
+  },
+
+  async findImportedCopy(userId: string, sourceDeckId: string): Promise<Deck | null> {
+    const row = await prisma.deck.findFirst({
+      where: { userId, sourceDeckId, isArchived: false },
+    });
+    return row ? toDeck(row) : null;
+  },
+
+  async clonePublicDeckToUser(userId: string, sourceDeckId: string): Promise<Deck> {
+    const source = await prisma.deck.findFirst({
+      where: { id: sourceDeckId, isPublic: true, isArchived: false },
+      include: {
+        user: { select: { username: true } },
+        lessons: {
+          orderBy: { sortOrder: "asc" },
+          include: {
+            cards: {
+              where: { isSuspended: false },
+              orderBy: { createdAt: "asc" },
+            },
+          },
+        },
+        cards: {
+          where: { isSuspended: false, lessonId: null },
+          orderBy: { createdAt: "asc" },
+        },
+      },
+    });
+
+    if (!source) {
+      throw new Error("SOURCE_NOT_PUBLIC");
+    }
+
+    if (source.userId === userId) {
+      throw new Error("OWN_DECK");
+    }
+
+    const existing = await deckRepository.findImportedCopy(userId, sourceDeckId);
+    if (existing) {
+      return existing;
+    }
+
+    const authorUsername = source.user.username ?? "learner";
+
+    return prisma.$transaction(async (tx) => {
+      const deck = await tx.deck.create({
+        data: {
+          userId,
+          title: source.title,
+          description: source.description,
+          subject: source.subject,
+          color: source.color ?? "#6366f1",
+          isPublic: false,
+          sourceDeckId,
+          sourceAuthorUsername: authorUsername,
+        },
+      });
+
+      const lessonIdMap = new Map<string, string>();
+
+      for (const lesson of source.lessons) {
+        const newLesson = await tx.lesson.create({
+          data: {
+            deckId: deck.id,
+            title: lesson.title,
+            sortOrder: lesson.sortOrder,
+          },
+        });
+        lessonIdMap.set(lesson.id, newLesson.id);
+
+        for (const card of lesson.cards) {
+          const cardId = randomUUID();
+          const initialState = schedulingEngine.createInitialState(cardId, new Date());
+          await tx.card.create({
+            data: {
+              id: cardId,
+              deckId: deck.id,
+              lessonId: newLesson.id,
+              front: card.front,
+              back: card.back,
+              pronunciation: card.pronunciation,
+              exampleSentence: card.exampleSentence,
+              notes: card.notes,
+              imageUrl: card.imageUrl,
+              audioUrl: card.audioUrl,
+              schedulingState: {
+                create: {
+                  dueAt: initialState.dueAt,
+                  intervalDays: initialState.intervalDays,
+                  easeFactor: initialState.easeFactor,
+                  repetitions: initialState.repetitions,
+                  lapses: initialState.lapses,
+                  lastReviewedAt: initialState.lastReviewedAt,
+                  algorithmVersion: initialState.algorithmVersion,
+                  algorithmState:
+                    initialState.algorithmState === null
+                      ? undefined
+                      : (initialState.algorithmState as Prisma.InputJsonObject),
+                },
+              },
+            },
+          });
+        }
+      }
+
+      for (const card of source.cards) {
+        const cardId = randomUUID();
+        const initialState = schedulingEngine.createInitialState(cardId, new Date());
+        await tx.card.create({
+          data: {
+            id: cardId,
+            deckId: deck.id,
+            front: card.front,
+            back: card.back,
+            pronunciation: card.pronunciation,
+            exampleSentence: card.exampleSentence,
+            notes: card.notes,
+            imageUrl: card.imageUrl,
+            audioUrl: card.audioUrl,
+            schedulingState: {
+              create: {
+                dueAt: initialState.dueAt,
+                intervalDays: initialState.intervalDays,
+                easeFactor: initialState.easeFactor,
+                repetitions: initialState.repetitions,
+                lapses: initialState.lapses,
+                lastReviewedAt: initialState.lastReviewedAt,
+                algorithmVersion: initialState.algorithmVersion,
+                algorithmState:
+                  initialState.algorithmState === null
+                    ? undefined
+                    : (initialState.algorithmState as Prisma.InputJsonObject),
+              },
+            },
+          },
+        });
+      }
+
+      return toDeck(deck);
+    });
   },
 
   async delete(id: string): Promise<void> {

@@ -25,6 +25,10 @@ export const deckApi = {
     });
   },
 
+  importPublic(id: string): Promise<DeckDetail> {
+    return fetchJson<DeckDetail>(`/api/decks/${id}/import`, { method: "POST" });
+  },
+
   delete(id: string): Promise<void> {
     return fetchJson<void>(`/api/decks/${id}`, { method: "DELETE" });
   },

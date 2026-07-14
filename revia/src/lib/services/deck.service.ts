@@ -26,7 +26,14 @@ export const deckService = {
 
     const publicDeck = await deckRepository.findPublicById(deckId);
     if (publicDeck) {
-      return { ...publicDeck, isOwner: false };
+      const { authorUsername, ...deck } = publicDeck;
+      const importedCopy = await deckRepository.findImportedCopy(userId, deckId);
+      return {
+        ...deck,
+        authorUsername,
+        isOwner: false,
+        importedDeckId: importedCopy?.id ?? null,
+      };
     }
 
     throw new ApiError(404, "NOT_FOUND", "Deck not found");
@@ -63,5 +70,22 @@ export const deckService = {
   async delete(userId: string, deckId: string): Promise<void> {
     await deckService.assertOwner(userId, deckId);
     await deckRepository.delete(deckId);
+  },
+
+  async importPublicDeck(userId: string, sourceDeckId: string): Promise<DeckDetail> {
+    try {
+      const deck = await deckRepository.clonePublicDeckToUser(userId, sourceDeckId);
+      return { ...deck, isOwner: true };
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.message === "SOURCE_NOT_PUBLIC") {
+          throw new ApiError(404, "NOT_FOUND", "Public deck not found");
+        }
+        if (error.message === "OWN_DECK") {
+          throw new ApiError(400, "VALIDATION", "You already own this deck");
+        }
+      }
+      throw error;
+    }
   },
 };

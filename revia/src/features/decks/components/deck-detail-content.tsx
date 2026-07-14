@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, Globe } from "lucide-react";
+import { ArrowLeft, Globe, UserRound } from "lucide-react";
 
 import { DeckVisibilityToggle } from "@/features/decks/components/deck-visibility-toggle";
+import { ImportPublicDeckButton } from "@/features/decks/components/import-public-deck-button";
 import { useDeck } from "@/features/decks/hooks/use-decks";
 import { useLessons } from "@/features/lessons/hooks/use-lessons";
 import { LessonsSection } from "@/features/lessons/components/lesson-list";
@@ -36,6 +37,7 @@ export function DeckDetailContent({ deckId }: { deckId: string }) {
 
   const backHref = deck.isOwner ? "/decks" : "/explore";
   const backLabel = deck.isOwner ? "All Decks" : "Explore";
+  const creditedAuthor = deck.sourceAuthorUsername ?? deck.authorUsername;
 
   return (
     <div className="space-y-8">
@@ -60,35 +62,53 @@ export function DeckDetailContent({ deckId }: { deckId: string }) {
           </div>
         </div>
         <div className="mt-4 flex flex-wrap items-center gap-2">
-          {deck.isPublic && (
+          {deck.isPublic && deck.isOwner && (
             <Badge variant="outline" className="gap-1">
               <Globe className="h-3 w-3" />
               Public
             </Badge>
           )}
-          {!deck.isOwner && (
-            <Badge variant="secondary">Shared deck · browse only</Badge>
+          {creditedAuthor && (
+            <Badge variant="secondary" className="gap-1">
+              <UserRound className="h-3 w-3" />@{creditedAuthor}
+            </Badge>
           )}
         </div>
       </div>
 
       {deck.isOwner ? (
+        <>
+          {deck.sourceAuthorUsername ? (
+            <Card>
+              <CardContent className="py-6 text-sm text-muted-foreground">
+                Originally by @{deck.sourceAuthorUsername}. Study and review here — your progress
+                is saved to your library.
+              </CardContent>
+            </Card>
+          ) : null}
+          <Card>
+            <CardHeader>
+              <CardTitle>Visibility</CardTitle>
+              <CardDescription>
+                Choose whether this deck appears in Explore for other learners.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <DeckVisibilityToggle deckId={deckId} isPublic={deck.isPublic} />
+            </CardContent>
+          </Card>
+        </>
+      ) : (
         <Card>
           <CardHeader>
-            <CardTitle>Visibility</CardTitle>
+            <CardTitle>Add to your library</CardTitle>
             <CardDescription>
-              Choose whether this deck appears in Explore for other learners.
+              Import this deck to study, review, and save your own progress. The original author
+              stays credited on your copy.
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <DeckVisibilityToggle deckId={deckId} isPublic={deck.isPublic} />
-          </CardContent>
-        </Card>
-      ) : (
-        <Card>
-          <CardContent className="py-6 text-sm text-muted-foreground">
-            You are viewing a public deck shared by another learner. You can browse lessons
-            and cards, but reviews are not saved to your account.
+            <ImportPublicDeckButton deckId={deckId} importedDeckId={deck.importedDeckId} />
           </CardContent>
         </Card>
       )}

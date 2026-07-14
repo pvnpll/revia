@@ -1,6 +1,6 @@
 # Progress and Roadmap
 
-**Last updated:** July 2026 — **v1.2.1** (settings hub & auth fixes)  
+**Last updated:** July 2026 — **v1.3.0** (import public decks & feedback)  
 **Versioning:** [release-versioning.md](./release-versioning.md) — SemVer; every `main` merge = new version  
 **Policy:** Plan features by target release. Implement after you approve. Publish release notes only when you ask.
 
@@ -14,13 +14,14 @@
 | **v1.1.0** | ✅ Published | Public decks & Explore | Phase 8+ |
 | **v1.2.0** | ✅ Published | Usernames, username login, dark default | Identity |
 | **v1.2.1** | ✅ Published | Settings hub, auth/email fixes | UX |
+| **v1.3.0** | ✅ Published | Import public decks, feedback | Sharing |
 | **v1.0.1** | Open | Patches: bugs, perf, deploy fixes | Ad-hoc |
-| **v1.3.0** | Planned | Content editing UI | Phase A |
-| **v1.4.0** | Planned | JSON export | Phase B |
-| **v1.5.0** | Planned | Statistics / charts | Phase C |
-| **v1.6.0** | Planned | Tags | Phase D |
-| **v1.7.0** | Planned | Image/audio cards | Phase E |
-| **v1.8.0** | Planned | CSV import, review filters | Phase F + G |
+| **v1.4.0** | Planned | Content editing UI | Phase A |
+| **v1.5.0** | Planned | JSON export | Phase B |
+| **v1.6.0** | Planned | Statistics / charts | Phase C |
+| **v1.7.0** | Planned | Tags | Phase D |
+| **v1.8.0** | Planned | Image/audio cards | Phase E |
+| **v1.9.0** | Planned | CSV import, review filters | Phase F + G |
 | **v2.0.0** | Future | Breaking changes, roles, native API | Phase H / I |
 
 Release notes: [docs/releases/](../releases/) · Changelog: [CHANGELOG.md](../../CHANGELOG.md)
@@ -87,6 +88,25 @@ Sign up → Get random username → Customize in Settings → Shown on public de
 | Dark mode default | ✅ Shipped |
 
 **Release notes:** [v1.2.0.md](../releases/v1.2.0.md) (**Published**)
+
+---
+
+## v1.3.0 Summary
+
+Revia **v1.3.0** improves **sharing and feedback**:
+
+```text
+Explore public deck → Add to library → Study with your own progress → Author credited
+```
+
+| Area | v1.3.0 Status |
+|------|---------------|
+| Import public decks to library | ✅ Shipped |
+| Author attribution on imported decks | ✅ Shipped |
+| Feedback (suggestions & bugs) | ✅ Shipped |
+| Username under Account settings | ✅ Shipped |
+
+**Release notes:** [v1.3.0.md](../releases/v1.3.0.md) (**Published**)
 
 ---
 

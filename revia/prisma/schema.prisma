@@ -22,6 +22,7 @@ model User {
   tags           Tag[]
   reviewSessions ReviewSession[]
   reviewLogs     ReviewLog[]
+  feedback       Feedback[]
 
   @@map("users")
 }
@@ -37,6 +38,8 @@ model Deck {
   color       String?  @default("#6366f1")
   isArchived  Boolean  @default(false) @map("is_archived")
   isPublic    Boolean  @default(false) @map("is_public")
+  sourceDeckId        String?  @map("source_deck_id")
+  sourceAuthorUsername String? @map("source_author_username")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
@@ -49,7 +52,23 @@ model Deck {
   @@index([userId])
   @@index([userId, isArchived])
   @@index([isPublic, isArchived])
+  @@index([userId, sourceDeckId])
   @@map("decks")
+}
+
+// ─── Feedback ─────────────────────────────────────────────────
+
+model Feedback {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  type      String
+  message   String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@map("feedback")
 }
 
 model Lesson {

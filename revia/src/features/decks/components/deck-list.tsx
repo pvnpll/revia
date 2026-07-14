@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpen, Clock, Globe } from "lucide-react";
+import { BookOpen, Clock, Globe, UserRound } from "lucide-react";
 
 import { DeleteDeckButton } from "@/features/decks/components/delete-deck-button";
 import type { DeckWithStats } from "@/types/deck";
@@ -77,6 +77,11 @@ function DeckListCard({ deck }: { deck: DeckWithStats }) {
           <Badge variant="outline" className="gap-1">
             <Globe className="h-3 w-3" />
             Public
+          </Badge>
+        )}
+        {deck.sourceAuthorUsername && (
+          <Badge variant="outline" className="gap-1">
+            <UserRound className="h-3 w-3" />@{deck.sourceAuthorUsername}
           </Badge>
         )}
         {deck.dueCount > 0 && (
