@@ -1,14 +1,16 @@
 import { deckRepository } from "@/lib/repositories/deck.repository";
 import type { CreateDeckInput, UpdateDeckInput } from "@/lib/validators/deck.schema";
+import type { ExploreInput } from "@/lib/validators/explore.schema";
 import { ApiError } from "@/types/api";
-import type { Deck, DeckWithStats } from "@/types/deck";
+import type { Deck, DeckDetail, DeckWithStats } from "@/types/deck";
+import type { ExploreResponse } from "@/types/explore";
 
 export const deckService = {
   async list(userId: string): Promise<DeckWithStats[]> {
     return deckRepository.findByUser(userId);
   },
 
-  async getById(userId: string, deckId: string): Promise<Deck> {
+  async assertOwner(userId: string, deckId: string): Promise<Deck> {
     const deck = await deckRepository.findByIdForUser(deckId, userId);
     if (!deck) {
       throw new ApiError(404, "NOT_FOUND", "Deck not found");
@@ -16,17 +18,50 @@ export const deckService = {
     return deck;
   },
 
+  async getReadable(userId: string, deckId: string): Promise<DeckDetail> {
+    const owned = await deckRepository.findByIdForUser(deckId, userId);
+    if (owned) {
+      return { ...owned, isOwner: true };
+    }
+
+    const publicDeck = await deckRepository.findPublicById(deckId);
+    if (publicDeck) {
+      return { ...publicDeck, isOwner: false };
+    }
+
+    throw new ApiError(404, "NOT_FOUND", "Deck not found");
+  },
+
+  /** @deprecated Use assertOwner for mutations or getReadable for reads */
+  async getById(userId: string, deckId: string): Promise<Deck> {
+    return deckService.assertOwner(userId, deckId);
+  },
+
+  async explore(userId: string, input: ExploreInput): Promise<ExploreResponse> {
+    const decks = await deckRepository.findPublicDecks({
+      query: input.q,
+      limit: input.limit,
+      excludeUserId: userId,
+    });
+
+    return {
+      query: input.q,
+      decks,
+    };
+  },
+
   async create(userId: string, input: CreateDeckInput): Promise<Deck> {
     return deckRepository.create(userId, input);
   },
 
-  async update(userId: string, deckId: string, input: UpdateDeckInput): Promise<Deck> {
-    await deckService.getById(userId, deckId);
-    return deckRepository.update(deckId, input);
+  async update(userId: string, deckId: string, input: UpdateDeckInput): Promise<DeckDetail> {
+    await deckService.assertOwner(userId, deckId);
+    const deck = await deckRepository.update(deckId, input);
+    return { ...deck, isOwner: true };
   },
 
   async delete(userId: string, deckId: string): Promise<void> {
-    await deckService.getById(userId, deckId);
+    await deckService.assertOwner(userId, deckId);
     await deckRepository.delete(deckId);
   },
 };

@@ -7,6 +7,7 @@ import { ThemeSetting } from "@/components/layout/theme-setting";
 import { AccountSettings } from "@/features/auth/components/account-settings";
 import { CreateDeckForm } from "@/features/decks/components/create-deck-form";
 import { ImportDeckForm } from "@/features/import/components/import-deck-form";
+import { APP_VERSION } from "@/lib/app-version";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -79,6 +80,10 @@ export function SettingsPageContent() {
           <p>Study due cards from Review, organize content in Decks, and track progress on Home.</p>
         </CardContent>
       </Card>
+
+      <p className="pb-4 text-center text-xs text-muted-foreground">
+        Revia v{APP_VERSION}
+      </p>
     </div>
   );
 }

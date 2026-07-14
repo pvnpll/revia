@@ -1,19 +1,26 @@
 import { fetchJson } from "@/lib/utils/fetch-json";
-import type { CreateDeckInput } from "@/lib/validators/deck.schema";
-import type { Deck, DeckWithStats } from "@/types/deck";
+import type { CreateDeckInput, UpdateDeckInput } from "@/lib/validators/deck.schema";
+import type { Deck, DeckDetail, DeckWithStats } from "@/types/deck";
 
 export const deckApi = {
   list(): Promise<DeckWithStats[]> {
     return fetchJson<DeckWithStats[]>("/api/decks");
   },
 
-  getById(id: string): Promise<Deck> {
-    return fetchJson<Deck>(`/api/decks/${id}`);
+  getById(id: string): Promise<DeckDetail> {
+    return fetchJson<DeckDetail>(`/api/decks/${id}`);
   },
 
   create(input: CreateDeckInput): Promise<Deck> {
     return fetchJson<Deck>("/api/decks", {
       method: "POST",
+      body: JSON.stringify(input),
+    });
+  },
+
+  update(id: string, input: UpdateDeckInput): Promise<DeckDetail> {
+    return fetchJson<DeckDetail>(`/api/decks/${id}`, {
+      method: "PATCH",
       body: JSON.stringify(input),
     });
   },

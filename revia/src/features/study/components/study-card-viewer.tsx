@@ -25,6 +25,7 @@ interface StudyCardViewerProps {
   errorMessage?: string | null;
   allowFreeNavigation?: boolean;
   fullscreen?: boolean;
+  readOnly?: boolean;
 }
 
 export function StudyCardViewer({
@@ -39,6 +40,7 @@ export function StudyCardViewer({
   errorMessage,
   allowFreeNavigation = false,
   fullscreen = true,
+  readOnly = false,
 }: StudyCardViewerProps) {
   const touchStartY = useRef<number | null>(null);
   const [revealedIds, setRevealedIds] = useState<Set<string>>(() => new Set());
@@ -185,31 +187,56 @@ export function StudyCardViewer({
 
       {isRevealed && (
         <footer className="shrink-0 border-t bg-background px-4 pb-8 pt-4">
-          <div className="grid grid-cols-5 gap-2">
-            {ratings.map((rating) => (
-              <button
-                key={rating}
-                type="button"
-                disabled={isSubmitting}
-                onClick={() => handleRating(rating)}
-                className={cn(
-                  "flex h-14 flex-col items-center justify-center rounded-xl border bg-card transition-colors active:scale-95 disabled:opacity-50",
-                  rating <= 2 && "border-destructive/30",
-                  rating === 3 && "border-border",
-                  rating >= 4 && "border-primary/30 bg-primary/5",
-                )}
-              >
-                <span className="text-lg font-bold">{rating}</span>
-              </button>
-            ))}
-          </div>
-          <div className="mt-2 grid grid-cols-5 gap-1 text-center text-[9px] leading-tight text-muted-foreground">
-            {ratings.map((rating) => (
-              <span key={rating}>{RATING_LABELS[rating]}</span>
-            ))}
-          </div>
-          {errorMessage && (
-            <p className="mt-3 text-center text-sm text-destructive">{errorMessage}</p>
+          {readOnly ? (
+            <Button
+              type="button"
+              className="w-full"
+              onClick={() => {
+                if (currentIndex + 1 >= cards.length) {
+                  onClose?.();
+                  return;
+                }
+                goToIndex(currentIndex + 1);
+                if (current) {
+                  setRevealedIds((prev) => {
+                    const next = new Set(prev);
+                    next.delete(current.id);
+                    return next;
+                  });
+                }
+              }}
+            >
+              {currentIndex + 1 >= cards.length ? "Done" : "Next card"}
+            </Button>
+          ) : (
+            <>
+              <div className="grid grid-cols-5 gap-2">
+                {ratings.map((rating) => (
+                  <button
+                    key={rating}
+                    type="button"
+                    disabled={isSubmitting}
+                    onClick={() => handleRating(rating)}
+                    className={cn(
+                      "flex h-14 flex-col items-center justify-center rounded-xl border bg-card transition-colors active:scale-95 disabled:opacity-50",
+                      rating <= 2 && "border-destructive/30",
+                      rating === 3 && "border-border",
+                      rating >= 4 && "border-primary/30 bg-primary/5",
+                    )}
+                  >
+                    <span className="text-lg font-bold">{rating}</span>
+                  </button>
+                ))}
+              </div>
+              <div className="mt-2 grid grid-cols-5 gap-1 text-center text-[9px] leading-tight text-muted-foreground">
+                {ratings.map((rating) => (
+                  <span key={rating}>{RATING_LABELS[rating]}</span>
+                ))}
+              </div>
+              {errorMessage && (
+                <p className="mt-3 text-center text-sm text-destructive">{errorMessage}</p>
+              )}
+            </>
           )}
         </footer>
       )}

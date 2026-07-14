@@ -1,6 +1,6 @@
 # Progress and Roadmap
 
-**Last updated:** July 2026 — **v1.0.0** (first stable release)  
+**Last updated:** July 2026 — **v1.1.0** (public decks & Explore)  
 **Versioning:** [release-versioning.md](./release-versioning.md) — SemVer; every `main` merge = new version  
 **Policy:** Plan features by target release. Implement after you approve. Publish release notes only when you ask.
 
@@ -11,13 +11,14 @@
 | Version | Status | Scope | Roadmap |
 |---------|--------|-------|---------|
 | **v1.0.0** | ✅ Published | Core app + deploy | Phases 0–12 |
+| **v1.1.0** | ✅ Published | Public decks & Explore | Phase 8+ |
 | **v1.0.1** | Open | Patches: bugs, perf, deploy fixes | Ad-hoc |
-| **v1.1.0** | Planned | Content editing UI | Phase A |
-| **v1.2.0** | Planned | JSON export | Phase B |
-| **v1.3.0** | Planned | Statistics / charts | Phase C |
-| **v1.4.0** | Planned | Tags | Phase D |
-| **v1.5.0** | Planned | Image/audio cards | Phase E |
-| **v1.6.0** | Planned | CSV import, review filters | Phase F + G |
+| **v1.2.0** | Planned | Content editing UI | Phase A |
+| **v1.3.0** | Planned | JSON export | Phase B |
+| **v1.4.0** | Planned | Statistics / charts | Phase C |
+| **v1.5.0** | Planned | Tags | Phase D |
+| **v1.6.0** | Planned | Image/audio cards | Phase E |
+| **v1.7.0** | Planned | CSV import, review filters | Phase F + G |
 | **v2.0.0** | Future | Breaking changes, roles, native API | Phase H / I |
 
 Release notes: [docs/releases/](../releases/) · Changelog: [CHANGELOG.md](../../CHANGELOG.md)
@@ -46,6 +47,25 @@ Import or create content → Study lessons → Daily review → Track on dashboa
 | Performance (mobile) | ✅ Optimized |
 
 **Release notes:** [v1.0.0.md](../releases/v1.0.0.md) (**Published**) · [v1-release.md](./v1-release.md) (snapshot)
+
+---
+
+## v1.1.0 Summary
+
+Revia **v1.1.0** adds **public deck publishing** and **Explore**:
+
+```text
+Create deck → Set Public → Appears in Explore for others → Browse read-only
+```
+
+| Area | v1.1.0 Status |
+|------|---------------|
+| Public/private deck toggle | ✅ Shipped |
+| Explore page (library search + public decks) | ✅ Shipped |
+| Read-only public deck browsing | ✅ Shipped |
+| App version in Settings | ✅ Shipped |
+
+**Release notes:** [v1.1.0.md](../releases/v1.1.0.md) (**Published**)
 
 ---
 

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
-import { BookOpen, GraduationCap, LayoutDashboard, Search } from "lucide-react";
+import { BookOpen, Compass, GraduationCap, LayoutDashboard } from "lucide-react";
 
 import { dashboardQueryKeys } from "@/features/dashboard/hooks/use-dashboard";
 import { dashboardApi } from "@/features/dashboard/services/dashboard-api";
@@ -17,7 +17,7 @@ const navItems = [
   { href: "/dashboard", label: "Home", icon: LayoutDashboard, prefetchKey: "dashboard" as const },
   { href: "/decks", label: "Decks", icon: BookOpen, prefetchKey: "decks" as const },
   { href: "/review", label: "Review", icon: GraduationCap, prefetchKey: "review" as const },
-  { href: "/search", label: "Search", icon: Search, prefetchKey: null },
+  { href: "/explore", label: "Explore", icon: Compass, prefetchKey: null },
 ];
 
 function prefetchRoute(

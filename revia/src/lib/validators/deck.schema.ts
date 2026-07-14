@@ -7,7 +7,9 @@ export const createDeckSchema = z.object({
   color: z.string().regex(/^#[0-9a-fA-F]{6}$/, "Invalid color"),
 });
 
-export const updateDeckSchema = createDeckSchema.partial();
+export const updateDeckSchema = createDeckSchema.partial().extend({
+  isPublic: z.boolean().optional(),
+});
 
 export type CreateDeckInput = z.infer<typeof createDeckSchema>;
 export type UpdateDeckInput = z.infer<typeof updateDeckSchema>;

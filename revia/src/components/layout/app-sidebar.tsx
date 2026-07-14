@@ -4,9 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   BookOpen,
+  Compass,
   GraduationCap,
   LayoutDashboard,
-  Search,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils/cn";
@@ -15,7 +15,7 @@ const navItems = [
   { href: "/dashboard", label: "Home", icon: LayoutDashboard, ready: true },
   { href: "/decks", label: "Decks", icon: BookOpen, ready: true },
   { href: "/review", label: "Review", icon: GraduationCap, ready: true },
-  { href: "/search", label: "Search", icon: Search, ready: true },
+  { href: "/explore", label: "Explore", icon: Compass, ready: true },
 ];
 
 export function AppSidebar() {

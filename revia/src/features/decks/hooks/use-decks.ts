@@ -3,7 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { deckApi } from "@/features/decks/services/deck-api";
-import type { CreateDeckInput } from "@/lib/validators/deck.schema";
+import type { CreateDeckInput, UpdateDeckInput } from "@/lib/validators/deck.schema";
 
 export const deckQueryKeys = {
   all: ["decks"] as const,
@@ -33,6 +33,18 @@ export function useCreateDeck() {
     mutationFn: (input: CreateDeckInput) => deckApi.create(input),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: deckQueryKeys.all });
+    },
+  });
+}
+
+export function useUpdateDeck(deckId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (input: UpdateDeckInput) => deckApi.update(deckId, input),
+    onSuccess: (deck) => {
+      queryClient.setQueryData(deckQueryKeys.detail(deckId), deck);
+      queryClient.invalidateQueries({ queryKey: deckQueryKeys.all });
+      queryClient.invalidateQueries({ queryKey: ["explore"] });
     },
   });
 }
