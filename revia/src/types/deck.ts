@@ -27,6 +27,6 @@ export interface PublicDeckSummary {
   subject: string | null;
   color: string;
   cardCount: number;
-  authorName: string | null;
+  authorUsername: string;
   updatedAt: string;
 }

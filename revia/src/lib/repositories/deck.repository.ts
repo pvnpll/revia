@@ -123,7 +123,7 @@ export const deckRepository = {
       orderBy: { updatedAt: "desc" },
       take: input.limit,
       include: {
-        user: { select: { name: true } },
+        user: { select: { username: true } },
         _count: { select: { cards: { where: { isSuspended: false } } } },
       },
     });
@@ -135,7 +135,7 @@ export const deckRepository = {
       subject: row.subject,
       color: row.color ?? "#6366f1",
       cardCount: row._count.cards,
-      authorName: row.user.name,
+      authorUsername: row.user.username ?? "learner",
       updatedAt: row.updatedAt.toISOString(),
     }));
   },

@@ -6,6 +6,22 @@ Release notes are **drafted** on each `main` merge; **published** only when expl
 
 ---
 
+## [v1.2.0] — 2026-07-14 (Published)
+
+**Usernames & dark default** — unique usernames, username login, dark mode by default.
+
+→ [Full release notes](docs/releases/v1.2.0.md)
+
+### Added
+- Auto-assigned usernames with Settings customization
+- `@username` shown on public decks in Explore
+- Sign in with email or username
+
+### Changed
+- Default theme is now dark for new users
+
+---
+
 ## [v1.1.0] — 2026-07-14 (Published)
 
 **Public decks & Explore** — publish decks, discover public content, app version in Settings.
@@ -44,10 +60,10 @@ Release notes are **drafted** on each `main` merge; **published** only when expl
 | Version | Scope |
 |---------|--------|
 | v1.0.1 | Patch fixes and polish (if needed) |
-| v1.2.0 | Content editing UI (deck/lesson/card) |
-| v1.3.0 | JSON export |
-| v1.4.0 | Statistics page |
-| v1.5.0 | Tags |
-| v1.6.0 | Media on cards |
+| v1.3.0 | Content editing UI (deck/lesson/card) |
+| v1.4.0 | JSON export |
+| v1.5.0 | Statistics page |
+| v1.6.0 | Tags |
+| v1.7.0 | Media on cards |
 
 See [progress-and-roadmap.md](docs/application/progress-and-roadmap.md) for details.

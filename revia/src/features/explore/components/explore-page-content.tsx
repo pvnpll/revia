@@ -242,12 +242,15 @@ function PublicDeckCard({ deck }: { deck: PublicDeckSummary }) {
             className="mt-1 h-3 w-3 shrink-0 rounded-full"
             style={{ backgroundColor: deck.color }}
           />
-          <div className="min-w-0">
-            <CardTitle className="text-lg">
-              <Link href={`/decks/${deck.id}`} prefetch className="hover:underline">
-                {deck.title}
-              </Link>
-            </CardTitle>
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+              <CardTitle className="text-lg">
+                <Link href={`/decks/${deck.id}`} prefetch className="hover:underline">
+                  {deck.title}
+                </Link>
+              </CardTitle>
+              <span className="text-sm text-muted-foreground">@{deck.authorUsername}</span>
+            </div>
             {deck.subject && <CardDescription>{deck.subject}</CardDescription>}
           </div>
         </div>
@@ -258,12 +261,6 @@ function PublicDeckCard({ deck }: { deck: PublicDeckSummary }) {
         )}
         <div className="flex flex-wrap items-center gap-2">
           <Badge variant="secondary">{deck.cardCount} cards</Badge>
-          {deck.authorName && (
-            <Badge variant="outline" className="gap-1">
-              <Globe className="h-3 w-3" />
-              {deck.authorName}
-            </Badge>
-          )}
         </div>
       </CardContent>
     </Card>

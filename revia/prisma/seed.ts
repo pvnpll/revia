@@ -13,6 +13,7 @@ async function main() {
       id: MOCK_USER_ID,
       email: MOCK_USER_EMAIL,
       name: "Demo User",
+      username: "demo-user",
     },
   });
 
