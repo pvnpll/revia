@@ -1,5 +1,5 @@
-import { UsernameSettingsPageContent } from "@/features/settings/components/username-settings-page-content";
+import { redirect } from "next/navigation";
 
 export default function UsernameSettingsPage() {
-  return <UsernameSettingsPageContent />;
+  redirect("/settings/account");
 }

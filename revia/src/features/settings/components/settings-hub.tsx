@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import {
-  AtSign,
   ChevronRight,
   Info,
+  MessageSquarePlus,
   Palette,
   PlusCircle,
   Upload,
@@ -21,14 +21,14 @@ const settingsItems = [
     icon: UserCircle,
   },
   {
-    href: "/settings/username",
-    label: "Username",
-    icon: AtSign,
-  },
-  {
     href: "/settings/appearance",
     label: "Appearance",
     icon: Palette,
+  },
+  {
+    href: "/settings/feedback",
+    label: "Feedback",
+    icon: MessageSquarePlus,
   },
   {
     href: "/settings/import",

@@ -7,6 +7,8 @@ export interface Deck {
   color: string;
   isArchived: boolean;
   isPublic: boolean;
+  sourceDeckId: string | null;
+  sourceAuthorUsername: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -18,6 +20,8 @@ export interface DeckWithStats extends Deck {
 
 export interface DeckDetail extends Deck {
   isOwner: boolean;
+  importedDeckId?: string | null;
+  authorUsername?: string | null;
 }
 
 export interface PublicDeckSummary {

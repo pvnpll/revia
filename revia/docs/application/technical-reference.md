@@ -149,6 +149,7 @@ All data routes call `getUserId()` from `src/lib/api/auth.ts` (Supabase session 
 | GET | `/api/decks` | List decks with card/due counts |
 | POST | `/api/decks` | Create deck |
 | GET/PATCH/DELETE | `/api/decks/:deckId` | Deck CRUD (PATCH supports `isPublic`; GET allows public read) |
+| POST | `/api/decks/:deckId/import` | Import public deck into your library |
 | GET/POST | `/api/decks/:deckId/lessons` | List/create lessons |
 | GET/PATCH/DELETE | `/api/decks/:deckId/lessons/:lessonId` | Lesson CRUD |
 | GET/POST | `/api/decks/:deckId/cards` | List/create cards (`?lessonId=` filter) |
@@ -159,6 +160,7 @@ All data routes call `getUserId()` from `src/lib/api/auth.ts` (Supabase session 
 | GET | `/api/explore` | List public decks (`q`, `limit`) |
 | GET/PATCH/POST | `/api/account` | Profile, username update, account sync |
 | GET | `/api/auth/resolve-email` | Resolve username → email for login |
+| POST | `/api/feedback` | Submit suggestion or bug report |
 | POST | `/api/import/deck` | Import JSON deck |
 | GET | `/auth/callback` | Supabase session + Prisma user sync |
 

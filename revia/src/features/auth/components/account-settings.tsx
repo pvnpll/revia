@@ -43,20 +43,14 @@ export function AccountSettings() {
     <div className="space-y-4">
       {isLoading ? (
         <p className="text-sm text-muted-foreground">Loading account...</p>
-      ) : (
-        <div className="space-y-1 text-sm text-muted-foreground">
-          {profile?.username ? (
+        ) : (
+          <div className="space-y-1 text-sm text-muted-foreground">
             <p>
-              Username{" "}
-              <span className="font-medium text-foreground">@{profile.username}</span>
+              Signed in as{" "}
+              <span className="font-medium text-foreground">{email ?? profile?.email ?? "Unknown user"}</span>
             </p>
-          ) : null}
-          <p>
-            Signed in as{" "}
-            <span className="font-medium text-foreground">{email ?? profile?.email ?? "Unknown user"}</span>
-          </p>
-        </div>
-      )}
+          </div>
+        )}
       <Button
         type="button"
         variant="outline"

@@ -6,6 +6,22 @@ Release notes are **drafted** on each `main` merge; **published** only when expl
 
 ---
 
+## [v1.3.0] — 2026-07-15 (Published)
+
+**Import public decks & feedback** — add Explore decks to your library, author credits, in-app feedback.
+
+→ [Full release notes](docs/releases/v1.3.0.md)
+
+### Added
+- Import public decks to library with saved review progress
+- Original author shown on imported decks
+- Feedback page for suggestions and bug reports
+
+### Changed
+- Username settings merged into Account page
+
+---
+
 ## [v1.2.1] — 2026-07-15 (Published)
 
 **Settings hub & auth fixes** — cleaner Settings UI, signup rate-limit fixes, email URL config.
@@ -77,10 +93,10 @@ Release notes are **drafted** on each `main` merge; **published** only when expl
 | Version | Scope |
 |---------|--------|
 | v1.0.1 | Patch fixes and polish (if needed) |
-| v1.3.0 | Content editing UI (deck/lesson/card) |
-| v1.4.0 | JSON export |
-| v1.5.0 | Statistics page |
-| v1.6.0 | Tags |
-| v1.7.0 | Media on cards |
+| v1.4.0 | Content editing UI (deck/lesson/card) |
+| v1.5.0 | JSON export |
+| v1.6.0 | Statistics page |
+| v1.7.0 | Tags |
+| v1.8.0 | Media on cards |
 
 See [progress-and-roadmap.md](docs/application/progress-and-roadmap.md) for details.
