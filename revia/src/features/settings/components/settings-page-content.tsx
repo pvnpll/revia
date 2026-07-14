@@ -1,10 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect } from "react";
 import { BookOpen, Info } from "lucide-react";
 
 import { ThemeSetting } from "@/components/layout/theme-setting";
 import { AccountSettings } from "@/features/auth/components/account-settings";
+import { UsernameSettings } from "@/features/auth/components/username-settings";
+import { accountApi } from "@/features/auth/services/account-api";
 import { CreateDeckForm } from "@/features/decks/components/create-deck-form";
 import { ImportDeckForm } from "@/features/import/components/import-deck-form";
 import { APP_VERSION } from "@/lib/app-version";
@@ -12,6 +15,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function SettingsPageContent() {
+  useEffect(() => {
+    void accountApi.sync();
+  }, []);
+
   return (
     <div className="space-y-6">
       <div>
@@ -22,6 +29,8 @@ export function SettingsPageContent() {
       </div>
 
       <AccountSettings />
+
+      <UsernameSettings />
 
       <Card>
         <CardHeader>

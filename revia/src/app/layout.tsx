@@ -25,7 +25,7 @@ const themeScript = `
 (function() {
   try {
     var theme = localStorage.getItem('revia-theme');
-    if (theme === 'dark') document.documentElement.classList.add('dark');
+    if (theme !== 'light') document.documentElement.classList.add('dark');
   } catch (e) {}
 })();
 `;

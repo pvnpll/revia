@@ -157,6 +157,8 @@ All data routes call `getUserId()` from `src/lib/api/auth.ts` (Supabase session 
 | POST | `/api/review` | Submit rating, update scheduling |
 | GET | `/api/search` | Search your library (`q`, `limit`) |
 | GET | `/api/explore` | List public decks (`q`, `limit`) |
+| GET/PATCH/POST | `/api/account` | Profile, username update, account sync |
+| GET | `/api/auth/resolve-email` | Resolve username → email for login |
 | POST | `/api/import/deck` | Import JSON deck |
 | GET | `/auth/callback` | Supabase session + Prisma user sync |
 
