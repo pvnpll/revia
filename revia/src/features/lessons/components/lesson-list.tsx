@@ -23,7 +23,7 @@ interface ActiveLessonSession {
   reverseMode: boolean;
 }
 
-export function LessonList({ deckId }: { deckId: string }) {
+export function LessonList({ deckId, readOnly = false }: { deckId: string; readOnly?: boolean }) {
   const { data: lessons, isLoading, isError, error } = useLessons(deckId);
   const [activeSession, setActiveSession] = useState<ActiveLessonSession | null>(null);
 
@@ -47,7 +47,9 @@ export function LessonList({ deckId }: { deckId: string }) {
         <div className="flex flex-col items-center gap-3 py-8 text-center">
           <Layers className="h-8 w-8 text-muted-foreground" />
           <p className="text-sm text-muted-foreground">
-            No lessons yet. Add one below to organize cards within this deck.
+            {readOnly
+              ? "This deck has no lessons yet."
+              : "No lessons yet. Add one below to organize cards within this deck."}
           </p>
         </div>
       ) : (
@@ -64,7 +66,8 @@ export function LessonList({ deckId }: { deckId: string }) {
               >
                 <p className="font-semibold">{lesson.title}</p>
                 <p className="mt-0.5 text-xs text-muted-foreground">
-                  Swipe through {lesson.cardCount} cards · front to back
+                  {readOnly ? "Browse" : "Swipe through"} {lesson.cardCount} cards
+                  {!readOnly && " · front to back"}
                 </p>
               </button>
               <div className="flex shrink-0 flex-col items-end gap-2">
@@ -77,22 +80,25 @@ export function LessonList({ deckId }: { deckId: string }) {
                 >
                   Reverse
                 </Button>
-                <DeleteLessonButton
-                  deckId={deckId}
-                  lessonId={lesson.id}
-                  cardCount={lesson.cardCount}
-                />
+                {!readOnly && (
+                  <DeleteLessonButton
+                    deckId={deckId}
+                    lessonId={lesson.id}
+                    cardCount={lesson.cardCount}
+                  />
+                )}
               </div>
             </li>
           ))}
         </ul>
       )}
-      <CreateLessonForm deckId={deckId} />
+      {!readOnly && <CreateLessonForm deckId={deckId} />}
       {activeSession && (
         <LessonCardSession
           deckId={deckId}
           lesson={activeSession.lesson}
           reverseMode={activeSession.reverseMode}
+          readOnly={readOnly}
           onClose={() => setActiveSession(null)}
         />
       )}
@@ -100,17 +106,25 @@ export function LessonList({ deckId }: { deckId: string }) {
   );
 }
 
-export function LessonsSection({ deckId }: { deckId: string }) {
+export function LessonsSection({
+  deckId,
+  readOnly = false,
+}: {
+  deckId: string;
+  readOnly?: boolean;
+}) {
   return (
     <Card>
       <CardHeader>
         <CardTitle>Lessons</CardTitle>
         <CardDescription>
-          Tap a lesson to study cards with swipe navigation.
+          {readOnly
+            ? "Browse lessons and cards in this shared deck."
+            : "Tap a lesson to study cards with swipe navigation."}
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <LessonList deckId={deckId} />
+        <LessonList deckId={deckId} readOnly={readOnly} />
       </CardContent>
     </Card>
   );
@@ -132,11 +146,13 @@ function LessonCardSession({
   deckId,
   lesson,
   reverseMode,
+  readOnly,
   onClose,
 }: {
   deckId: string;
   lesson: LessonWithStats;
   reverseMode: boolean;
+  readOnly: boolean;
   onClose: () => void;
 }) {
   const { data: cards = [], isLoading } = useCards(deckId, { lessonId: lesson.id });
@@ -154,7 +170,7 @@ function LessonCardSession({
   }, [current?.id]);
 
   function handleRating(rating: RatingValue) {
-    if (!current) return;
+    if (!current || readOnly) return;
 
     const cardId = current.id;
     const durationMs = Date.now() - startedAt;
@@ -206,6 +222,7 @@ function LessonCardSession({
       onClose={onClose}
       fullscreen
       allowFreeNavigation
+      readOnly={readOnly}
       errorMessage={
         submitReview.isError
           ? submitReview.error instanceof Error

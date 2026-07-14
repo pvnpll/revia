@@ -6,12 +6,12 @@ import type { Lesson, LessonWithStats } from "@/types/lesson";
 
 export const lessonService = {
   async list(userId: string, deckId: string): Promise<LessonWithStats[]> {
-    await deckService.getById(userId, deckId);
+    await deckService.getReadable(userId, deckId);
     return lessonRepository.findByDeck(deckId);
   },
 
   async getById(userId: string, deckId: string, lessonId: string): Promise<Lesson> {
-    await deckService.getById(userId, deckId);
+    await deckService.getReadable(userId, deckId);
     const lesson = await lessonRepository.findByIdForDeck(lessonId, deckId);
     if (!lesson) {
       throw new ApiError(404, "NOT_FOUND", "Lesson not found");
@@ -20,7 +20,7 @@ export const lessonService = {
   },
 
   async create(userId: string, deckId: string, input: CreateLessonInput): Promise<Lesson> {
-    await deckService.getById(userId, deckId);
+    await deckService.assertOwner(userId, deckId);
     return lessonRepository.create(deckId, input);
   },
 
@@ -30,12 +30,20 @@ export const lessonService = {
     lessonId: string,
     input: UpdateLessonInput,
   ): Promise<Lesson> {
-    await lessonService.getById(userId, deckId, lessonId);
+    await deckService.assertOwner(userId, deckId);
+    const lesson = await lessonRepository.findByIdForDeck(lessonId, deckId);
+    if (!lesson) {
+      throw new ApiError(404, "NOT_FOUND", "Lesson not found");
+    }
     return lessonRepository.update(lessonId, input);
   },
 
   async delete(userId: string, deckId: string, lessonId: string): Promise<void> {
-    await lessonService.getById(userId, deckId, lessonId);
+    await deckService.assertOwner(userId, deckId);
+    const lesson = await lessonRepository.findByIdForDeck(lessonId, deckId);
+    if (!lesson) {
+      throw new ApiError(404, "NOT_FOUND", "Lesson not found");
+    }
     await lessonRepository.delete(lessonId);
   },
 };

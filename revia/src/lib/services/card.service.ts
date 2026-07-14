@@ -21,12 +21,12 @@ export const cardService = {
     deckId: string,
     options?: { lessonId?: string },
   ): Promise<CardWithScheduling[]> {
-    await deckService.getById(userId, deckId);
+    await deckService.getReadable(userId, deckId);
     return cardRepository.findByDeck(deckId, options?.lessonId);
   },
 
   async getById(userId: string, deckId: string, cardId: string): Promise<CardWithScheduling> {
-    await deckService.getById(userId, deckId);
+    await deckService.getReadable(userId, deckId);
     const card = await cardRepository.findByIdForDeck(cardId, deckId);
     if (!card) {
       throw new ApiError(404, "NOT_FOUND", "Card not found");
@@ -39,7 +39,7 @@ export const cardService = {
     deckId: string,
     input: CreateCardInput,
   ): Promise<CardWithScheduling> {
-    await deckService.getById(userId, deckId);
+    await deckService.assertOwner(userId, deckId);
     if (input.lessonId) {
       await ensureLessonBelongsToDeck(deckId, input.lessonId);
     }
@@ -63,7 +63,11 @@ export const cardService = {
     cardId: string,
     input: UpdateCardInput,
   ): Promise<CardWithScheduling> {
-    await cardService.getById(userId, deckId, cardId);
+    await deckService.assertOwner(userId, deckId);
+    const card = await cardRepository.findByIdForDeck(cardId, deckId);
+    if (!card) {
+      throw new ApiError(404, "NOT_FOUND", "Card not found");
+    }
     if (input.lessonId) {
       await ensureLessonBelongsToDeck(deckId, input.lessonId);
     }
@@ -72,7 +76,11 @@ export const cardService = {
   },
 
   async delete(userId: string, deckId: string, cardId: string): Promise<void> {
-    await cardService.getById(userId, deckId, cardId);
+    await deckService.assertOwner(userId, deckId);
+    const card = await cardRepository.findByIdForDeck(cardId, deckId);
+    if (!card) {
+      throw new ApiError(404, "NOT_FOUND", "Card not found");
+    }
     await cardRepository.delete(cardId);
   },
 };

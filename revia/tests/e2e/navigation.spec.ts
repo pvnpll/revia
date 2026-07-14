@@ -14,9 +14,9 @@ test.describe("Mobile navigation", () => {
     await expect(page).toHaveURL(/\/decks$/);
     await expect(page.getByRole("heading", { name: "Decks" })).toBeVisible();
 
-    await page.getByRole("link", { name: "Search" }).click();
-    await expect(page).toHaveURL(/\/search$/);
-    await expect(page.getByRole("heading", { name: "Search" })).toBeVisible();
+    await page.getByRole("link", { name: "Explore" }).click();
+    await expect(page).toHaveURL(/\/explore$/);
+    await expect(page.getByRole("heading", { name: "Explore" })).toBeVisible();
 
     await page.getByRole("link", { name: "Home", exact: true }).click();
     await expect(page).toHaveURL(/\/dashboard$/);

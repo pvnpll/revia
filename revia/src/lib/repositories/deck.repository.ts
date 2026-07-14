@@ -1,7 +1,7 @@
 import type { Deck as PrismaDeck } from "@prisma/client";
 
 import { prisma } from "@/lib/db/prisma";
-import type { Deck, DeckWithStats } from "@/types/deck";
+import type { Deck, DeckWithStats, PublicDeckSummary } from "@/types/deck";
 
 function toDeck(row: PrismaDeck): Deck {
   return {
@@ -12,6 +12,7 @@ function toDeck(row: PrismaDeck): Deck {
     subject: row.subject,
     color: row.color ?? "#6366f1",
     isArchived: row.isArchived,
+    isPublic: row.isPublic,
     createdAt: row.createdAt.toISOString(),
     updatedAt: row.updatedAt.toISOString(),
   };
@@ -91,6 +92,54 @@ export const deckRepository = {
     }));
   },
 
+  async findPublicById(id: string): Promise<Deck | null> {
+    const row = await prisma.deck.findFirst({
+      where: { id, isPublic: true, isArchived: false },
+    });
+    return row ? toDeck(row) : null;
+  },
+
+  async findPublicDecks(input: {
+    query: string;
+    limit: number;
+    excludeUserId?: string;
+  }): Promise<PublicDeckSummary[]> {
+    const normalized = input.query.trim();
+    const rows = await prisma.deck.findMany({
+      where: {
+        isPublic: true,
+        isArchived: false,
+        ...(input.excludeUserId ? { userId: { not: input.excludeUserId } } : {}),
+        ...(normalized
+          ? {
+              OR: [
+                { title: { contains: normalized, mode: "insensitive" } },
+                { description: { contains: normalized, mode: "insensitive" } },
+                { subject: { contains: normalized, mode: "insensitive" } },
+              ],
+            }
+          : {}),
+      },
+      orderBy: { updatedAt: "desc" },
+      take: input.limit,
+      include: {
+        user: { select: { name: true } },
+        _count: { select: { cards: { where: { isSuspended: false } } } },
+      },
+    });
+
+    return rows.map((row) => ({
+      id: row.id,
+      title: row.title,
+      description: row.description,
+      subject: row.subject,
+      color: row.color ?? "#6366f1",
+      cardCount: row._count.cards,
+      authorName: row.user.name,
+      updatedAt: row.updatedAt.toISOString(),
+    }));
+  },
+
   async create(
     userId: string,
     input: { title: string; description?: string | null; subject?: string | null; color?: string },
@@ -109,7 +158,13 @@ export const deckRepository = {
 
   async update(
     id: string,
-    input: Partial<{ title: string; description: string | null; subject: string | null; color: string }>,
+    input: Partial<{
+      title: string;
+      description: string | null;
+      subject: string | null;
+      color: string;
+      isPublic: boolean;
+    }>,
   ): Promise<Deck> {
     const row = await prisma.deck.update({ where: { id }, data: input });
     return toDeck(row);

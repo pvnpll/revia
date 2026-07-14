@@ -43,7 +43,7 @@ Pages/Components → TanStack Query Hooks → API Route Handlers
 | Decks | Complete | List, create, delete, detail; PATCH API without edit UI |
 | Lessons | Complete | Create, delete, study viewer; PATCH API without edit UI |
 | Review | Complete | Due queue, ratings, `simple-v1` scheduler, optimistic UI |
-| Search | Complete | API + UI, min 2 chars |
+| Explore | Complete | Library search + public decks (`/explore`) |
 | Settings | Complete | Theme, import, create deck, account, about |
 | Import | Complete | JSON/text via `POST /api/import/deck` |
 | Auth | Complete | Supabase email/password; mock user fallback locally |
@@ -148,14 +148,15 @@ All data routes call `getUserId()` from `src/lib/api/auth.ts` (Supabase session 
 | GET | `/api/dashboard` | Summary stats + 5 recent decks |
 | GET | `/api/decks` | List decks with card/due counts |
 | POST | `/api/decks` | Create deck |
-| GET/PATCH/DELETE | `/api/decks/:deckId` | Deck CRUD |
+| GET/PATCH/DELETE | `/api/decks/:deckId` | Deck CRUD (PATCH supports `isPublic`; GET allows public read) |
 | GET/POST | `/api/decks/:deckId/lessons` | List/create lessons |
 | GET/PATCH/DELETE | `/api/decks/:deckId/lessons/:lessonId` | Lesson CRUD |
 | GET/POST | `/api/decks/:deckId/cards` | List/create cards (`?lessonId=` filter) |
 | GET/PATCH/DELETE | `/api/decks/:deckId/cards/:cardId` | Card CRUD |
 | GET | `/api/review/due` | Due queue (`deckId`, `limit` query) |
 | POST | `/api/review` | Submit rating, update scheduling |
-| GET | `/api/search` | Search (`q`, `limit`) |
+| GET | `/api/search` | Search your library (`q`, `limit`) |
+| GET | `/api/explore` | List public decks (`q`, `limit`) |
 | POST | `/api/import/deck` | Import JSON deck |
 | GET | `/auth/callback` | Supabase session + Prisma user sync |
 

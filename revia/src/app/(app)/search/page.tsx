@@ -1,5 +1,5 @@
-import { SearchPageContent } from "@/features/search/components/search-page-content";
+import { redirect } from "next/navigation";
 
 export default function SearchPage() {
-  return <SearchPageContent />;
+  redirect("/explore");
 }

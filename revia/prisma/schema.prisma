@@ -35,6 +35,7 @@ model Deck {
   subject     String?
   color       String?  @default("#6366f1")
   isArchived  Boolean  @default(false) @map("is_archived")
+  isPublic    Boolean  @default(false) @map("is_public")
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
@@ -46,6 +47,7 @@ model Deck {
 
   @@index([userId])
   @@index([userId, isArchived])
+  @@index([isPublic, isArchived])
   @@map("decks")
 }
 

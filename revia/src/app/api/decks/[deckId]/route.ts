@@ -8,7 +8,7 @@ type RouteContext = { params: Promise<{ deckId: string }> };
 export async function GET(_request: Request, context: RouteContext) {
   try {
     const { deckId } = await context.params;
-    const deck = await deckService.getById(await getUserId(), deckId);
+    const deck = await deckService.getReadable(await getUserId(), deckId);
     return jsonResponse(deck);
   } catch (error) {
     return handleApiError(error);
