@@ -2,7 +2,7 @@
 
 **Policy owner:** You (product)  
 **Standard:** [Semantic Versioning 2.0.0](https://semver.org/) (`MAJOR.MINOR.PATCH`)  
-**Current release:** **v1.2.0** — usernames & dark default  
+**Current release:** **v1.2.1** — settings hub & auth fixes  
 **Trigger:** Every merge to `main` that ships to production is a new version.
 
 ---

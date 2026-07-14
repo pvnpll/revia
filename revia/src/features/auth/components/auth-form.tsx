@@ -4,7 +4,9 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
+import { formatAuthError, isExistingUserSignup } from "@/features/auth/auth-errors";
 import { accountApi } from "@/features/auth/services/account-api";
+import { getAuthCallbackUrl } from "@/lib/app-url";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -62,38 +64,52 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
       }
 
       if (isSignup) {
-        const { error: signUpError } = await supabase.auth.signUp({
+        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
           email: loginEmail,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(redirectTo)}`,
+            emailRedirectTo: getAuthCallbackUrl(redirectTo),
           },
         });
 
         if (signUpError) {
-          setError(signUpError.message);
+          setError(formatAuthError(signUpError.message, "signup"));
           return;
         }
 
-        const { error: signInError } = await supabase.auth.signInWithPassword({
-          email: loginEmail,
-          password,
-        });
-
-        if (signInError) {
-          setMessage("Account created. Check your email to confirm, then sign in.");
+        if (isExistingUserSignup(signUpData)) {
+          setMessage(
+            "An account with this email may already exist. Try signing in, or check your inbox for a confirmation link.",
+          );
           return;
         }
-      } else {
-        const { error: signInError } = await supabase.auth.signInWithPassword({
-          email: loginEmail,
-          password,
-        });
 
-        if (signInError) {
-          setError("Invalid username or password");
+        if (signUpData.session) {
+          await bootstrapAccount();
+          router.push(redirectTo);
+          router.refresh();
           return;
         }
+
+        setMessage(
+          "Account created. Check your email to confirm, then sign in. If you don't see it, check spam or wait before requesting another.",
+        );
+        return;
+      }
+
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: loginEmail,
+        password,
+      });
+
+      if (signInError) {
+        const lower = signInError.message.toLowerCase();
+        setError(
+          lower.includes("invalid login credentials")
+            ? "Invalid username or password"
+            : formatAuthError(signInError.message, "login"),
+        );
+        return;
       }
 
       await bootstrapAccount();

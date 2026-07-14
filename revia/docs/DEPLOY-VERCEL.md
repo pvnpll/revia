@@ -74,6 +74,9 @@ In Vercel → Project → **Settings → Environment Variables**, add for **Prod
 | `DATABASE_URL` | Transaction pooler (port **6543**) — see below |
 | `DIRECT_URL` | Session pooler (port **5432**) — see below |
 | `SUPABASE_PROJECT_REF` | `ophrrajusdwhuxvnsjrr` |
+| `NEXT_PUBLIC_APP_URL` | `https://revialearn.vercel.app` ← **must include the dot** |
+
+**Important:** The Site URL must be exactly `https://revialearn.vercel.app` (not `https://revialearnvercel.app`). A missing dot breaks email confirmation links.
 
 **Pooler URLs** (replace `[PASSWORD]` with your DB password):
 
@@ -103,10 +106,18 @@ In [Supabase → Authentication → URL Configuration](https://supabase.com/dash
 
 | Setting | Value |
 |---------|-------|
-| **Site URL** | `https://your-app.vercel.app` |
-| **Redirect URLs** | `https://your-app.vercel.app/auth/callback` |
+| **Site URL** | `https://revialearn.vercel.app` |
+| **Redirect URLs** | `https://revialearn.vercel.app/auth/callback` |
 | | `https://*-*.vercel.app/auth/callback` (preview deploys) |
 | | `http://localhost:3000/auth/callback` (local dev) |
+
+If confirmation emails open a broken domain like `revialearnvercel.app`, fix **Site URL** in the dashboard or run:
+
+```bash
+cd revia
+SUPABASE_ACCESS_TOKEN="sbp_..." SUPABASE_PROJECT_REF="ophrrajusdwhuxvnsjrr" \
+  npx tsx scripts/fix-supabase-production-url.ts
+```
 
 The setup script above applies these automatically when you pass `VERCEL_URL`.
 
@@ -166,6 +177,8 @@ If you ever need a different region, create a new Supabase project there, run `n
 | Build fails on Prisma | Ensure `postinstall` runs (`prisma generate` in package.json) |
 | 500 after deploy | Check Vercel env vars; `DATABASE_URL` must use port **6543** |
 | Login redirect fails | Add Vercel URL to Supabase redirect URLs |
+| Email confirmation opens wrong domain | Site URL must be `https://revialearn.vercel.app` (with dot) |
+| `email rate limit exceeded` on signup | Supabase free tier caps auth emails (~4/hour). Wait ~1 hour, manually confirm user in Supabase → Users, or run `npm run supabase:fix-production-url` to enable auto-confirm (skips confirmation emails) |
 | Build shows 0ms / site 404 | Set **Root Directory** to `revia` under [Build and Deployment](https://vercel.com/pvnplls-projects/revia/settings/build-and-deployment), then redeploy |
 | Can't find Root Directory | It's under **Settings → Build and Deployment**, not General |
 | `develop` should not go to production | Set Production branch to `main` and Preview branch tracking to `develop` under [Environments](https://vercel.com/pvnplls-projects/revia/settings/environments) |
