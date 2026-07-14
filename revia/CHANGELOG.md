@@ -6,6 +6,23 @@ Release notes are **drafted** on each `main` merge; **published** only when expl
 
 ---
 
+## [v1.2.1] — 2026-07-15 (Published)
+
+**Settings hub & auth fixes** — cleaner Settings UI, signup rate-limit fixes, email URL config.
+
+→ [Full release notes](docs/releases/v1.2.1.md)
+
+### Added
+- Settings hub with dedicated sub-pages per option
+- Auth error messages for rate limits and email confirmation
+- Supabase production URL fix script
+
+### Fixed
+- Signup double-request rate limiting
+- Email confirmation redirect URL configuration
+
+---
+
 ## [v1.2.0] — 2026-07-14 (Published)
 
 **Usernames & dark default** — unique usernames, username login, dark mode by default.

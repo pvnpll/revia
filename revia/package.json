@@ -1,6 +1,6 @@
 {
   "name": "revia",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -17,6 +17,7 @@
     "check": "npm run typecheck && npm run test && npm run build",
     "setup": "bash scripts/setup.sh",
     "supabase:connect": "tsx scripts/supabase-connect.ts",
+    "supabase:fix-production-url": "tsx scripts/fix-supabase-production-url.ts",
     "vercel:setup": "tsx scripts/vercel-supabase-setup.ts",
     "prod": "bash scripts/prod-local.sh",
     "db:generate": "prisma generate",

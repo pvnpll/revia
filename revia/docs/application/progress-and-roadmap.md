@@ -1,6 +1,6 @@
 # Progress and Roadmap
 
-**Last updated:** July 2026 — **v1.2.0** (usernames & dark default)  
+**Last updated:** July 2026 — **v1.2.1** (settings hub & auth fixes)  
 **Versioning:** [release-versioning.md](./release-versioning.md) — SemVer; every `main` merge = new version  
 **Policy:** Plan features by target release. Implement after you approve. Publish release notes only when you ask.
 
@@ -13,6 +13,7 @@
 | **v1.0.0** | ✅ Published | Core app + deploy | Phases 0–12 |
 | **v1.1.0** | ✅ Published | Public decks & Explore | Phase 8+ |
 | **v1.2.0** | ✅ Published | Usernames, username login, dark default | Identity |
+| **v1.2.1** | ✅ Published | Settings hub, auth/email fixes | UX |
 | **v1.0.1** | Open | Patches: bugs, perf, deploy fixes | Ad-hoc |
 | **v1.3.0** | Planned | Content editing UI | Phase A |
 | **v1.4.0** | Planned | JSON export | Phase B |

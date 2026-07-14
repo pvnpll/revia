@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 
 import { useAccountProfile, useUpdateUsername } from "@/features/auth/hooks/use-account";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { isValidUsernameFormat, normalizeUsername } from "@/lib/username";
@@ -22,11 +21,7 @@ export function UsernameSettings() {
   }, [profile?.username]);
 
   if (isLoading) {
-    return (
-      <Card>
-        <CardContent className="py-6 text-sm text-muted-foreground">Loading username...</CardContent>
-      </Card>
-    );
+    return <p className="text-sm text-muted-foreground">Loading username...</p>;
   }
 
   if (isError || !profile) {
@@ -51,15 +46,7 @@ export function UsernameSettings() {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Username</CardTitle>
-        <CardDescription>
-          Your public name on shared decks. You can change the auto-assigned username anytime.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form className="space-y-4" onSubmit={handleSubmit}>
+    <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="space-y-2">
             <Label htmlFor="username">Username</Label>
             <div className="flex items-center gap-2">
@@ -96,9 +83,7 @@ export function UsernameSettings() {
             }
           >
             {updateUsername.isPending ? "Saving..." : "Save username"}
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
+        </Button>
+    </form>
   );
 }
