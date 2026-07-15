@@ -35,7 +35,7 @@ export function AccountSettings() {
     setSigningOut(true);
     const supabase = createClient();
     await supabase.auth.signOut();
-    router.push("/login");
+    router.push("/explore");
     router.refresh();
   }
 

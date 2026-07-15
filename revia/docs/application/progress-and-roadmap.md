@@ -1,6 +1,6 @@
 # Progress and Roadmap
 
-**Last updated:** July 2026 — **v1.6.0** (Guest mode & public browse)  
+**Last updated:** July 2026 — **v1.6.1** (Touch UX & lesson navigation)  
 **Versioning:** [release-versioning.md](./release-versioning.md) — SemVer; every `main` merge = new version  
 **Policy:** Plan features by target release. Implement after you approve. Publish release notes only when you ask.
 
@@ -18,6 +18,7 @@
 | **v1.4.0** | ✅ Published | Practice mode, Daily Review split | Learning modes |
 | **v1.5.0** | ✅ Published | Deck/lesson rename, import UX & reliability | Phase A (partial) |
 | **v1.6.0** | ✅ Published | Guest mode, public browse without login | Access |
+| **v1.6.1** | ✅ Published | Touch UX, lesson navigation, sign-out redirect | UX polish |
 | **v1.0.1** | Open | Patches: bugs, perf, deploy fixes | Ad-hoc |
 | **v1.7.0** | Planned | Deck description/color edit, lesson reorder, card UI on deck page | Phase A (rest) |
 | **v1.8.0** | Planned | JSON export | Phase B |
