@@ -8,6 +8,22 @@ Release notes are **drafted** on each `main` merge; **published** only when expl
 
 ---
 
+## [v1.6.1] — 2026-07-15 (Published)
+
+**Touch UX & lesson navigation** — consistent lesson row taps, improved swipe/tap on practice cards, sign out returns to Explore.
+
+→ [Full release notes](docs/releases/v1.6.1.md)
+
+### Changed
+- Full lesson row tap target for guest and signed-in users
+- Signed-in practice uses tap-to-reveal touch handling (ratings unchanged)
+- Guest swipe navigation thresholds and edge tap zones
+
+### Fixed
+- Sign out redirects to Explore instead of login
+
+---
+
 ## [v1.6.0] — 2026-07-15 (Published)
 
 **Guest mode & public browse** — use Explore and practice public decks without signing in; Daily Review and library require an account.

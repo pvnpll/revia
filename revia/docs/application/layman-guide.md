@@ -109,7 +109,8 @@ flowchart LR
 - **Import decks** — upload or paste JSON; confirm with Import JSON button
 - Dashboard with due count, reviewed today, streak, deck/card totals
 - Deck list, create, delete, detail, and **Practice deck**
-- Lessons: create, delete, tap to practice (lesson-scoped)
+- Lessons: create, delete, tap anywhere on a lesson row to practice (lesson-scoped)
+- Sign out returns you to Explore
 - Public/private decks, Explore, import public decks to library
 - Usernames, sign in with username, author credits on shared decks
 - Feedback, light/dark theme

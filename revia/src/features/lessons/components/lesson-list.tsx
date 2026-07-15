@@ -54,34 +54,43 @@ export function LessonList({ deckId, canEdit = false }: { deckId: string; canEdi
           {items.map((lesson) => (
             <li
               key={lesson.id}
-              className="group flex items-center justify-between gap-4 px-4 py-4 transition-colors active:bg-accent"
+              className="group flex items-center justify-between gap-4 px-4 py-4 transition-colors"
             >
-              <div className="min-w-0 flex-1 space-y-1">
+              <Link
+                href={practiceHref(deckId, lesson.id, false)}
+                prefetch
+                aria-label={`Practice ${lesson.title}`}
+                className="min-w-0 flex-1 space-y-1 rounded-md py-1 transition-colors active:bg-accent"
+              >
                 {canEdit ? (
-                  <InlineTitleEditor
-                    value={lesson.title}
-                    titleClassName="font-semibold"
-                    isSaving={updateLesson.isPending}
-                    error={
-                      updateLesson.isError && updateLesson.error instanceof Error
-                        ? updateLesson.error.message
-                        : null
-                    }
-                    onSave={async (title) => {
-                      await updateLesson.mutateAsync({ lessonId: lesson.id, input: { title } });
+                  <div
+                    onClick={(event) => {
+                      event.preventDefault();
+                      event.stopPropagation();
                     }}
-                  />
+                    onKeyDown={(event) => event.stopPropagation()}
+                  >
+                    <InlineTitleEditor
+                      value={lesson.title}
+                      titleClassName="font-semibold"
+                      isSaving={updateLesson.isPending}
+                      error={
+                        updateLesson.isError && updateLesson.error instanceof Error
+                          ? updateLesson.error.message
+                          : null
+                      }
+                      onSave={async (title) => {
+                        await updateLesson.mutateAsync({ lessonId: lesson.id, input: { title } });
+                      }}
+                    />
+                  </div>
                 ) : (
                   <p className="font-semibold">{lesson.title}</p>
                 )}
-                <Link
-                  href={practiceHref(deckId, lesson.id, false)}
-                  prefetch
-                  className="block text-left text-xs text-muted-foreground hover:text-foreground"
-                >
+                <p className="text-xs text-muted-foreground">
                   Practice {lesson.cardCount} cards · front to back
-                </Link>
-              </div>
+                </p>
+              </Link>
               <div className="flex shrink-0 flex-col items-end gap-2">
                 <Badge variant="secondary">{lesson.cardCount} cards</Badge>
                 <Button asChild variant="outline" size="sm">
@@ -120,7 +129,7 @@ export function LessonsSection({
         <CardDescription>
           {canEdit
             ? "Tap a lesson to start an endless practice session."
-            : "Tap a lesson to practice with ratings. Session progress is not saved — sign in and add to your library for Daily Review."}
+            : "Tap a lesson to browse cards. Session progress is not saved — sign in and add to your library for Daily Review."}
         </CardDescription>
       </CardHeader>
       <CardContent>
