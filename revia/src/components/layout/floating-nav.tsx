@@ -9,6 +9,8 @@ import { dashboardQueryKeys } from "@/features/dashboard/hooks/use-dashboard";
 import { dashboardApi } from "@/features/dashboard/services/dashboard-api";
 import { deckQueryKeys } from "@/features/decks/hooks/use-decks";
 import { deckApi } from "@/features/decks/services/deck-api";
+import { exploreQueryKeys } from "@/features/explore/hooks/use-explore";
+import { exploreApi } from "@/features/explore/services/explore-api";
 import { practiceQueryKeys } from "@/features/practice/hooks/use-practice";
 import { practiceApi } from "@/features/practice/services/practice-api";
 import { cn } from "@/lib/utils/cn";
@@ -17,12 +19,12 @@ const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, prefetchKey: "dashboard" as const },
   { href: "/practice", label: "Practice", icon: Sparkles, prefetchKey: "practice" as const },
   { href: "/decks", label: "Decks", icon: BookOpen, prefetchKey: "decks" as const },
-  { href: "/explore", label: "Explore", icon: Compass, prefetchKey: null },
+  { href: "/explore", label: "Explore", icon: Compass, prefetchKey: "explore" as const },
 ];
 
 function prefetchRoute(
   queryClient: ReturnType<typeof useQueryClient>,
-  key: "dashboard" | "decks" | "practice" | null,
+  key: "dashboard" | "decks" | "practice" | "explore" | null,
 ) {
   if (key === "dashboard") {
     void queryClient.prefetchQuery({
@@ -47,6 +49,15 @@ function prefetchRoute(
       queryKey: practiceQueryKeys.cards(),
       queryFn: () => practiceApi.getCards(),
       staleTime: 60_000,
+    });
+    return;
+  }
+
+  if (key === "explore") {
+    void queryClient.prefetchQuery({
+      queryKey: exploreQueryKeys.list(""),
+      queryFn: () => exploreApi.list(""),
+      staleTime: 2 * 60_000,
     });
   }
 }

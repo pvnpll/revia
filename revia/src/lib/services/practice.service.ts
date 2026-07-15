@@ -1,7 +1,7 @@
 import { cardRepository } from "@/lib/repositories/card.repository";
 import { lessonRepository } from "@/lib/repositories/lesson.repository";
 import { deckRepository } from "@/lib/repositories/deck.repository";
-import { RECENT_DECK_LIMIT } from "@/lib/constants/deck-limits";
+import { RECENT_DECK_LIMIT, PRACTICE_CARD_LIMIT } from "@/lib/constants/deck-limits";
 import { deckService } from "@/lib/services/deck.service";
 import { ApiError } from "@/types/api";
 import type { CardWithScheduling } from "@/types/card";
@@ -35,7 +35,6 @@ export const practiceService = {
   ): Promise<CardWithScheduling[]> {
     if (options?.deckId) {
       await deckService.getReadable(userId, options.deckId);
-      void deckRepository.recordAccess(options.deckId, userId);
 
       if (options.lessonId) {
         await ensureLessonBelongsToDeck(options.deckId, options.lessonId);
@@ -48,6 +47,8 @@ export const practiceService = {
     }
 
     const deckIds = await getRecentPracticeDeckIds(userId);
-    return cardRepository.findForPracticeByDeckIds(deckIds);
+    return cardRepository.findForPracticeByDeckIds(deckIds, {
+      limit: PRACTICE_CARD_LIMIT,
+    });
   },
 };

@@ -32,6 +32,8 @@ function buildStudyCards(
     .map((card) => toPracticeStudyCard(card, reverseMode));
 }
 
+// buildStudyCards used for read-only lesson browse.
+
 export function PracticeSession({
   title,
   deckId,
@@ -86,10 +88,19 @@ export function PracticeSession({
     setInitialized(true);
   }, [cardIdsKey, shouldFetch, isFetched]);
 
-  const studyCards = useMemo(
-    () => buildStudyCards(queue, cardMap, reverseMode),
-    [queue, cardMap, reverseMode],
-  );
+  const studyCards = useMemo(() => {
+    if (readOnly) {
+      return buildStudyCards(queue, cardMap, reverseMode);
+    }
+    const cardId = queue[currentIndex];
+    if (!cardId) {
+      return [];
+    }
+    const card = cardMap.get(cardId);
+    return card ? [toPracticeStudyCard(card, reverseMode)] : [];
+  }, [readOnly, queue, currentIndex, cardMap, reverseMode]);
+
+  const viewerIndex = readOnly ? currentIndex : 0;
 
   function handleRating(rating: RatingValue) {
     if (readOnly || queue.length === 0) {
@@ -149,14 +160,14 @@ export function PracticeSession({
   return (
     <StudyCardViewer
       cards={studyCards}
-      currentIndex={currentIndex}
+      currentIndex={viewerIndex}
       title={title}
       subtitle={
         readOnly
-          ? `${currentIndex + 1} of ${studyCards.length}`
+          ? `${currentIndex + 1} of ${queue.length}`
           : `${reviewedCount + 1} reviewed · endless`
       }
-      onIndexChange={setCurrentIndex}
+      onIndexChange={readOnly ? setCurrentIndex : () => undefined}
       onRate={handleRating}
       onClose={onClose}
       fullscreen
