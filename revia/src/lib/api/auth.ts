@@ -14,7 +14,7 @@ const getSessionUser = cache(async () => {
   return { user: session?.user ?? null, error };
 });
 
-export async function getUserId(): Promise<string> {
+export async function getOptionalUserId(): Promise<string | null> {
   if (!isSupabaseAuthEnabled()) {
     return env.MOCK_USER_ID;
   }
@@ -22,8 +22,18 @@ export async function getUserId(): Promise<string> {
   const { user, error } = await getSessionUser();
 
   if (error || !user) {
-    throw new ApiError(401, "UNAUTHORIZED", "Authentication required");
+    return null;
   }
 
   return user.id;
+}
+
+export async function getUserId(): Promise<string> {
+  const userId = await getOptionalUserId();
+
+  if (!userId) {
+    throw new ApiError(401, "UNAUTHORIZED", "Authentication required");
+  }
+
+  return userId;
 }

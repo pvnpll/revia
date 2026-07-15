@@ -4,12 +4,15 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { BookOpen, Compass, FileQuestion, Globe, Layers, Search } from "lucide-react";
 
+import { LoginRequired } from "@/features/auth/components/login-required";
+import { useAuthSession } from "@/features/auth/hooks/use-auth-session";
 import { useExplore } from "@/features/explore/hooks/use-explore";
 import { useSearch } from "@/features/search/hooks/use-search";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { APP_VERSION } from "@/lib/app-version";
 import type { PublicDeckSummary } from "@/types/deck";
 import type { SearchResult, SearchResultType } from "@/types/search";
 
@@ -36,6 +39,7 @@ function groupResults(results: SearchResult[]) {
 }
 
 export function ExplorePageContent() {
+  const { isAuthenticated } = useAuthSession();
   const [libraryQuery, setLibraryQuery] = useState("");
   const [publicQuery, setPublicQuery] = useState("");
 
@@ -59,10 +63,76 @@ export function ExplorePageContent() {
           Explore
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Search your library and discover public decks from the community.
+          {isAuthenticated
+            ? "Search your library and discover public decks from the community."
+            : "Browse public decks and start practicing — no account needed. Sign in to save decks and track progress."}
         </p>
       </div>
 
+      {!isAuthenticated && (
+        <section className="space-y-4">
+          <div>
+            <h2 className="flex items-center gap-2 text-lg font-semibold">
+              <Globe className="h-5 w-5 text-primary" />
+              Public decks
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Community decks you can practice right away.
+            </p>
+          </div>
+
+          <div className="relative">
+            <Search className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
+            <Input
+              value={publicQuery}
+              onChange={(event) => setPublicQuery(event.target.value)}
+              placeholder="Filter public decks by title, subject..."
+              className="h-12 rounded-2xl pl-10 text-base"
+              autoFocus
+            />
+          </div>
+
+          {publicExplore.isError && (
+            <p className="text-sm text-destructive">
+              {publicExplore.error instanceof Error
+                ? publicExplore.error.message
+                : "Failed to load public decks"}
+            </p>
+          )}
+
+          {publicExplore.isPending ? (
+            <Card>
+              <CardContent className="py-8 text-center text-sm text-muted-foreground">
+                Loading public decks...
+              </CardContent>
+            </Card>
+          ) : publicDecks.length === 0 ? (
+            <Card>
+              <CardContent className="py-8 text-center text-sm text-muted-foreground">
+                {normalizedPublic
+                  ? "No public decks match your search yet."
+                  : "No public decks to show yet. Be the first to publish one."}
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="grid gap-4 sm:grid-cols-2">
+              {publicDecks.map((deck) => (
+                <PublicDeckCard key={deck.id} deck={deck} />
+              ))}
+            </div>
+          )}
+        </section>
+      )}
+
+      {!isAuthenticated && (
+        <LoginRequired
+          title="Want your own library?"
+          description="Sign in to import decks, create your own, run Daily Review, and save progress across devices."
+          redirectPath="/explore"
+        />
+      )}
+
+      {isAuthenticated && (
       <section className="space-y-4">
         <div>
           <h2 className="text-lg font-semibold">Search your library</h2>
@@ -127,9 +197,11 @@ export function ExplorePageContent() {
           </div>
         )}
       </section>
+      )}
 
-      <Separator />
+      {isAuthenticated && <Separator />}
 
+      {isAuthenticated && (
       <section className="space-y-4">
         <div>
           <h2 className="flex items-center gap-2 text-lg font-semibold">
@@ -181,6 +253,9 @@ export function ExplorePageContent() {
           </div>
         )}
       </section>
+      )}
+
+      <p className="pt-2 text-center text-xs text-muted-foreground">Revia v{APP_VERSION}</p>
     </div>
   );
 }

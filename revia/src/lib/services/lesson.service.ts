@@ -5,12 +5,12 @@ import { ApiError } from "@/types/api";
 import type { Lesson, LessonWithStats } from "@/types/lesson";
 
 export const lessonService = {
-  async list(userId: string, deckId: string): Promise<LessonWithStats[]> {
+  async list(userId: string | null, deckId: string): Promise<LessonWithStats[]> {
     await deckService.getReadable(userId, deckId);
     return lessonRepository.findByDeck(deckId);
   },
 
-  async getById(userId: string, deckId: string, lessonId: string): Promise<Lesson> {
+  async getById(userId: string | null, deckId: string, lessonId: string): Promise<Lesson> {
     await deckService.getReadable(userId, deckId);
     const lesson = await lessonRepository.findByIdForDeck(lessonId, deckId);
     if (!lesson) {

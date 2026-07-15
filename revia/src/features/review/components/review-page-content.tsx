@@ -182,6 +182,7 @@ export function ReviewPageContent() {
       currentIndex={currentIndex}
       title="Daily Review"
       subtitle={`${completedCount + 1} of ${completedCount + totalDue} due`}
+      mode="review"
       onIndexChange={setCurrentIndex}
       onRate={handleRating}
       onClose={exitReview}

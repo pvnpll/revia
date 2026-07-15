@@ -8,6 +8,27 @@ Release notes are **drafted** on each `main` merge; **published** only when expl
 
 ---
 
+## [v1.6.0] — 2026-07-15 (Published)
+
+**Guest mode & public browse** — use Explore and practice public decks without signing in; Daily Review and library require an account.
+
+→ [Full release notes](docs/releases/v1.6.0.md)
+
+### Added
+- Guest access to Explore, public decks, and swipe-based practice
+- Login prompts for account-only features
+- App version footer on Explore page
+
+### Changed
+- Home redirect: guests → Explore, signed-in → Practice
+- Guest shell header and reduced nav
+- Separate practice vs review card viewer modes
+
+### Fixed
+- Guest practice session overlay and lesson navigation
+
+---
+
 ## [v1.5.0] — 2026-07-15 (Published)
 
 **Content editing & import improvements** — rename decks and lessons; confirm before import; reliable large deck imports.

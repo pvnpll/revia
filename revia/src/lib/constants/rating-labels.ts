@@ -13,3 +13,5 @@ export const RATING_SHORT_LABELS: Record<number, string> = {
   4: "Good",
   5: "Perfect",
 };
+
+export const PRACTICE_RATING_PROMPT = "How well did you know it?";

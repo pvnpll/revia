@@ -6,6 +6,7 @@ import { ArrowLeft, Globe, Sparkles, UserRound } from "lucide-react";
 import { DeckVisibilityToggle } from "@/features/decks/components/deck-visibility-toggle";
 import { ImportPublicDeckButton } from "@/features/decks/components/import-public-deck-button";
 import { useDeck, useUpdateDeck } from "@/features/decks/hooks/use-decks";
+import { useAuthSession } from "@/features/auth/hooks/use-auth-session";
 import { useLessons } from "@/features/lessons/hooks/use-lessons";
 import { LessonsSection } from "@/features/lessons/components/lesson-list";
 import { Badge } from "@/components/ui/badge";
@@ -15,6 +16,7 @@ import { InlineTitleEditor } from "@/components/ui/inline-title-editor";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function DeckDetailContent({ deckId }: { deckId: string }) {
+  const { isAuthenticated } = useAuthSession();
   const { data: deck, isLoading: deckLoading, isError, error } = useDeck(deckId);
   const updateDeck = useUpdateDeck(deckId);
   useLessons(deckId);
@@ -131,8 +133,9 @@ export function DeckDetailContent({ deckId }: { deckId: string }) {
           <CardHeader>
             <CardTitle>Add to your library</CardTitle>
             <CardDescription>
-              Import this deck to practice, run Daily Review, and save your own progress. The original author
-              stays credited on your copy.
+              {isAuthenticated
+                ? "Import this deck to practice, run Daily Review, and save your own progress. The original author stays credited on your copy."
+                : "Sign in to import this deck, run Daily Review, and save your own progress. You can practice it now without an account."}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -141,7 +144,7 @@ export function DeckDetailContent({ deckId }: { deckId: string }) {
         </Card>
       )}
 
-      <LessonsSection deckId={deckId} readOnly={!deck.isOwner} />
+      <LessonsSection deckId={deckId} canEdit={deck.isOwner} />
     </div>
   );
 }

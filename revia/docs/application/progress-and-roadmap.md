@@ -1,6 +1,6 @@
 # Progress and Roadmap
 
-**Last updated:** July 2026 — **v1.5.0** (Content editing & import improvements)  
+**Last updated:** July 2026 — **v1.6.0** (Guest mode & public browse)  
 **Versioning:** [release-versioning.md](./release-versioning.md) — SemVer; every `main` merge = new version  
 **Policy:** Plan features by target release. Implement after you approve. Publish release notes only when you ask.
 
@@ -17,13 +17,14 @@
 | **v1.3.0** | ✅ Published | Import public decks, feedback | Sharing |
 | **v1.4.0** | ✅ Published | Practice mode, Daily Review split | Learning modes |
 | **v1.5.0** | ✅ Published | Deck/lesson rename, import UX & reliability | Phase A (partial) |
+| **v1.6.0** | ✅ Published | Guest mode, public browse without login | Access |
 | **v1.0.1** | Open | Patches: bugs, perf, deploy fixes | Ad-hoc |
-| **v1.6.0** | Planned | Deck description/color edit, lesson reorder, card UI on deck page | Phase A (rest) |
-| **v1.7.0** | Planned | JSON export | Phase B |
-| **v1.8.0** | Planned | Statistics / charts | Phase C |
-| **v1.9.0** | Planned | Tags | Phase D |
-| **v2.0.0** | Planned | Image/audio cards | Phase E |
-| **v2.1.0** | Planned | CSV import, review filters | Phase F + G |
+| **v1.7.0** | Planned | Deck description/color edit, lesson reorder, card UI on deck page | Phase A (rest) |
+| **v1.8.0** | Planned | JSON export | Phase B |
+| **v1.9.0** | Planned | Statistics / charts | Phase C |
+| **v2.0.0** | Planned | Tags | Phase D |
+| **v2.1.0** | Planned | Image/audio cards | Phase E |
+| **v2.2.0** | Planned | CSV import, review filters | Phase F + G |
 | **v3.0.0** | Future | Breaking changes, roles, native API | Phase H / I |
 
 Release notes: [docs/releases/](../releases/) · Changelog: [CHANGELOG.md](../../CHANGELOG.md)

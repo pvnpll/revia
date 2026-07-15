@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { studySurface } from "@/lib/theme/app-theme";
-import { RATING_LABELS } from "@/lib/constants/rating-labels";
+import { PRACTICE_RATING_PROMPT, RATING_LABELS } from "@/lib/constants/rating-labels";
 import { RATING_BORDER_STYLES } from "@/lib/constants/rating-colors";
 import type { RatingValue } from "@/lib/scheduler";
 import { cn } from "@/lib/utils/cn";
@@ -14,11 +14,16 @@ import type { StudyCardItem } from "@/features/study/types";
 
 const ratings: RatingValue[] = [1, 2, 3, 4, 5];
 
+type StudyMode = "practice" | "review";
+type NavigationMode = "ratings" | "swipe";
+
 interface StudyCardViewerProps {
   cards: StudyCardItem[];
   currentIndex: number;
   title?: string;
   subtitle?: string;
+  mode?: StudyMode;
+  navigationMode?: NavigationMode;
   onIndexChange: (index: number) => void;
   onRate: (rating: RatingValue) => void | Promise<void>;
   onClose?: () => void;
@@ -34,6 +39,8 @@ export function StudyCardViewer({
   currentIndex,
   title,
   subtitle,
+  mode = "review",
+  navigationMode = "ratings",
   onIndexChange,
   onRate,
   onClose,
@@ -43,11 +50,25 @@ export function StudyCardViewer({
   fullscreen = true,
   readOnly = false,
 }: StudyCardViewerProps) {
-  const touchStartY = useRef<number | null>(null);
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
   const [revealedIds, setRevealedIds] = useState<Set<string>>(() => new Set());
+  const previousCardId = useRef<string | null>(null);
 
   const current = cards[currentIndex];
   const isRevealed = current ? revealedIds.has(current.id) : false;
+  const isSwipeNavigation = navigationMode === "swipe";
+  const progress = `${currentIndex + 1} / ${cards.length}`;
+
+  useEffect(() => {
+    if (!current) {
+      return;
+    }
+
+    if (previousCardId.current !== current.id) {
+      previousCardId.current = current.id;
+      setRevealedIds(new Set());
+    }
+  }, [current]);
 
   useEffect(() => {
     if (fullscreen) {
@@ -70,24 +91,61 @@ export function StudyCardViewer({
     }
   }
 
+  function goNext() {
+    goToIndex(currentIndex + 1);
+  }
+
+  function goPrevious() {
+    goToIndex(currentIndex - 1);
+  }
+
   function handleTouchStart(event: React.TouchEvent) {
-    touchStartY.current = event.touches[0]?.clientY ?? null;
+    const touch = event.touches[0];
+    if (!touch) return;
+    touchStart.current = { x: touch.clientX, y: touch.clientY };
   }
 
   function handleTouchEnd(event: React.TouchEvent) {
-    if (touchStartY.current === null) return;
-    const endY = event.changedTouches[0]?.clientY;
-    if (endY === undefined) return;
+    if (touchStart.current === null) return;
+    const touch = event.changedTouches[0];
+    if (!touch) return;
 
-    const delta = touchStartY.current - endY;
-    touchStartY.current = null;
+    const deltaX = touch.clientX - touchStart.current.x;
+    const deltaY = touchStart.current.y - touch.clientY;
+    touchStart.current = null;
 
-    if (delta > 55) {
-      if (allowFreeNavigation || isRevealed) {
-        goToIndex(currentIndex + 1);
+    if (isSwipeNavigation && Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 55) {
+      if (deltaX > 0) {
+        goNext();
+      } else {
+        goPrevious();
       }
-    } else if (delta < -55) {
-      goToIndex(currentIndex - 1);
+      return;
+    }
+
+    if (deltaY > 55) {
+      if (allowFreeNavigation || isRevealed || isSwipeNavigation) {
+        goNext();
+      }
+    } else if (deltaY < -55) {
+      goPrevious();
+    }
+  }
+
+  function handleMainTap(event: React.MouseEvent<HTMLDivElement>) {
+    if (!isSwipeNavigation) return;
+
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const width = rect.width;
+
+    if (x < width * 0.25) {
+      goPrevious();
+      return;
+    }
+
+    if (x > width * 0.75) {
+      goNext();
     }
   }
 
@@ -104,7 +162,9 @@ export function StudyCardViewer({
 
   if (!current) return null;
 
-  const progress = `${currentIndex + 1} / ${cards.length}`;
+  const headerSubtitle =
+    subtitle ??
+    (isSwipeNavigation ? progress : mode === "practice" ? "Practice mode" : progress);
 
   return (
     <div
@@ -134,22 +194,28 @@ export function StudyCardViewer({
           {title && (
             <p className="truncate text-sm font-medium text-muted-foreground">{title}</p>
           )}
-          <p className="text-xs text-muted-foreground">{subtitle ?? progress}</p>
+          <p className="text-xs text-muted-foreground">{headerSubtitle}</p>
         </div>
         <span className="w-10 text-right text-sm font-medium tabular-nums text-muted-foreground">
           {progress}
         </span>
       </header>
 
-      <main className="flex flex-1 flex-col overflow-auto px-6 pb-4">
+      <main
+        className="relative flex flex-1 flex-col overflow-hidden px-6 pb-4"
+        onClick={handleMainTap}
+      >
         {!isRevealed ? (
           <button
             type="button"
-            onClick={revealCurrent}
+            onClick={(event) => {
+              event.stopPropagation();
+              revealCurrent();
+            }}
             className="study-card-enter flex flex-1 flex-col items-center justify-center text-center"
           >
             <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
-              Front
+              {mode === "practice" ? "Question" : "Front"}
             </p>
             <p className="mt-8 max-w-md whitespace-pre-wrap text-4xl font-semibold leading-tight">
               {current.front}
@@ -157,10 +223,10 @@ export function StudyCardViewer({
             <p className="mt-12 text-sm text-muted-foreground">Tap to reveal</p>
           </button>
         ) : (
-          <div className="study-card-enter flex flex-1 flex-col gap-4 py-4">
+          <div className="study-card-enter flex flex-1 flex-col gap-4 overflow-auto py-4">
             <div className="shrink-0 rounded-2xl border bg-muted/50 p-4 text-left">
               <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
-                Front
+                {mode === "practice" ? "Question" : "Front"}
               </p>
               <p className="mt-2 whitespace-pre-wrap text-lg font-semibold leading-snug">
                 {current.front}
@@ -169,7 +235,7 @@ export function StudyCardViewer({
 
             <div className="flex flex-1 flex-col rounded-2xl border bg-card p-5">
               <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
-                Back
+                Answer
               </p>
               <p className="study-reveal-back mt-4 whitespace-pre-wrap text-3xl font-semibold leading-tight">
                 {current.back}
@@ -186,7 +252,13 @@ export function StudyCardViewer({
         )}
       </main>
 
-      {isRevealed && (
+      {isSwipeNavigation ? (
+        <footer className="shrink-0 border-t bg-background px-4 pb-8 pt-3 text-center text-xs text-muted-foreground">
+          Swipe or tap left/right for previous and next card
+        </footer>
+      ) : null}
+
+      {!isSwipeNavigation && isRevealed && (
         <footer className="shrink-0 border-t bg-background px-4 pb-8 pt-4">
           {readOnly ? (
             <Button
@@ -197,7 +269,7 @@ export function StudyCardViewer({
                   onClose?.();
                   return;
                 }
-                goToIndex(currentIndex + 1);
+                goNext();
                 if (current) {
                   setRevealedIds((prev) => {
                     const next = new Set(prev);
@@ -211,6 +283,9 @@ export function StudyCardViewer({
             </Button>
           ) : (
             <>
+              <p className="mb-3 text-center text-sm font-medium text-muted-foreground">
+                {mode === "practice" ? PRACTICE_RATING_PROMPT : "Rate this card"}
+              </p>
               <div className="grid grid-cols-5 gap-2">
                 {ratings.map((rating) => (
                   <button
