@@ -1,0 +1,2593 @@
+{
+  "deck": {
+    "title": "Kannada Basics",
+    "description": "Comprehensive Kannada foundation: greetings, grammar, numbers, family, food, travel, verbs, phrases, and culture. Front shows Kannada with romanization; back shows English.",
+    "language": "Kannada",
+    "tags": [
+      "kannada",
+      "language",
+      "basics",
+      "india",
+      "karnataka"
+    ]
+  },
+  "lessons": [
+    {
+      "title": "Greetings & Politeness",
+      "description": "Essential greetings and polite words",
+      "cards": [
+        {
+          "front": "ನಮಸ್ಕಾರ (namaskara)",
+          "back": "Hello / Greetings",
+          "pronunciation": "namaskara",
+          "example": "ನಮಸ್ಕಾರ, ಹೇಗಿದ್ದೀರ?",
+          "notes": "Universal formal greeting",
+          "tags": [
+            "greeting"
+          ]
+        },
+        {
+          "front": "ಶುಭೋದಯ (shubhodaya)",
+          "back": "Good morning",
+          "pronunciation": "shubhodaya",
+          "example": "ಶುಭೋದಯ! ಶುಭ ದಿನ.",
+          "tags": [
+            "greeting"
+          ]
+        },
+        {
+          "front": "ಶುಭ ಸಂಜೆ (shubha sanje)",
+          "back": "Good evening",
+          "pronunciation": "shubha sanje",
+          "tags": [
+            "greeting"
+          ]
+        },
+        {
+          "front": "ಶುಭ ರಾತ್ರಿ (shubha raatri)",
+          "back": "Good night",
+          "pronunciation": "shubha raatri",
+          "example": "ಶುಭ ರಾತ್ರಿ.",
+          "tags": [
+            "greeting"
+          ]
+        },
+        {
+          "front": "ಧನ್ಯವಾದಗಳು (dhanyavaadagalu)",
+          "back": "Thank you",
+          "pronunciation": "dhanyavaadagalu",
+          "example": "ಧನ್ಯವಾದಗಳು.",
+          "tags": [
+            "polite"
+          ]
+        },
+        {
+          "front": "ದಯವಿಟ್ಟು (dayavittu)",
+          "back": "Please",
+          "pronunciation": "dayavittu",
+          "example": "ದಯವಿಟ್ಟು ಮತ್ತೆ ಹೇಳಿ.",
+          "tags": [
+            "polite"
+          ]
+        },
+        {
+          "front": "ಕ್ಷಮಿಸಿ (kshamisi)",
+          "back": "Sorry / Excuse me",
+          "pronunciation": "kshamisi",
+          "example": "ತಡವಾದ್ದಕ್ಕೆ ಕ್ಷಮಿಸಿ.",
+          "tags": [
+            "polite"
+          ]
+        },
+        {
+          "front": "ಸ್ವಾಗತ (swaagata)",
+          "back": "Welcome",
+          "pronunciation": "swaagata",
+          "example": "ನಿಮಗೆ ಸ್ವಾಗತ.",
+          "tags": [
+            "polite"
+          ]
+        },
+        {
+          "front": "ಹೌದು (haudu)",
+          "back": "Yes",
+          "pronunciation": "haudu",
+          "tags": [
+            "basic"
+          ]
+        },
+        {
+          "front": "ಇಲ್ಲ (illa)",
+          "back": "No",
+          "pronunciation": "illa",
+          "tags": [
+            "basic"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Introductions",
+      "description": "Meeting people and talking about yourself",
+      "cards": [
+        {
+          "front": "ನೀವು ಹೇಗಿದ್ದೀರ? (neevu hegiddira?)",
+          "back": "How are you? (formal)",
+          "pronunciation": "neevu hegiddira?",
+          "example": "ನಮಸ್ಕಾರ, ನೀವು ಹೇಗಿದ್ದೀರ?",
+          "notes": "Informal: ನೀನು ಹೇಗಿದ್ದೀಯ?",
+          "tags": [
+            "introduction"
+          ]
+        },
+        {
+          "front": "ನಾನು ಚೆನ್ನಾಗಿದ್ದೇನೆ (naanu chennaagiddene)",
+          "back": "I am fine",
+          "pronunciation": "naanu chennaagiddene",
+          "example": "ನಾನು ಚೆನ್ನಾಗಿದ್ದೇನೆ.",
+          "tags": [
+            "introduction"
+          ]
+        },
+        {
+          "front": "ನಿಮ್ಮ ಹೆಸರೇನು? (nimma hesarenu?)",
+          "back": "What is your name?",
+          "pronunciation": "nimma hesarenu?",
+          "tags": [
+            "introduction"
+          ]
+        },
+        {
+          "front": "ನನ್ನ ಹೆಸರು (nanna hesaru)",
+          "back": "My name is ...",
+          "pronunciation": "nanna hesaru",
+          "example": "ನನ್ನ ಹೆಸರು ...",
+          "notes": "Say your name after this",
+          "tags": [
+            "introduction"
+          ]
+        },
+        {
+          "front": "ನಿಮ್ಮನ್ನು ಭೇಟಿಯಾಗಿ ಸಂತೋಷ (nimmanu bhetiyaagi santosha)",
+          "back": "Nice to meet you",
+          "pronunciation": "nimmanu bhetiyaagi santosha",
+          "tags": [
+            "introduction"
+          ]
+        },
+        {
+          "front": "ನಾನು ಕನ್ನಡ ಕಲಿಯುತ್ತಿದ್ದೇನೆ (naanu kannada kaliyuttiddene)",
+          "back": "I am learning Kannada",
+          "pronunciation": "naanu kannada kaliyuttiddene",
+          "tags": [
+            "introduction"
+          ]
+        },
+        {
+          "front": "ನಾನು ... ಇಂದ ಬಂದಿದ್ದೇನೆ (naanu ... inda bandiddene)",
+          "back": "I am from ...",
+          "pronunciation": "naanu ... inda bandiddene",
+          "example": "ನಾನು ಬೆಂಗಳೂರಿನಿಂದ ಬಂದಿದ್ದೇನೆ.",
+          "notes": "Place + inda = from",
+          "tags": [
+            "introduction"
+          ]
+        },
+        {
+          "front": "ನಿಮಗೆ ಕನ್ನಡ ಬರುತ್ತದೆಯ? (nimge kannada baruttadeya?)",
+          "back": "Do you know Kannada?",
+          "pronunciation": "nimge kannada baruttadeya?",
+          "tags": [
+            "introduction"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Pronouns & Question Words",
+      "description": "Core pronouns and question words",
+      "cards": [
+        {
+          "front": "ನಾನು (naanu)",
+          "back": "I",
+          "pronunciation": "naanu",
+          "example": "ನಾನು ಹೋಗುತ್ತಿದ್ದೇನೆ.",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ನೀನು (neenu)",
+          "back": "You (informal)",
+          "pronunciation": "neenu",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ನೀವು (neevu)",
+          "back": "You (formal)",
+          "pronunciation": "neevu",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ಅವನು (avanu)",
+          "back": "He",
+          "pronunciation": "avanu",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ಅವಳು (avalu)",
+          "back": "She",
+          "pronunciation": "avalu",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ಅವರು (avaru)",
+          "back": "They / respectful he or she",
+          "pronunciation": "avaru",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ನಾವು (naavu)",
+          "back": "We",
+          "pronunciation": "naavu",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ಇದು (idu)",
+          "back": "This",
+          "pronunciation": "idu",
+          "example": "ಇದು ನನ್ನ ಪುಸ್ತಕ.",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ಅದು (adu)",
+          "back": "That",
+          "pronunciation": "adu",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ಯಾರು (yaaru)",
+          "back": "Who",
+          "pronunciation": "yaaru",
+          "example": "ಅವರು ಯಾರು?",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ಏನು (enu)",
+          "back": "What",
+          "pronunciation": "enu",
+          "example": "ಇದು ಏನು?",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ಎಲ್ಲಿ (elli)",
+          "back": "Where",
+          "pronunciation": "elli",
+          "example": "ನೀವು ಎಲ್ಲಿ ವಾಸಿಸುತ್ತೀರ?",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ಯಾವಾಗ (yaavaga)",
+          "back": "When",
+          "pronunciation": "yaavaga",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ಏಕೆ (eke)",
+          "back": "Why",
+          "pronunciation": "eke",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ಹೇಗೆ (hege)",
+          "back": "How",
+          "pronunciation": "hege",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ಎಷ್ಟು (eshtu)",
+          "back": "How much / how many",
+          "pronunciation": "eshtu",
+          "example": "ಇದು ಎಷ್ಟು?",
+          "tags": [
+            "grammar"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Numbers 1–20",
+      "description": "Basic counting",
+      "cards": [
+        {
+          "front": "ಒಂದು (ondu)",
+          "back": "One",
+          "pronunciation": "ondu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ಎರಡು (eradu)",
+          "back": "Two",
+          "pronunciation": "eradu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ಮೂರು (mooru)",
+          "back": "Three",
+          "pronunciation": "mooru",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ನಾಲ್ಕು (naalku)",
+          "back": "Four",
+          "pronunciation": "naalku",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ಐದು (aidu)",
+          "back": "Five",
+          "pronunciation": "aidu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ಆರು (aaru)",
+          "back": "Six",
+          "pronunciation": "aaru",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ಏಳು (elu)",
+          "back": "Seven",
+          "pronunciation": "elu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ಎಂಟು (entu)",
+          "back": "Eight",
+          "pronunciation": "entu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ಒಂಬತ್ತು (ombattu)",
+          "back": "Nine",
+          "pronunciation": "ombattu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ಹತ್ತು (hattu)",
+          "back": "Ten",
+          "pronunciation": "hattu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ಹನ್ನೊಂದು (hannondu)",
+          "back": "Eleven",
+          "pronunciation": "hannondu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ಹನ್ನೆರಡು (hanneradu)",
+          "back": "Twelve",
+          "pronunciation": "hanneradu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ಹದಿಮೂರು (hadimooru)",
+          "back": "Thirteen",
+          "pronunciation": "hadimooru",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ಹದಿನಾಲ್ಕು (hadinaalku)",
+          "back": "Fourteen",
+          "pronunciation": "hadinaalku",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ಹದಿನೈದು (hadinaidu)",
+          "back": "Fifteen",
+          "pronunciation": "hadinaidu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ಹದಿನಾರು (hadinaaru)",
+          "back": "Sixteen",
+          "pronunciation": "hadinaaru",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ಹದಿನೇಳು (hadinelu)",
+          "back": "Seventeen",
+          "pronunciation": "hadinelu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ಹದಿನೆಂಟು (hadinentu)",
+          "back": "Eighteen",
+          "pronunciation": "hadinentu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ಹತ್ತೊಂಬತ್ತು (hattombattu)",
+          "back": "Nineteen",
+          "pronunciation": "hattombattu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ಇಪ್ಪತ್ತು (ippattu)",
+          "back": "Twenty",
+          "pronunciation": "ippattu",
+          "tags": [
+            "numbers"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Numbers & Quantities",
+      "description": "Tens, hundreds, and quantity words",
+      "cards": [
+        {
+          "front": "ಮೂವತ್ತು (moovattu)",
+          "back": "Thirty",
+          "pronunciation": "moovattu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ನಲವತ್ತು (nalavattu)",
+          "back": "Forty",
+          "pronunciation": "nalavattu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ಐವತ್ತು (aivattu)",
+          "back": "Fifty",
+          "pronunciation": "aivattu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ಅರುವತ್ತು (aruvattu)",
+          "back": "Sixty",
+          "pronunciation": "aruvattu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ಎಪ್ಪತ್ತು (eppattu)",
+          "back": "Seventy",
+          "pronunciation": "eppattu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ಎಂಬತ್ತು (embattu)",
+          "back": "Eighty",
+          "pronunciation": "embattu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ತೊಂಬತ್ತು (tombattu)",
+          "back": "Ninety",
+          "pronunciation": "tombattu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ನೂರು (nooru)",
+          "back": "One hundred",
+          "pronunciation": "nooru",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ಸಾವಿರ (saavira)",
+          "back": "One thousand",
+          "pronunciation": "saavira",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ಎಲ್ಲಾ (ellaa)",
+          "back": "All",
+          "pronunciation": "ellaa",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ಸ್ವಲ್ಪ (swalpa)",
+          "back": "A little / some",
+          "pronunciation": "swalpa",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ಹಲವು (halavu)",
+          "back": "Many / several",
+          "pronunciation": "halavu",
+          "tags": [
+            "numbers"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Days, Months & Time",
+      "description": "Calendar and telling time",
+      "cards": [
+        {
+          "front": "ಇಂದು (indu)",
+          "back": "Today",
+          "pronunciation": "indu",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "ನಾಳೆ (naale)",
+          "back": "Tomorrow",
+          "pronunciation": "naale",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "ನಿನ್ನೆ (ninne)",
+          "back": "Yesterday",
+          "pronunciation": "ninne",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "ಈಗ (iga)",
+          "back": "Now",
+          "pronunciation": "iga",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "ಸೋಮವಾರ (somavara)",
+          "back": "Monday",
+          "pronunciation": "somavara",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "ಮಂಗಳವಾರ (mangalavara)",
+          "back": "Tuesday",
+          "pronunciation": "mangalavara",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "ಬುಧವಾರ (budhavara)",
+          "back": "Wednesday",
+          "pronunciation": "budhavara",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "ಗುರುವಾರ (guruvara)",
+          "back": "Thursday",
+          "pronunciation": "guruvara",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "ಶುಕ್ರವಾರ (shukravara)",
+          "back": "Friday",
+          "pronunciation": "shukravara",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "ಶನಿವಾರ (shanivara)",
+          "back": "Saturday",
+          "pronunciation": "shanivara",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "ಭಾನುವಾರ (bhanuvaara)",
+          "back": "Sunday",
+          "pronunciation": "bhanuvaara",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "ಜನವರಿ (janavari)",
+          "back": "January",
+          "pronunciation": "janavari",
+          "notes": "Gregorian months used in modern Kannada",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "ಏಪ್ರಿಲ್ (eprill)",
+          "back": "April",
+          "pronunciation": "eprill",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "ಜುಲೈ (julai)",
+          "back": "July",
+          "pronunciation": "julai",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "ಅಕ್ಟೋಬರ್ (oktobar)",
+          "back": "October",
+          "pronunciation": "oktobar",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "ಡಿಸೆಂಬರ್ (disembar)",
+          "back": "December",
+          "pronunciation": "disembar",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "ಗಂಟೆ (gante)",
+          "back": "Hour / o'clock",
+          "pronunciation": "gante",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "ನಿಮಿಷ (nimisha)",
+          "back": "Minute",
+          "pronunciation": "nimisha",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "ಬೆಳಿಗ್ಗೆ (beligge)",
+          "back": "Morning",
+          "pronunciation": "beligge",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "ಸಂಜೆ (sanje)",
+          "back": "Evening",
+          "pronunciation": "sanje",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "ರಾತ್ರಿ (raatri)",
+          "back": "Night",
+          "pronunciation": "raatri",
+          "tags": [
+            "time"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Family & People",
+      "description": "Family members and relationships",
+      "cards": [
+        {
+          "front": "ಅಮ್ಮ (amma)",
+          "back": "Mother",
+          "pronunciation": "amma",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "ಅಪ್ಪ (appa)",
+          "back": "Father",
+          "pronunciation": "appa",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "ಅಕ್ಕ (akka)",
+          "back": "Elder sister",
+          "pronunciation": "akka",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "ತಂಗಿ (tangi)",
+          "back": "Younger sister",
+          "pronunciation": "tangi",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "ಅಣ್ಣ (anna)",
+          "back": "Elder brother",
+          "pronunciation": "anna",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "ತಮ್ಮ (thamma)",
+          "back": "Younger brother",
+          "pronunciation": "thamma",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "ಅಜ್ಜ (ajja)",
+          "back": "Grandfather",
+          "pronunciation": "ajja",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "ಅಜ್ಜಿ (ajji)",
+          "back": "Grandmother",
+          "pronunciation": "ajji",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "ಮಗ (maga)",
+          "back": "Son",
+          "pronunciation": "maga",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "ಮಗಳು (magalu)",
+          "back": "Daughter",
+          "pronunciation": "magalu",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "ಗಂಡ (ganda)",
+          "back": "Husband",
+          "pronunciation": "ganda",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "ಹೆಂಡತಿ (hendati)",
+          "back": "Wife",
+          "pronunciation": "hendati",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "ಕುಟುಂಬ (kutumba)",
+          "back": "Family",
+          "pronunciation": "kutumba",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "ಸ್ನೇಹಿತ (sneehita)",
+          "back": "Friend (male)",
+          "pronunciation": "sneehita",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "ಸ್ನೇಹಿತೆ (sneehite)",
+          "back": "Friend (female)",
+          "pronunciation": "sneehite",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "ಮಗು (magu)",
+          "back": "Child",
+          "pronunciation": "magu",
+          "tags": [
+            "family"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Body Parts",
+      "description": "Parts of the body",
+      "cards": [
+        {
+          "front": "ತಲೆ (tale)",
+          "back": "Head",
+          "pronunciation": "tale",
+          "tags": [
+            "body"
+          ]
+        },
+        {
+          "front": "ಕಣ್ಣು (kannu)",
+          "back": "Eye",
+          "pronunciation": "kannu",
+          "tags": [
+            "body"
+          ]
+        },
+        {
+          "front": "ಕಿವಿ (kivi)",
+          "back": "Ear",
+          "pronunciation": "kivi",
+          "tags": [
+            "body"
+          ]
+        },
+        {
+          "front": "ಮೂಗು (moogu)",
+          "back": "Nose",
+          "pronunciation": "moogu",
+          "tags": [
+            "body"
+          ]
+        },
+        {
+          "front": "ಬಾಯಿ (baayi)",
+          "back": "Mouth",
+          "pronunciation": "baayi",
+          "tags": [
+            "body"
+          ]
+        },
+        {
+          "front": "ಕೈ (kai)",
+          "back": "Hand",
+          "pronunciation": "kai",
+          "tags": [
+            "body"
+          ]
+        },
+        {
+          "front": "ಕಾಲು (kaalu)",
+          "back": "Leg / foot",
+          "pronunciation": "kaalu",
+          "tags": [
+            "body"
+          ]
+        },
+        {
+          "front": "ಬೆರಳು (beralu)",
+          "back": "Finger",
+          "pronunciation": "beralu",
+          "tags": [
+            "body"
+          ]
+        },
+        {
+          "front": "ಹೃದಯ (hrudaya)",
+          "back": "Heart",
+          "pronunciation": "hrudaya",
+          "tags": [
+            "body"
+          ]
+        },
+        {
+          "front": "ಹೊಟ್ಟೆ (hotte)",
+          "back": "Stomach / belly",
+          "pronunciation": "hotte",
+          "tags": [
+            "body"
+          ]
+        },
+        {
+          "front": "ಬೆನ್ನು (bennu)",
+          "back": "Back",
+          "pronunciation": "bennu",
+          "tags": [
+            "body"
+          ]
+        },
+        {
+          "front": "ಕತ್ತು (kattu)",
+          "back": "Neck",
+          "pronunciation": "kattu",
+          "tags": [
+            "body"
+          ]
+        },
+        {
+          "front": "ಮುಖ (mukha)",
+          "back": "Face",
+          "pronunciation": "mukha",
+          "tags": [
+            "body"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Colors",
+      "description": "Common colors",
+      "cards": [
+        {
+          "front": "ಕೆಂಪು (kempu)",
+          "back": "Red",
+          "pronunciation": "kempu",
+          "tags": [
+            "colors"
+          ]
+        },
+        {
+          "front": "ನೀಲಿ (neeli)",
+          "back": "Blue",
+          "pronunciation": "neeli",
+          "tags": [
+            "colors"
+          ]
+        },
+        {
+          "front": "ಹಸಿರು (hasiru)",
+          "back": "Green",
+          "pronunciation": "hasiru",
+          "tags": [
+            "colors"
+          ]
+        },
+        {
+          "front": "ಹಳದಿ (haladi)",
+          "back": "Yellow",
+          "pronunciation": "haladi",
+          "tags": [
+            "colors"
+          ]
+        },
+        {
+          "front": "ಕಪ್ಪು (kappu)",
+          "back": "Black",
+          "pronunciation": "kappu",
+          "tags": [
+            "colors"
+          ]
+        },
+        {
+          "front": "ಬಿಳಿ (bili)",
+          "back": "White",
+          "pronunciation": "bili",
+          "tags": [
+            "colors"
+          ]
+        },
+        {
+          "front": "ಕಿತ್ತಳೆ (kittale)",
+          "back": "Orange",
+          "pronunciation": "kittale",
+          "tags": [
+            "colors"
+          ]
+        },
+        {
+          "front": "ನೇರಳೆ (nerale)",
+          "back": "Purple",
+          "pronunciation": "nerale",
+          "tags": [
+            "colors"
+          ]
+        },
+        {
+          "front": "ಗುಲಾಬಿ (gulaabi)",
+          "back": "Pink",
+          "pronunciation": "gulaabi",
+          "tags": [
+            "colors"
+          ]
+        },
+        {
+          "front": "ಬೂದು (boodu)",
+          "back": "Gray",
+          "pronunciation": "boodu",
+          "tags": [
+            "colors"
+          ]
+        },
+        {
+          "front": "ಕಾಫಿ ಬಣ್ಣ (kaafi banna)",
+          "back": "Brown",
+          "pronunciation": "kaafi banna",
+          "notes": "Literally coffee color",
+          "tags": [
+            "colors"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Food & Drink",
+      "description": "Common food and dining words",
+      "cards": [
+        {
+          "front": "ಊಟ (oota)",
+          "back": "Food / meal",
+          "pronunciation": "oota",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "ಅನ್ನ (anna)",
+          "back": "Cooked rice / food",
+          "pronunciation": "anna",
+          "notes": "General word for food",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "ನೀರು (neeru)",
+          "back": "Water",
+          "pronunciation": "neeru",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "ಹಾಲು (haalu)",
+          "back": "Milk",
+          "pronunciation": "haalu",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "ಚಹಾ (chaha)",
+          "back": "Tea",
+          "pronunciation": "chaha",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "ಕಾಫಿ (kaafi)",
+          "back": "Coffee",
+          "pronunciation": "kaafi",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "ರೊಟ್ಟಿ (rotti)",
+          "back": "Bread / roti",
+          "pronunciation": "rotti",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "ಅಕ್ಕಿ (akki)",
+          "back": "Rice (uncooked)",
+          "pronunciation": "akki",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "ಸಾಂಬಾರ (saambar)",
+          "back": "Sambar",
+          "pronunciation": "saambar",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "ದೋಸೆ (dose)",
+          "back": "Dosa",
+          "pronunciation": "dose",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "ಇಡ್ಲಿ (idli)",
+          "back": "Idli",
+          "pronunciation": "idli",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "ಹಣ್ಣು (hannu)",
+          "back": "Fruit",
+          "pronunciation": "hannu",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "ತರಕಾರಿ (tarakaari)",
+          "back": "Vegetable",
+          "pronunciation": "tarakaari",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "ಮಾಂಸ (maamsa)",
+          "back": "Meat",
+          "pronunciation": "maamsa",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "ಮೀನು (meenu)",
+          "back": "Fish",
+          "pronunciation": "meenu",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "ಸಿಹಿ (sihi)",
+          "back": "Sweet",
+          "pronunciation": "sihi",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "ಖಾರ (khaara)",
+          "back": "Spicy / salty",
+          "pronunciation": "khaara",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "ರುಚಿ (ruchi)",
+          "back": "Taste / flavor",
+          "pronunciation": "ruchi",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "ಹಸಿವು (hasivu)",
+          "back": "Hunger / hungry",
+          "pronunciation": "hasivu",
+          "example": "ಹಸಿವಾಗಿದೆ.",
+          "tags": [
+            "food"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Home & Objects",
+      "description": "Home, rooms, and everyday objects",
+      "cards": [
+        {
+          "front": "ಮನೆ (mane)",
+          "back": "House / home",
+          "pronunciation": "mane",
+          "tags": [
+            "home"
+          ]
+        },
+        {
+          "front": "ಕೊಠಡಿ (kothadi)",
+          "back": "Room",
+          "pronunciation": "kothadi",
+          "tags": [
+            "home"
+          ]
+        },
+        {
+          "front": "ಅಡುಗೆಮನೆ (adugemane)",
+          "back": "Kitchen",
+          "pronunciation": "adugemane",
+          "tags": [
+            "home"
+          ]
+        },
+        {
+          "front": "ಸ್ನಾನಗೃಹ (snaanagriha)",
+          "back": "Bathroom",
+          "pronunciation": "snaanagriha",
+          "tags": [
+            "home"
+          ]
+        },
+        {
+          "front": "ಬಾಗಿಲು (baagilu)",
+          "back": "Door",
+          "pronunciation": "baagilu",
+          "tags": [
+            "home"
+          ]
+        },
+        {
+          "front": "ಕಿಟಕಿ (kitaki)",
+          "back": "Window",
+          "pronunciation": "kitaki",
+          "tags": [
+            "home"
+          ]
+        },
+        {
+          "front": "ಮಂಚ (mancha)",
+          "back": "Bed",
+          "pronunciation": "mancha",
+          "tags": [
+            "home"
+          ]
+        },
+        {
+          "front": "ಮೇಜು (meju)",
+          "back": "Table",
+          "pronunciation": "meju",
+          "tags": [
+            "home"
+          ]
+        },
+        {
+          "front": "ಕುರ್ಚಿ (kurchi)",
+          "back": "Chair",
+          "pronunciation": "kurchi",
+          "tags": [
+            "home"
+          ]
+        },
+        {
+          "front": "ದೀಪ (deepa)",
+          "back": "Lamp / light",
+          "pronunciation": "deepa",
+          "tags": [
+            "home"
+          ]
+        },
+        {
+          "front": "ಪುಸ್ತಕ (pustaka)",
+          "back": "Book",
+          "pronunciation": "pustaka",
+          "tags": [
+            "home"
+          ]
+        },
+        {
+          "front": "ಫೋನ್ (phone)",
+          "back": "Phone",
+          "pronunciation": "phone",
+          "tags": [
+            "home"
+          ]
+        },
+        {
+          "front": "ಚಾವಿ (chaavi)",
+          "back": "Key",
+          "pronunciation": "chaavi",
+          "tags": [
+            "home"
+          ]
+        },
+        {
+          "front": "ಚೀಲ (cheela)",
+          "back": "Bag",
+          "pronunciation": "cheela",
+          "tags": [
+            "home"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Clothes",
+      "description": "Clothing",
+      "cards": [
+        {
+          "front": "ಬಟ್ಟೆ (batte)",
+          "back": "Cloth / clothes",
+          "pronunciation": "batte",
+          "tags": [
+            "clothes"
+          ]
+        },
+        {
+          "front": "ಅಂಗಿ (angi)",
+          "back": "Shirt",
+          "pronunciation": "angi",
+          "tags": [
+            "clothes"
+          ]
+        },
+        {
+          "front": "ಪ್ಯಾಂಟ್ (paant)",
+          "back": "Pants",
+          "pronunciation": "paant",
+          "tags": [
+            "clothes"
+          ]
+        },
+        {
+          "front": "ಸೀರೆ (seere)",
+          "back": "Saree",
+          "pronunciation": "seere",
+          "tags": [
+            "clothes"
+          ]
+        },
+        {
+          "front": "ಶರ್ಟು (shirtu)",
+          "back": "Shirt",
+          "pronunciation": "shirtu",
+          "tags": [
+            "clothes"
+          ]
+        },
+        {
+          "front": "ಶೂ (shoo)",
+          "back": "Shoes",
+          "pronunciation": "shoo",
+          "tags": [
+            "clothes"
+          ]
+        },
+        {
+          "front": "ಟೋಪಿ (topi)",
+          "back": "Hat / cap",
+          "pronunciation": "topi",
+          "tags": [
+            "clothes"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Nature & Weather",
+      "description": "Nature, animals, and weather",
+      "cards": [
+        {
+          "front": "ಸೂರ್ಯ (soorya)",
+          "back": "Sun",
+          "pronunciation": "soorya",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "ಚಂದ್ರ (chandra)",
+          "back": "Moon",
+          "pronunciation": "chandra",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "ನಕ್ಷತ್ರ (nakshatra)",
+          "back": "Star",
+          "pronunciation": "nakshatra",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "ಮಳೆ (male)",
+          "back": "Rain",
+          "pronunciation": "male",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "ಗಾಳಿ (gaali)",
+          "back": "Wind",
+          "pronunciation": "gaali",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "ಬೆಟ್ಟ (betta)",
+          "back": "Hill / mountain",
+          "pronunciation": "betta",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "ನದಿ (nadi)",
+          "back": "River",
+          "pronunciation": "nadi",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "ಸಮುದ್ರ (samudra)",
+          "back": "Sea / ocean",
+          "pronunciation": "samudra",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "ಮರ (mara)",
+          "back": "Tree",
+          "pronunciation": "mara",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "ಹೂ (hoo)",
+          "back": "Flower",
+          "pronunciation": "hoo",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "ನಾಯಿ (naayi)",
+          "back": "Dog",
+          "pronunciation": "naayi",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "ಬೆಕ್ಕು (bekku)",
+          "back": "Cat",
+          "pronunciation": "bekku",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "ಹಸು (hasu)",
+          "back": "Cow",
+          "pronunciation": "hasu",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "ಪಕ್ಷಿ (pakshi)",
+          "back": "Bird",
+          "pronunciation": "pakshi",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "ಬಿಸಿಲು (bisilu)",
+          "back": "Heat / sunny",
+          "pronunciation": "bisilu",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "ಚಳಿ (chali)",
+          "back": "Cold",
+          "pronunciation": "chali",
+          "tags": [
+            "nature"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Places & Directions",
+      "description": "Places and getting around",
+      "cards": [
+        {
+          "front": "ನಗರ (nagara)",
+          "back": "City",
+          "pronunciation": "nagara",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "ಗ್ರಾಮ (graama)",
+          "back": "Village",
+          "pronunciation": "graama",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "ರಸ್ತೆ (raste)",
+          "back": "Road / street",
+          "pronunciation": "raste",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "ಆಸ್ಪತ್ರೆ (aaspatre)",
+          "back": "Hospital",
+          "pronunciation": "aaspatre",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "ಶಾಲೆ (shaale)",
+          "back": "School",
+          "pronunciation": "shaale",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "ಕಚೇರಿ (kacheri)",
+          "back": "Office",
+          "pronunciation": "kacheri",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "ಮಾರುಕಟ್ಟೆ (maarukatte)",
+          "back": "Market",
+          "pronunciation": "maarukatte",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "ನಿಲ್ದಾಣ (nildana)",
+          "back": "Station / stop",
+          "pronunciation": "nildana",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "ಎಡ (eda)",
+          "back": "Left",
+          "pronunciation": "eda",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "ಬಲ (bala)",
+          "back": "Right",
+          "pronunciation": "bala",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "ನೇರ (nera)",
+          "back": "Straight",
+          "pronunciation": "nera",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "ಹತ್ತಿರ (hattira)",
+          "back": "Near",
+          "pronunciation": "hattira",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "ದೂರ (doora)",
+          "back": "Far",
+          "pronunciation": "doora",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "ಇಲ್ಲಿ (illi)",
+          "back": "Here",
+          "pronunciation": "illi",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "ಅಲ್ಲಿ (alli)",
+          "back": "There",
+          "pronunciation": "alli",
+          "tags": [
+            "places"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Transport",
+      "description": "Vehicles and travel",
+      "cards": [
+        {
+          "front": "ಬಸ್ (bas)",
+          "back": "Bus",
+          "pronunciation": "bas",
+          "tags": [
+            "transport"
+          ]
+        },
+        {
+          "front": "ಟ್ರೈನ್ (train)",
+          "back": "Train",
+          "pronunciation": "train",
+          "tags": [
+            "transport"
+          ]
+        },
+        {
+          "front": "ಕಾರು (kaaru)",
+          "back": "Car",
+          "pronunciation": "kaaru",
+          "tags": [
+            "transport"
+          ]
+        },
+        {
+          "front": "ಬೈಕ್ (baik)",
+          "back": "Bike / motorcycle",
+          "pronunciation": "baik",
+          "tags": [
+            "transport"
+          ]
+        },
+        {
+          "front": "ಸೈಕಲ್ (saikal)",
+          "back": "Bicycle",
+          "pronunciation": "saikal",
+          "tags": [
+            "transport"
+          ]
+        },
+        {
+          "front": "ಟ್ಯಾಕ್ಸಿ (taksi)",
+          "back": "Taxi",
+          "pronunciation": "taksi",
+          "tags": [
+            "transport"
+          ]
+        },
+        {
+          "front": "ವಿಮಾನ (vimaana)",
+          "back": "Airplane",
+          "pronunciation": "vimaana",
+          "tags": [
+            "transport"
+          ]
+        },
+        {
+          "front": "ಟಿಕೆಟ್ (tiket)",
+          "back": "Ticket",
+          "pronunciation": "tiket",
+          "tags": [
+            "transport"
+          ]
+        },
+        {
+          "front": "ಪ್ರಯಾಣ (prayaana)",
+          "back": "Journey / travel",
+          "pronunciation": "prayaana",
+          "tags": [
+            "transport"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Common Verbs",
+      "description": "Everyday action verbs",
+      "cards": [
+        {
+          "front": "ಹೋಗು (hogu)",
+          "back": "Go",
+          "pronunciation": "hogu",
+          "example": "ನಾನು ಮನೆಗೆ ಹೋಗುತ್ತಿದ್ದೇನೆ.",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "ಬರು (baru)",
+          "back": "Come",
+          "pronunciation": "baru",
+          "example": "ನೀವು ಬನ್ನಿ.",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "ತಿನ್ನು (tinnu)",
+          "back": "Eat",
+          "pronunciation": "tinnu",
+          "example": "ನಾನು ಊಟ ಮಾಡುತ್ತಿದ್ದೇನೆ.",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "ಕುಡಿ (kudi)",
+          "back": "Drink",
+          "pronunciation": "kudi",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "ನೋಡು (nodu)",
+          "back": "See / look",
+          "pronunciation": "nodu",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "ಕೇಳು (kelu)",
+          "back": "Listen / ask",
+          "pronunciation": "kelu",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "ಮಾತನಾಡು (maatanaadu)",
+          "back": "Speak",
+          "pronunciation": "maatanaadu",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "ಬರೆ (bare)",
+          "back": "Write",
+          "pronunciation": "bare",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "ಓದು (odu)",
+          "back": "Read",
+          "pronunciation": "odu",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "ಕಲಿ (kali)",
+          "back": "Learn",
+          "pronunciation": "kali",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "ಕೆಲಸ (kelasa)",
+          "back": "Work",
+          "pronunciation": "kelasa",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "ನಿದ್ರೆ (nidre)",
+          "back": "Sleep",
+          "pronunciation": "nidre",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "ಎದ್ದೇಳು (eddelu)",
+          "back": "Wake up",
+          "pronunciation": "eddelu",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "ನಡೆ (nade)",
+          "back": "Walk",
+          "pronunciation": "nade",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "ಓಡು (odu)",
+          "back": "Run",
+          "pronunciation": "odu",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "ಕೊಡು (kodu)",
+          "back": "Give",
+          "pronunciation": "kodu",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "ತೆಗೆ (tege)",
+          "back": "Take",
+          "pronunciation": "tege",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "ತಿಳಿ (tili)",
+          "back": "Know / understand",
+          "pronunciation": "tili",
+          "tags": [
+            "verbs"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Adjectives & Feelings",
+      "description": "Describing things and emotions",
+      "cards": [
+        {
+          "front": "ಚೆನ್ನಾಗಿ (chennaagi)",
+          "back": "Well / good",
+          "pronunciation": "chennaagi",
+          "tags": [
+            "adjectives"
+          ]
+        },
+        {
+          "front": "ಕೆಟ್ಟ (ketta)",
+          "back": "Bad",
+          "pronunciation": "ketta",
+          "tags": [
+            "adjectives"
+          ]
+        },
+        {
+          "front": "ದೊಡ್ಡ (dodda)",
+          "back": "Big",
+          "pronunciation": "dodda",
+          "tags": [
+            "adjectives"
+          ]
+        },
+        {
+          "front": "ಚಿಕ್ಕ (chikka)",
+          "back": "Small",
+          "pronunciation": "chikka",
+          "tags": [
+            "adjectives"
+          ]
+        },
+        {
+          "front": "ಹೊಸ (hosa)",
+          "back": "New",
+          "pronunciation": "hosa",
+          "tags": [
+            "adjectives"
+          ]
+        },
+        {
+          "front": "ಹಳೆಯ (haleya)",
+          "back": "Old",
+          "pronunciation": "haleya",
+          "tags": [
+            "adjectives"
+          ]
+        },
+        {
+          "front": "ಸುಂದರ (sundara)",
+          "back": "Beautiful",
+          "pronunciation": "sundara",
+          "tags": [
+            "adjectives"
+          ]
+        },
+        {
+          "front": "ಸಂತೋಷ (santosha)",
+          "back": "Happy / happiness",
+          "pronunciation": "santosha",
+          "tags": [
+            "adjectives"
+          ]
+        },
+        {
+          "front": "ದುಃಖ (duhkha)",
+          "back": "Sad / sorrow",
+          "pronunciation": "duhkha",
+          "tags": [
+            "adjectives"
+          ]
+        },
+        {
+          "front": "ಆಸೆ (aase)",
+          "back": "Hope / desire",
+          "pronunciation": "aase",
+          "tags": [
+            "adjectives"
+          ]
+        },
+        {
+          "front": "ಭಯ (bhaya)",
+          "back": "Fear",
+          "pronunciation": "bhaya",
+          "tags": [
+            "adjectives"
+          ]
+        },
+        {
+          "front": "ಬಿಸಿ (bisi)",
+          "back": "Hot",
+          "pronunciation": "bisi",
+          "tags": [
+            "adjectives"
+          ]
+        },
+        {
+          "front": "ತಂಪು (thampu)",
+          "back": "Cool / warm",
+          "pronunciation": "thampu",
+          "tags": [
+            "adjectives"
+          ]
+        },
+        {
+          "front": "ತುಂಬಾ (tumbaa)",
+          "back": "Very / a lot",
+          "pronunciation": "tumbaa",
+          "tags": [
+            "adjectives"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Useful Phrases",
+      "description": "High-frequency sentences for daily life",
+      "cards": [
+        {
+          "front": "ನನಗೆ ಅರ್ಥವಾಗಲಿಲ್ಲ (nanage arthavaagalilla)",
+          "back": "I don't understand",
+          "pronunciation": "nanage arthavaagalilla",
+          "tags": [
+            "phrases"
+          ]
+        },
+        {
+          "front": "ದಯವಿಟ್ಟು ನಿಧಾನವಾಗಿ ಮಾತನಾಡಿ (dayavittu nidhaanavaagi maatanaadi)",
+          "back": "Please speak slowly",
+          "pronunciation": "dayavittu nidhaanavaagi maatanaadi",
+          "tags": [
+            "phrases"
+          ]
+        },
+        {
+          "front": "ಇದು ಎಷ್ಟು? (idu eshtu?)",
+          "back": "How much is this?",
+          "pronunciation": "idu eshtu?",
+          "tags": [
+            "phrases"
+          ]
+        },
+        {
+          "front": "ನೀವು ಇಂಗ್ಲಿಷ್ ಮಾತನಾಡುತ್ತೀರ? (neevu inglish maatanaaduttira?)",
+          "back": "Do you speak English?",
+          "pronunciation": "neevu inglish maatanaaduttira?",
+          "tags": [
+            "phrases"
+          ]
+        },
+        {
+          "front": "ನನಗೆ ಸಹಾಯ ಬೇಕು (nanage sahaaya beku)",
+          "back": "I need help",
+          "pronunciation": "nanage sahaaya beku",
+          "tags": [
+            "phrases"
+          ]
+        },
+        {
+          "front": "ಎಲ್ಲಿ ಶೌಚಾಲಯ? (elli shouchaalaya?)",
+          "back": "Where is the restroom?",
+          "pronunciation": "elli shouchaalaya?",
+          "tags": [
+            "phrases"
+          ]
+        },
+        {
+          "front": "ನಾನು ಕಳೆದುಕೊಂಡಿದ್ದೇನೆ (naanu kaledukondiddene)",
+          "back": "I am lost",
+          "pronunciation": "naanu kaledukondiddene",
+          "tags": [
+            "phrases"
+          ]
+        },
+        {
+          "front": "ಒಂದು ನಿಮಿಷ (ondu nimisha)",
+          "back": "One moment",
+          "pronunciation": "ondu nimisha",
+          "tags": [
+            "phrases"
+          ]
+        },
+        {
+          "front": "ಮತ್ತೆ ಹೇಳಿ (matte heli)",
+          "back": "Say it again",
+          "pronunciation": "matte heli",
+          "tags": [
+            "phrases"
+          ]
+        },
+        {
+          "front": "ಸರಿ (sari)",
+          "back": "Okay / correct",
+          "pronunciation": "sari",
+          "tags": [
+            "phrases"
+          ]
+        },
+        {
+          "front": "ಸಮಯವಾಯಿತು (samayavaayitu)",
+          "back": "Time is up / it's late",
+          "pronunciation": "samayavaayitu",
+          "tags": [
+            "phrases"
+          ]
+        },
+        {
+          "front": "ಶುಭ ದಿನ (shubha dina)",
+          "back": "Have a good day",
+          "pronunciation": "shubha dina",
+          "tags": [
+            "phrases"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Kannada Culture & Karnataka",
+      "description": "Language, state, and cultural context",
+      "cards": [
+        {
+          "front": "ಕನ್ನಡ (kannada)",
+          "back": "Kannada (language)",
+          "pronunciation": "kannada",
+          "tags": [
+            "culture"
+          ]
+        },
+        {
+          "front": "ಕರ್ನಾಟಕ (karnataka)",
+          "back": "Karnataka (state)",
+          "pronunciation": "karnataka",
+          "tags": [
+            "culture"
+          ]
+        },
+        {
+          "front": "ಬೆಂಗಳೂರು (bengaluru)",
+          "back": "Bengaluru / Bangalore",
+          "pronunciation": "bengaluru",
+          "tags": [
+            "culture"
+          ]
+        },
+        {
+          "front": "ಮೈಸೂರು (maisuru)",
+          "back": "Mysuru / Mysore",
+          "pronunciation": "maisuru",
+          "tags": [
+            "culture"
+          ]
+        },
+        {
+          "front": "ಯುಗಾದಿ (yugaadi)",
+          "back": "Kannada New Year festival",
+          "pronunciation": "yugaadi",
+          "tags": [
+            "culture"
+          ]
+        },
+        {
+          "front": "ದಸರಾ (dasara)",
+          "back": "Dasara festival",
+          "pronunciation": "dasara",
+          "tags": [
+            "culture"
+          ]
+        },
+        {
+          "front": "ಕರ್ನಾಟಕ ಸಂಗೀತ (karnataka sangeeta)",
+          "back": "Carnatic music tradition",
+          "pronunciation": "karnataka sangeeta",
+          "tags": [
+            "culture"
+          ]
+        },
+        {
+          "front": "ಕನ್ನಡ ಸಾಹಿತ್ಯ (kannada saahitya)",
+          "back": "Kannada literature",
+          "pronunciation": "kannada saahitya",
+          "tags": [
+            "culture"
+          ]
+        },
+        {
+          "front": "ರಾಜ್ಯ ಭಾಷೆ (raajya bhaashe)",
+          "back": "State language",
+          "pronunciation": "raajya bhaashe",
+          "notes": "Kannada is Karnataka's official language",
+          "tags": [
+            "culture"
+          ]
+        },
+        {
+          "front": "ಪ್ರಾಚೀನ ಭಾಷೆ (praachina bhaashe)",
+          "back": "Classical language",
+          "pronunciation": "praachina bhaashe",
+          "notes": "Kannada has classical language status in India",
+          "tags": [
+            "culture"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Money & Shopping",
+      "description": "Buying, selling, and money",
+      "cards": [
+        {
+          "front": "ಹಣ (hana)",
+          "back": "Money",
+          "pronunciation": "hana",
+          "tags": [
+            "shopping"
+          ]
+        },
+        {
+          "front": "ಬೆಲೆ (bele)",
+          "back": "Price",
+          "pronunciation": "bele",
+          "tags": [
+            "shopping"
+          ]
+        },
+        {
+          "front": "ಖರೀದಿ (kharidi)",
+          "back": "Purchase / buy",
+          "pronunciation": "kharidi",
+          "tags": [
+            "shopping"
+          ]
+        },
+        {
+          "front": "ಮಾರಾಟ (maarata)",
+          "back": "Sale / sell",
+          "pronunciation": "maarata",
+          "tags": [
+            "shopping"
+          ]
+        },
+        {
+          "front": "ರೂಪಾಯಿ (roopaayi)",
+          "back": "Rupee",
+          "pronunciation": "roopaayi",
+          "tags": [
+            "shopping"
+          ]
+        },
+        {
+          "front": "ಸಿಗುತ್ತದೆ (siguttade)",
+          "back": "Available / you get",
+          "pronunciation": "siguttade",
+          "tags": [
+            "shopping"
+          ]
+        },
+        {
+          "front": "ಬೇಕು (beku)",
+          "back": "Want / need",
+          "pronunciation": "beku",
+          "tags": [
+            "shopping"
+          ]
+        },
+        {
+          "front": "ಬೇಡ (beda)",
+          "back": "Don't want / not needed",
+          "pronunciation": "beda",
+          "tags": [
+            "shopping"
+          ]
+        },
+        {
+          "front": "ಕಡೆ (kade)",
+          "back": "Shop / store",
+          "pronunciation": "kade",
+          "tags": [
+            "shopping"
+          ]
+        },
+        {
+          "front": "ಬಿಲ್ (bill)",
+          "back": "Bill / receipt",
+          "pronunciation": "bill",
+          "tags": [
+            "shopping"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Health & Emergencies",
+      "description": "Health, doctor, and emergency phrases",
+      "cards": [
+        {
+          "front": "ಆರೋಗ್ಯ (aarogya)",
+          "back": "Health",
+          "pronunciation": "aarogya",
+          "tags": [
+            "health"
+          ]
+        },
+        {
+          "front": "ವೈದ್ಯ (vaidya)",
+          "back": "Doctor",
+          "pronunciation": "vaidya",
+          "tags": [
+            "health"
+          ]
+        },
+        {
+          "front": "ಮದ್ದು (maddu)",
+          "back": "Medicine",
+          "pronunciation": "maddu",
+          "tags": [
+            "health"
+          ]
+        },
+        {
+          "front": "ನೋವು (novu)",
+          "back": "Pain",
+          "pronunciation": "novu",
+          "tags": [
+            "health"
+          ]
+        },
+        {
+          "front": "ಜ್ವರ (jwara)",
+          "back": "Fever",
+          "pronunciation": "jwara",
+          "tags": [
+            "health"
+          ]
+        },
+        {
+          "front": "ಆಸ್ಪತ್ರೆಗೆ ಕರೆ ಮಾಡಿ (aaspatrege kare maadi)",
+          "back": "Call an ambulance / hospital",
+          "pronunciation": "aaspatrege kare maadi",
+          "tags": [
+            "health"
+          ]
+        },
+        {
+          "front": "ನನಗೆ ನೋವಾಗಿದೆ (nanage novaagide)",
+          "back": "I am in pain / it hurts",
+          "pronunciation": "nanage novaagide",
+          "tags": [
+            "health"
+          ]
+        },
+        {
+          "front": "ಅಪಾಯ (apaaya)",
+          "back": "Danger",
+          "pronunciation": "apaaya",
+          "tags": [
+            "health"
+          ]
+        },
+        {
+          "front": "ಸಹಾಯ (sahaaya)",
+          "back": "Help",
+          "pronunciation": "sahaaya",
+          "tags": [
+            "health"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Work & Occupations",
+      "description": "Jobs and workplace words",
+      "cards": [
+        {
+          "front": "ಉದ್ಯೋಗ (udyoga)",
+          "back": "Job / employment",
+          "pronunciation": "udyoga",
+          "tags": [
+            "work"
+          ]
+        },
+        {
+          "front": "ವಿದ್ಯಾರ್ಥಿ (vidyaarthi)",
+          "back": "Student",
+          "pronunciation": "vidyaarthi",
+          "tags": [
+            "work"
+          ]
+        },
+        {
+          "front": "ಶಿಕ್ಷಕ (shikshaka)",
+          "back": "Teacher (male)",
+          "pronunciation": "shikshaka",
+          "tags": [
+            "work"
+          ]
+        },
+        {
+          "front": "ಶಿಕ್ಷಕಿ (shikshaki)",
+          "back": "Teacher (female)",
+          "pronunciation": "shikshaki",
+          "tags": [
+            "work"
+          ]
+        },
+        {
+          "front": "ಎಂಜಿನಿಯರ್ (enjiniyar)",
+          "back": "Engineer",
+          "pronunciation": "enjiniyar",
+          "tags": [
+            "work"
+          ]
+        },
+        {
+          "front": "ವ್ಯಾಪಾರಿ (vyaapaari)",
+          "back": "Businessperson / merchant",
+          "pronunciation": "vyaapaari",
+          "tags": [
+            "work"
+          ]
+        },
+        {
+          "front": "ರೈತ (raita)",
+          "back": "Farmer",
+          "pronunciation": "raita",
+          "tags": [
+            "work"
+          ]
+        },
+        {
+          "front": "ಕಚೇರಿ (kacheri)",
+          "back": "Office",
+          "pronunciation": "kacheri",
+          "tags": [
+            "work"
+          ]
+        },
+        {
+          "front": "ಸಭೆ (sabhe)",
+          "back": "Meeting",
+          "pronunciation": "sabhe",
+          "tags": [
+            "work"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Grammar Essentials",
+      "description": "Postpositions, conjunctions, and sentence glue",
+      "cards": [
+        {
+          "front": "ಮತ್ತು (mattu)",
+          "back": "And",
+          "pronunciation": "mattu",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ಆದರೆ (aadare)",
+          "back": "But",
+          "pronunciation": "aadare",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ಅಥವಾ (athava)",
+          "back": "Or",
+          "pronunciation": "athava",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ಏಕೆಂದರೆ (ekendare)",
+          "back": "Because",
+          "pronunciation": "ekendare",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ಇಂದ (inda)",
+          "back": "From / since",
+          "pronunciation": "inda",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ಗೆ (ge)",
+          "back": "To / for (dative)",
+          "pronunciation": "ge",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ಅಲ್ಲಿ (alli)",
+          "back": "In / at (locative)",
+          "pronunciation": "alli",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ಇಲ್ಲ (illa)",
+          "back": "Not / there isn't",
+          "pronunciation": "illa",
+          "notes": "Same spelling as 'no' — context distinguishes",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ಇದೆ (ide)",
+          "back": "Is / exists",
+          "pronunciation": "ide",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ಇಲ್ಲವೇ? (illave?)",
+          "back": "Isn't it? / right?",
+          "pronunciation": "illave?",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ಬಹಳ (bahala)",
+          "back": "Very / much",
+          "pronunciation": "bahala",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ಇನ್ನೂ (innu)",
+          "back": "Still / yet / more",
+          "pronunciation": "innu",
+          "tags": [
+            "grammar"
+          ]
+        }
+      ]
+    }
+  ]
+}

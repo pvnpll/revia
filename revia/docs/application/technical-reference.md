@@ -42,11 +42,11 @@ Pages/Components → TanStack Query Hooks → API Route Handlers
 | Practice | Complete | Endless adaptive sessions; `PracticeScheduler`; `/practice` |
 | Daily Review | Complete | Due queue, SRS via `DailyReviewScheduler`; `/review` |
 | Dashboard | Complete | Stats, recent decks, Practice + Daily Review CTAs |
-| Decks | Complete | List, create, delete, detail, practice deck; PATCH without edit UI |
-| Lessons | Complete | Create, delete, lesson-scoped practice; PATCH without edit UI |
+| Decks | Complete | List, create, delete, detail, practice deck, rename title |
+| Lessons | Complete | Create, delete, practice, rename title |
 | Explore | Complete | Library search + public decks (includes author's own) |
 | Settings | Complete | Theme, import, create deck, account, feedback, about |
-| Import | Complete | JSON/text + public deck import to library |
+| Import | Complete | JSON/text with confirm step; batched large imports; public deck import |
 | Auth | Complete | Supabase email/password; mock user fallback locally |
 | Cards CRUD | Partial | Full API; `CardsSection` not mounted on deck page |
 | Tags | Partial | Prisma + import; no UI or tag API routes |

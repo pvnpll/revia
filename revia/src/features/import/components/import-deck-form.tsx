@@ -29,8 +29,11 @@ export function ImportDeckForm() {
         ...parsed,
         targetDeckId: targetDeckId || null,
       });
-      inputRef.current?.form?.reset();
+      setFileName(null);
+      setRawText("");
+      inputRef.current && (inputRef.current.value = "");
       router.push(`/decks/${result.deckId}`);
+      router.refresh();
     } catch (error) {
       setParseError(
         error instanceof SyntaxError
@@ -42,13 +45,13 @@ export function ImportDeckForm() {
     }
   }
 
-  async function handleImport(file: File | undefined) {
+  async function handleFileSelect(file: File | undefined) {
     if (!file) return;
 
+    setParseError(null);
     setFileName(file.name);
     const text = await file.text();
     setRawText(text);
-    await importFromText(text);
   }
 
   return (
@@ -61,12 +64,13 @@ export function ImportDeckForm() {
           type="file"
           accept=".json,.txt,application/json,text/plain"
           className="block w-full rounded-lg border border-dashed border-input bg-background p-4 text-sm"
-          onChange={(event) => handleImport(event.target.files?.[0])}
+          onChange={(event) => handleFileSelect(event.target.files?.[0])}
         />
       </div>
 
       <div className="rounded-lg bg-muted p-3 text-xs text-muted-foreground">
-        Required JSON fields: deck title, lesson title, card front, and card back.
+        Required JSON fields: deck title, lesson title, card front, and card back. Upload loads the
+        file — click Import JSON to confirm.
       </div>
 
       <div className="space-y-2">
@@ -100,9 +104,9 @@ export function ImportDeckForm() {
         />
       </div>
 
-      {fileName && !parseError && (
+      {fileName && !parseError && !importDeck.isPending && (
         <p className="text-sm text-muted-foreground">
-          {importDeck.isPending ? `Importing ${fileName}...` : `Selected ${fileName}`}
+          Loaded {fileName}. Choose a destination, then click Import JSON.
         </p>
       )}
 

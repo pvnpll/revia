@@ -9,8 +9,8 @@ export function AboutSettingsPageContent() {
     <SettingsSubpage title="About" description="Learn more about Revia.">
       <Card>
         <CardContent className="space-y-2 pt-6 text-sm text-muted-foreground">
-          <p>Mobile-first spaced repetition app for flashcard learning.</p>
-          <p>Study due cards from Review, organize content in Decks, and track progress on Home.</p>
+          <p>Mobile-first learning app with Practice mode and Daily Review.</p>
+          <p>Practice endlessly on open, run Daily Review when cards are due, and manage decks from Settings.</p>
           <p className="pt-2 text-xs">Revia v{APP_VERSION}</p>
         </CardContent>
       </Card>

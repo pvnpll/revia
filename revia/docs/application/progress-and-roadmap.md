@@ -1,6 +1,6 @@
 # Progress and Roadmap
 
-**Last updated:** July 2026 — **v1.4.0** (Practice mode & Daily Review split)  
+**Last updated:** July 2026 — **v1.5.0** (Content editing & import improvements)  
 **Versioning:** [release-versioning.md](./release-versioning.md) — SemVer; every `main` merge = new version  
 **Policy:** Plan features by target release. Implement after you approve. Publish release notes only when you ask.
 
@@ -16,14 +16,15 @@
 | **v1.2.1** | ✅ Published | Settings hub, auth/email fixes | UX |
 | **v1.3.0** | ✅ Published | Import public decks, feedback | Sharing |
 | **v1.4.0** | ✅ Published | Practice mode, Daily Review split | Learning modes |
+| **v1.5.0** | ✅ Published | Deck/lesson rename, import UX & reliability | Phase A (partial) |
 | **v1.0.1** | Open | Patches: bugs, perf, deploy fixes | Ad-hoc |
-| **v1.5.0** | Planned | Content editing UI | Phase A |
-| **v1.6.0** | Planned | JSON export | Phase B |
-| **v1.7.0** | Planned | Statistics / charts | Phase C |
-| **v1.8.0** | Planned | Tags | Phase D |
-| **v1.9.0** | Planned | Image/audio cards | Phase E |
-| **v2.0.0** | Planned | CSV import, review filters | Phase F + G |
-| **v2.1.0** | Future | Breaking changes, roles, native API | Phase H / I |
+| **v1.6.0** | Planned | Deck description/color edit, lesson reorder, card UI on deck page | Phase A (rest) |
+| **v1.7.0** | Planned | JSON export | Phase B |
+| **v1.8.0** | Planned | Statistics / charts | Phase C |
+| **v1.9.0** | Planned | Tags | Phase D |
+| **v2.0.0** | Planned | Image/audio cards | Phase E |
+| **v2.1.0** | Planned | CSV import, review filters | Phase F + G |
+| **v3.0.0** | Future | Breaking changes, roles, native API | Phase H / I |
 
 Release notes: [docs/releases/](../releases/) · Changelog: [CHANGELOG.md](../../CHANGELOG.md)
 
@@ -138,6 +139,29 @@ Dashboard → Daily Review (due cards only) → Updates SRS schedule
 
 ---
 
+## v1.5.0 Summary
+
+Revia **v1.5.0** adds **content editing** and **import reliability**:
+
+```text
+Deck detail → Pencil icon → Rename deck or lesson
+Settings → Import → Upload file → Import JSON (confirm)
+```
+
+| Area | v1.5.0 Status |
+|------|---------------|
+| Deck title edit (pencil on deck page) | ✅ Shipped |
+| Lesson title edit (pencil on lesson list) | ✅ Shipped |
+| Import requires Import JSON click (no auto-import on upload) | ✅ Shipped |
+| Large deck import batched per lesson | ✅ Shipped |
+| Import cache invalidation (deck detail + lessons) | ✅ Shipped |
+| Faster app load (practice prefetch removed) | ✅ Shipped |
+| Sample Telugu & Kannada deck JSON in repo | ✅ Shipped |
+
+**Release notes:** [v1.5.0.md](../releases/v1.5.0.md) (**Published**)
+
+---
+
 ## Completed Phases (v1.0.0)
 
 ### Phase 0 — Architecture
@@ -223,8 +247,8 @@ These exist in code partially but are **not required for v1 stability**:
 
 | Gap | What exists | What's missing |
 |-----|-------------|----------------|
-| Deck edit | `PATCH /api/decks/:id` | Edit form in UI |
-| Lesson edit/reorder | `PATCH` API, `useUpdateLesson` | Edit/reorder UI |
+| Deck edit (full) | Title edit in UI; `PATCH` API for description/color | Description, color, subject edit UI |
+| Lesson edit/reorder | Title edit in UI; `PATCH` API | Drag reorder UI |
 | Card management | Full API + forms in `features/cards/` | `CardsSection` on deck page |
 | Tags | Prisma models + import | Tag API routes + UI |
 | Export | — | API + UI |
@@ -239,23 +263,22 @@ These exist in code partially but are **not required for v1 stability**:
 > Map features to **target versions** below. Adjust scope or merge versions before approving work.  
 > See [release-versioning.md](./release-versioning.md) for MAJOR/MINOR/PATCH rules.
 
-### v1.1.0 — Phase A: Content editing UI
+### v1.6.0 — Phase A (continued): Remaining content editing
 
-**Goal:** Edit content without re-importing JSON.
+**Goal:** Complete content editing without re-importing JSON.
 
 | Item | Effort | Value |
 |------|--------|-------|
-| Deck edit form (title, description, subject, color) | Small | High |
-| Lesson rename | Small | Medium |
+| Deck edit (description, subject, color) | Small | High |
 | Lesson reorder (drag or up/down) | Medium | Medium |
 | Mount `CardsSection` on deck detail | Medium | High |
 | Inline card create/edit/delete on deck page | Medium | High |
 
-**Depends on:** Nothing — APIs already exist.
+**Depends on:** v1.5.0 title editing (shipped).
 
 ---
 
-### v1.2.0 — Phase B: Export
+### v1.7.0 — Phase B: Export
 
 **Goal:** Portable backup and sharing prep (personal use).
 
@@ -269,7 +292,7 @@ These exist in code partially but are **not required for v1 stability**:
 
 ---
 
-### v1.3.0 — Phase C: Statistics and progress
+### v1.8.0 — Phase C: Statistics and progress
 
 **Goal:** Visual learning history beyond dashboard counts.
 
@@ -285,7 +308,7 @@ These exist in code partially but are **not required for v1 stability**:
 
 ---
 
-### v1.4.0 — Phase D: Tags
+### v1.9.0 — Phase D: Tags
 
 **Goal:** Organize and filter content.
 
@@ -300,7 +323,7 @@ These exist in code partially but are **not required for v1 stability**:
 
 ---
 
-### v1.5.0 — Phase E: Rich cards (media)
+### v2.0.0 — Phase E: Rich cards (media)
 
 **Goal:** Image and audio on flashcards.
 
@@ -315,18 +338,7 @@ These exist in code partially but are **not required for v1 stability**:
 
 ---
 
-### v1.6.0 — Phase F + G: Import expansion & review enhancements
-
-**Goal:** More ways to get content in.
-
-| Item | Effort | Value |
-|------|--------|-------|
-| CSV import (front, back columns) | Medium | High |
-| Anki `.apkg` import | Large | High |
-| Markdown import | Medium | Low |
-| PDF → cards (AI-assisted) | Large | Low (v2+) |
-
-### v1.6.0 — Phase F + G: Import expansion & review enhancements
+### v2.1.0 — Phase F + G: Import expansion & review enhancements
 
 **Goal:** More import options and flexible review.
 
@@ -340,11 +352,11 @@ These exist in code partially but are **not required for v1 stability**:
 | Leech detection (cards failed N times) | Medium | Medium |
 | Markdown import | Medium | Low |
 
-**Depends on:** v1.1.0 card UI helpful for import testing.
+**Depends on:** Card UI on deck page (v1.6.0).
 
 ---
 
-### v2.0.0 — Phase H + I: Platform (future)
+### v3.0.0 — Phase H + I: Platform (future)
 
 **Goal:** Admin tools, roles, and native mobile clients.
 
@@ -363,12 +375,11 @@ These exist in code partially but are **not required for v1 stability**:
 
 ## Suggested priority (by release)
 
-1. **v1.1.0** — Content editing UI
-2. **v1.2.0** — Export
-3. **v1.3.0** — Statistics
-4. **v1.5.0** — Media (if needed)
-5. **v1.4.0** — Tags
-6. **v1.6.0+** / **v2.0.0** — As needed
+1. **v1.6.0** — Remaining content editing (deck fields, card UI on deck page)
+2. **v1.7.0** — Export
+3. **v1.8.0** — Statistics
+4. **v1.9.0** — Tags
+5. **v2.0.0+** — Media, CSV import, platform — as needed
 
 ---
 

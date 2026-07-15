@@ -2,7 +2,7 @@
 
 A mobile-first, subject-agnostic spaced repetition learning platform.
 
-**v1.4** — Practice mode + Daily Review at [revialearn.vercel.app](https://revialearn.vercel.app)
+**v1.5** — Practice, Daily Review, deck editing at [revialearn.vercel.app](https://revialearn.vercel.app)
 
 ## What You Can Do
 
@@ -58,7 +58,7 @@ Add redirect URL `http://localhost:3000/auth/callback` in Supabase dashboard.
 | Lessons + practice | ✅ |
 | Settings + import + feedback | ✅ |
 | Supabase Auth | ✅ |
-| Deck/lesson edit UI | ⏳ API only |
+| Deck/lesson title edit | ✅ |
 | Card UI on deck page | ⏳ API only |
 | Export | Planned |
 | Statistics | Planned |

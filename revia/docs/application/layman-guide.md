@@ -37,7 +37,7 @@ Revia gives you two modes:
 - **Add lessons** and **practice** them (all deck cards or one lesson at a time)
 - **Run Daily Review** — rate each due card 1–5; scheduling updates for next time
 - **Explore public decks** — browse, import to your library, author stays credited
-- **Import decks** from JSON (file upload or paste) in Settings
+- **Import decks** from JSON (upload or paste, then click Import JSON) in Settings
 - **Search** your library and public decks in Explore
 - **Send feedback** (suggestions and bugs) in Settings
 - **Switch theme** (light/dark) and manage account in Settings
@@ -98,23 +98,26 @@ flowchart LR
 | **Spaced repetition** | Showing cards at intervals based on difficulty (Daily Review) |
 | **Streak** | Consecutive days with at least one Daily Review |
 
-## What Is Available Now (v1.4)
+## What Is Available Now (v1.5)
 
 - **Practice mode** — opens on launch; cards from your recent decks
-- **Daily Review** — secondary spaced-repetition sessions from dashboard
+- **Daily Review** — spaced-repetition sessions from dashboard
+- **Rename decks and lessons** — pencil icon on deck detail page
+- **Import decks** — upload or paste JSON; confirm with Import JSON button
 - Dashboard with due count, reviewed today, streak, deck/card totals
 - Deck list, create, delete, detail, and **Practice deck**
 - Lessons: create, delete, tap to practice (lesson-scoped)
 - Public/private decks, Explore, import public decks to library
 - Usernames, sign in with username, author credits on shared decks
-- JSON deck import, feedback, light/dark theme
+- Feedback, light/dark theme
 - Live deployment at [revialearn.vercel.app](https://revialearn.vercel.app)
 
 ## What Is Coming Later
 
 See [progress-and-roadmap.md](./progress-and-roadmap.md) for the full phased plan. Candidates include:
 
-- Edit deck title, description, and color in the UI
+- Edit deck description and color in the UI
+- Lesson reorder
 - Add and edit cards directly on the deck page
 - Export decks as JSON
 - Statistics page with charts
@@ -122,4 +125,4 @@ See [progress-and-roadmap.md](./progress-and-roadmap.md) for the full phased pla
 
 ## Current App Status In One Sentence
 
-**Revia v1.4 is a mobile learning app: practice endlessly on launch, run Daily Review when cards are due, and manage or share decks from your phone.**
+**Revia v1.5 is a mobile learning app: practice endlessly on launch, run Daily Review when cards are due, rename decks and lessons, and manage or share content from your phone.**

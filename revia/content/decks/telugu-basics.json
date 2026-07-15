@@ -1,0 +1,2601 @@
+{
+  "deck": {
+    "title": "Telugu",
+    "description": "Comprehensive Telugu foundation: greetings, grammar, numbers, family, food, travel, verbs, phrases, and culture. Front shows Telugu with romanization; back shows English.",
+    "language": "Telugu",
+    "tags": [
+      "telugu",
+      "language",
+      "basics",
+      "india",
+      "andhra",
+      "telangana"
+    ]
+  },
+  "lessons": [
+    {
+      "title": "Greetings & Politeness",
+      "description": "Essential greetings and polite words",
+      "cards": [
+        {
+          "front": "నమస్కారం (namaskaram)",
+          "back": "Hello / Greetings",
+          "pronunciation": "namaskaram",
+          "example": "నమస్కారం, మీరు ఎలా ఉన్నారు?",
+          "notes": "Universal formal greeting",
+          "tags": [
+            "greeting"
+          ]
+        },
+        {
+          "front": "శుభోదయం (shubhodayam)",
+          "back": "Good morning",
+          "pronunciation": "shubhodayam",
+          "example": "శుభోదయం! మంచి రోజు.",
+          "tags": [
+            "greeting"
+          ]
+        },
+        {
+          "front": "శుభ సాయంత్రం (shubha saayanthram)",
+          "back": "Good evening",
+          "pronunciation": "shubha saayanthram",
+          "tags": [
+            "greeting"
+          ]
+        },
+        {
+          "front": "శుభ రాత్రి (shubha raatri)",
+          "back": "Good night",
+          "pronunciation": "shubha raatri",
+          "example": "శుభ రాత్రి.",
+          "tags": [
+            "greeting"
+          ]
+        },
+        {
+          "front": "ధన్యవాదాలు (dhanyavaadaalu)",
+          "back": "Thank you",
+          "pronunciation": "dhanyavaadaalu",
+          "example": "ధన్యవాదాలు.",
+          "tags": [
+            "polite"
+          ]
+        },
+        {
+          "front": "దయచేసి (dayacheesi)",
+          "back": "Please",
+          "pronunciation": "dayacheesi",
+          "example": "దయచేసి మళ్లీ చెప్పండి.",
+          "tags": [
+            "polite"
+          ]
+        },
+        {
+          "front": "క్షమించండి (kshaminchandi)",
+          "back": "Sorry / Excuse me",
+          "pronunciation": "kshaminchandi",
+          "example": "ఆలస్యమైనందుకు క్షమించండి.",
+          "tags": [
+            "polite"
+          ]
+        },
+        {
+          "front": "స్వాగతం (swaagatam)",
+          "back": "Welcome",
+          "pronunciation": "swaagatam",
+          "example": "మీకు స్వాగతం.",
+          "tags": [
+            "polite"
+          ]
+        },
+        {
+          "front": "అవును (avunu)",
+          "back": "Yes",
+          "pronunciation": "avunu",
+          "tags": [
+            "basic"
+          ]
+        },
+        {
+          "front": "లేదు (ledu)",
+          "back": "No",
+          "pronunciation": "ledu",
+          "tags": [
+            "basic"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Introductions",
+      "description": "Meeting people and talking about yourself",
+      "cards": [
+        {
+          "front": "మీరు ఎలా ఉన్నారు? (meeru elaa unnaaru?)",
+          "back": "How are you? (formal)",
+          "pronunciation": "meeru elaa unnaaru?",
+          "example": "నమస్కారం, మీరు ఎలా ఉన్నారు?",
+          "notes": "Informal: నువ్వు ఎలా ఉన్నావు?",
+          "tags": [
+            "introduction"
+          ]
+        },
+        {
+          "front": "నేను బాగున్నాను (nenu baagunnaanu)",
+          "back": "I am fine",
+          "pronunciation": "nenu baagunnaanu",
+          "example": "నేను బాగున్నాను.",
+          "tags": [
+            "introduction"
+          ]
+        },
+        {
+          "front": "మీ పేరు ఏమిటి? (mee peru emiti?)",
+          "back": "What is your name?",
+          "pronunciation": "mee peru emiti?",
+          "tags": [
+            "introduction"
+          ]
+        },
+        {
+          "front": "నా పేరు (naa peru)",
+          "back": "My name is ...",
+          "pronunciation": "naa peru",
+          "example": "నా పేరు ...",
+          "notes": "Say your name after this",
+          "tags": [
+            "introduction"
+          ]
+        },
+        {
+          "front": "మిమ్మల్ని కలవడం సంతోషం (mimmlni kalavadam santosham)",
+          "back": "Nice to meet you",
+          "pronunciation": "mimmlni kalavadam santosham",
+          "tags": [
+            "introduction"
+          ]
+        },
+        {
+          "front": "నేను తెలుగు నేర్చుకుంటున్నాను (nenu telugu nerchukuntunnaanu)",
+          "back": "I am learning Telugu",
+          "pronunciation": "nenu telugu nerchukuntunnaanu",
+          "tags": [
+            "introduction"
+          ]
+        },
+        {
+          "front": "నేను ... నుండి వచ్చాను (nenu ... nundi vachchaanu)",
+          "back": "I am from ...",
+          "pronunciation": "nenu ... nundi vachchaanu",
+          "example": "నేను హైదరాబాద్ నుండి వచ్చాను.",
+          "notes": "Place + nundi = from",
+          "tags": [
+            "introduction"
+          ]
+        },
+        {
+          "front": "మీకు తెలుగు వస్తుందా? (meeku telugu vasthundaa?)",
+          "back": "Do you know Telugu?",
+          "pronunciation": "meeku telugu vasthundaa?",
+          "tags": [
+            "introduction"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Pronouns & Question Words",
+      "description": "Core pronouns and question words",
+      "cards": [
+        {
+          "front": "నేను (nenu)",
+          "back": "I",
+          "pronunciation": "nenu",
+          "example": "నేను వెళ్తున్నాను.",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "నువ్వు (nuvvu)",
+          "back": "You (informal)",
+          "pronunciation": "nuvvu",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "మీరు (meeru)",
+          "back": "You (formal)",
+          "pronunciation": "meeru",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "అతను (athanu)",
+          "back": "He",
+          "pronunciation": "athanu",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ఆమె (aame)",
+          "back": "She",
+          "pronunciation": "aame",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "వారు (vaaru)",
+          "back": "They / respectful he or she",
+          "pronunciation": "vaaru",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "మేము (memu)",
+          "back": "We",
+          "pronunciation": "memu",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ఇది (idi)",
+          "back": "This",
+          "pronunciation": "idi",
+          "example": "ఇది నా పుస్తకం.",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "అది (adi)",
+          "back": "That",
+          "pronunciation": "adi",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ఎవరు (evaru)",
+          "back": "Who",
+          "pronunciation": "evaru",
+          "example": "వారు ఎవరు?",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ఏమిటి (emiti)",
+          "back": "What",
+          "pronunciation": "emiti",
+          "example": "ఇది ఏమిటి?",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ఎక్కడ (ekkada)",
+          "back": "Where",
+          "pronunciation": "ekkada",
+          "example": "మీరు ఎక్కడ ఉంటారు?",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ఎప్పుడు (eppudu)",
+          "back": "When",
+          "pronunciation": "eppudu",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ఎందుకు (enduku)",
+          "back": "Why",
+          "pronunciation": "enduku",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ఎలా (elaa)",
+          "back": "How",
+          "pronunciation": "elaa",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ఎంత (entha)",
+          "back": "How much / how many",
+          "pronunciation": "entha",
+          "example": "ఇది ఎంత?",
+          "tags": [
+            "grammar"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Numbers 1–20",
+      "description": "Basic counting",
+      "cards": [
+        {
+          "front": "ఒకటి (okati)",
+          "back": "One",
+          "pronunciation": "okati",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "రెండు (rendu)",
+          "back": "Two",
+          "pronunciation": "rendu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "మూడు (moodu)",
+          "back": "Three",
+          "pronunciation": "moodu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "నాలుగు (naalugu)",
+          "back": "Four",
+          "pronunciation": "naalugu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "అయిదు (ayidu)",
+          "back": "Five",
+          "pronunciation": "ayidu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ఆరు (aaru)",
+          "back": "Six",
+          "pronunciation": "aaru",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ఏడు (eedu)",
+          "back": "Seven",
+          "pronunciation": "eedu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ఎనిమిది (enimidi)",
+          "back": "Eight",
+          "pronunciation": "enimidi",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "తొమ్మిది (tommidi)",
+          "back": "Nine",
+          "pronunciation": "tommidi",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "పది (padi)",
+          "back": "Ten",
+          "pronunciation": "padi",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "పదకొండు (padakondu)",
+          "back": "Eleven",
+          "pronunciation": "padakondu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "పన్నెండు (pannendu)",
+          "back": "Twelve",
+          "pronunciation": "pannendu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "పదమూడు (padamoodu)",
+          "back": "Thirteen",
+          "pronunciation": "padamoodu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "పదనాలుగు (padanaalugu)",
+          "back": "Fourteen",
+          "pronunciation": "padanaalugu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "పదిహేను (padihenu)",
+          "back": "Fifteen",
+          "pronunciation": "padihenu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "పదహారు (padahaaru)",
+          "back": "Sixteen",
+          "pronunciation": "padahaaru",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "పదిహేడు (padiheedu)",
+          "back": "Seventeen",
+          "pronunciation": "padiheedu",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "పద్దెనిమిది (paddenimidi)",
+          "back": "Eighteen",
+          "pronunciation": "paddenimidi",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "పంతొమ్మిది (pantommidi)",
+          "back": "Nineteen",
+          "pronunciation": "pantommidi",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ఇరవై (iravai)",
+          "back": "Twenty",
+          "pronunciation": "iravai",
+          "tags": [
+            "numbers"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Numbers & Quantities",
+      "description": "Tens, hundreds, and quantity words",
+      "cards": [
+        {
+          "front": "ముప్పై (muppai)",
+          "back": "Thirty",
+          "pronunciation": "muppai",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "నలభై (nalabhai)",
+          "back": "Forty",
+          "pronunciation": "nalabhai",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "యాభై (yaabhai)",
+          "back": "Fifty",
+          "pronunciation": "yaabhai",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "అరవై (aravai)",
+          "back": "Sixty",
+          "pronunciation": "aravai",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "డెబ్బై (debbaai)",
+          "back": "Seventy",
+          "pronunciation": "debbaai",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "ఎనభై (enabhai)",
+          "back": "Eighty",
+          "pronunciation": "enabhai",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "తొంభై (tombhai)",
+          "back": "Ninety",
+          "pronunciation": "tombhai",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "వంద (vanda)",
+          "back": "One hundred",
+          "pronunciation": "vanda",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "వేయి (veyi)",
+          "back": "One thousand",
+          "pronunciation": "veyi",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "అన్నీ (anni)",
+          "back": "All",
+          "pronunciation": "anni",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "కొంచెం (konchem)",
+          "back": "A little / some",
+          "pronunciation": "konchem",
+          "tags": [
+            "numbers"
+          ]
+        },
+        {
+          "front": "చాలా (chaalaa)",
+          "back": "Many / a lot",
+          "pronunciation": "chaalaa",
+          "tags": [
+            "numbers"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Days, Months & Time",
+      "description": "Calendar and telling time",
+      "cards": [
+        {
+          "front": "ఈరోజు (eerroju)",
+          "back": "Today",
+          "pronunciation": "eerroju",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "రేపు (repu)",
+          "back": "Tomorrow",
+          "pronunciation": "repu",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "నిన్న (ninna)",
+          "back": "Yesterday",
+          "pronunciation": "ninna",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "ఇప్పుడు (ippudu)",
+          "back": "Now",
+          "pronunciation": "ippudu",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "సోమవారం (somavaaram)",
+          "back": "Monday",
+          "pronunciation": "somavaaram",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "మంగళవారం (mangalavaaram)",
+          "back": "Tuesday",
+          "pronunciation": "mangalavaaram",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "బుధవారం (budhavaaram)",
+          "back": "Wednesday",
+          "pronunciation": "budhavaaram",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "గురువారం (guruvaaram)",
+          "back": "Thursday",
+          "pronunciation": "guruvaaram",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "శుక్రవారం (shukravaaram)",
+          "back": "Friday",
+          "pronunciation": "shukravaaram",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "శనివారం (shanivaaram)",
+          "back": "Saturday",
+          "pronunciation": "shanivaaram",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "ఆదివారం (aadivaaram)",
+          "back": "Sunday",
+          "pronunciation": "aadivaaram",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "జనవరి (janavari)",
+          "back": "January",
+          "pronunciation": "janavari",
+          "notes": "Gregorian months used in modern Telugu",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "ఏప్రిల్ (epril)",
+          "back": "April",
+          "pronunciation": "epril",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "జూలై (julai)",
+          "back": "July",
+          "pronunciation": "julai",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "అక్టోబర్ (oktobar)",
+          "back": "October",
+          "pronunciation": "oktobar",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "డిసెంబర్ (disembar)",
+          "back": "December",
+          "pronunciation": "disembar",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "గంట (ganta)",
+          "back": "Hour / o'clock",
+          "pronunciation": "ganta",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "నిమిషం (nimisham)",
+          "back": "Minute",
+          "pronunciation": "nimisham",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "ఉదయం (udayam)",
+          "back": "Morning",
+          "pronunciation": "udayam",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "సాయంత్రం (saayanthram)",
+          "back": "Evening",
+          "pronunciation": "saayanthram",
+          "tags": [
+            "time"
+          ]
+        },
+        {
+          "front": "రాత్రి (raatri)",
+          "back": "Night",
+          "pronunciation": "raatri",
+          "tags": [
+            "time"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Family & People",
+      "description": "Family members and relationships",
+      "cards": [
+        {
+          "front": "అమ్మ (amma)",
+          "back": "Mother",
+          "pronunciation": "amma",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "నాన్న (naanna)",
+          "back": "Father",
+          "pronunciation": "naanna",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "అక్క (akka)",
+          "back": "Elder sister",
+          "pronunciation": "akka",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "చెల్లి (chelli)",
+          "back": "Younger sister",
+          "pronunciation": "chelli",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "అన్న (anna)",
+          "back": "Elder brother",
+          "pronunciation": "anna",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "తమ్ముడు (thammudu)",
+          "back": "Younger brother",
+          "pronunciation": "thammudu",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "తాత (thaata)",
+          "back": "Grandfather",
+          "pronunciation": "thaata",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "అమ్మమ్మ (ammamma)",
+          "back": "Grandmother",
+          "pronunciation": "ammamma",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "కొడుకు (koduku)",
+          "back": "Son",
+          "pronunciation": "koduku",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "కూతురు (koothuru)",
+          "back": "Daughter",
+          "pronunciation": "koothuru",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "భర్త (bharta)",
+          "back": "Husband",
+          "pronunciation": "bharta",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "భార్య (bhaarya)",
+          "back": "Wife",
+          "pronunciation": "bhaarya",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "కుటుంబం (kutumbam)",
+          "back": "Family",
+          "pronunciation": "kutumbam",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "స్నేహితుడు (snehitudu)",
+          "back": "Friend (male)",
+          "pronunciation": "snehitudu",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "స్నేహితురాలు (snehituraalu)",
+          "back": "Friend (female)",
+          "pronunciation": "snehituraalu",
+          "tags": [
+            "family"
+          ]
+        },
+        {
+          "front": "పిల్ల (pilla)",
+          "back": "Child",
+          "pronunciation": "pilla",
+          "tags": [
+            "family"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Body Parts",
+      "description": "Parts of the body",
+      "cards": [
+        {
+          "front": "తల (tala)",
+          "back": "Head",
+          "pronunciation": "tala",
+          "tags": [
+            "body"
+          ]
+        },
+        {
+          "front": "కన్ను (kannu)",
+          "back": "Eye",
+          "pronunciation": "kannu",
+          "tags": [
+            "body"
+          ]
+        },
+        {
+          "front": "చెవి (chevi)",
+          "back": "Ear",
+          "pronunciation": "chevi",
+          "tags": [
+            "body"
+          ]
+        },
+        {
+          "front": "ముక్కు (mukku)",
+          "back": "Nose",
+          "pronunciation": "mukku",
+          "tags": [
+            "body"
+          ]
+        },
+        {
+          "front": "నోరు (nooru)",
+          "back": "Mouth",
+          "pronunciation": "nooru",
+          "tags": [
+            "body"
+          ]
+        },
+        {
+          "front": "చేయి (cheyi)",
+          "back": "Hand",
+          "pronunciation": "cheyi",
+          "tags": [
+            "body"
+          ]
+        },
+        {
+          "front": "కాలు (kaalu)",
+          "back": "Leg / foot",
+          "pronunciation": "kaalu",
+          "tags": [
+            "body"
+          ]
+        },
+        {
+          "front": "వేలు (velu)",
+          "back": "Finger",
+          "pronunciation": "velu",
+          "tags": [
+            "body"
+          ]
+        },
+        {
+          "front": "గుండె (gunde)",
+          "back": "Heart",
+          "pronunciation": "gunde",
+          "tags": [
+            "body"
+          ]
+        },
+        {
+          "front": "కడుపు (kadupu)",
+          "back": "Stomach / belly",
+          "pronunciation": "kadupu",
+          "tags": [
+            "body"
+          ]
+        },
+        {
+          "front": "వెనుక (venuka)",
+          "back": "Back",
+          "pronunciation": "venuka",
+          "tags": [
+            "body"
+          ]
+        },
+        {
+          "front": "మెడ (meda)",
+          "back": "Neck",
+          "pronunciation": "meda",
+          "tags": [
+            "body"
+          ]
+        },
+        {
+          "front": "ముఖం (mukham)",
+          "back": "Face",
+          "pronunciation": "mukham",
+          "tags": [
+            "body"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Colors",
+      "description": "Common colors",
+      "cards": [
+        {
+          "front": "ఎరుపు (erupu)",
+          "back": "Red",
+          "pronunciation": "erupu",
+          "tags": [
+            "colors"
+          ]
+        },
+        {
+          "front": "నీలం (neelam)",
+          "back": "Blue",
+          "pronunciation": "neelam",
+          "tags": [
+            "colors"
+          ]
+        },
+        {
+          "front": "ఆకుపచ్చ (aakupachcha)",
+          "back": "Green",
+          "pronunciation": "aakupachcha",
+          "tags": [
+            "colors"
+          ]
+        },
+        {
+          "front": "పసుపు (pasupu)",
+          "back": "Yellow",
+          "pronunciation": "pasupu",
+          "tags": [
+            "colors"
+          ]
+        },
+        {
+          "front": "నలుపు (nalupu)",
+          "back": "Black",
+          "pronunciation": "nalupu",
+          "tags": [
+            "colors"
+          ]
+        },
+        {
+          "front": "తెలుపు (telupu)",
+          "back": "White",
+          "pronunciation": "telupu",
+          "tags": [
+            "colors"
+          ]
+        },
+        {
+          "front": "నారింజ (naarinja)",
+          "back": "Orange",
+          "pronunciation": "naarinja",
+          "tags": [
+            "colors"
+          ]
+        },
+        {
+          "front": "ఊదా (oodaa)",
+          "back": "Purple / violet",
+          "pronunciation": "oodaa",
+          "tags": [
+            "colors"
+          ]
+        },
+        {
+          "front": "గులాబీ (gulaabi)",
+          "back": "Pink",
+          "pronunciation": "gulaabi",
+          "tags": [
+            "colors"
+          ]
+        },
+        {
+          "front": "బూడిద (boodida)",
+          "back": "Gray",
+          "pronunciation": "boodida",
+          "tags": [
+            "colors"
+          ]
+        },
+        {
+          "front": "కాఫీ రంగు (kaafi rangu)",
+          "back": "Brown",
+          "pronunciation": "kaafi rangu",
+          "notes": "Literally coffee color",
+          "tags": [
+            "colors"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Food & Drink",
+      "description": "Common food and dining words",
+      "cards": [
+        {
+          "front": "భోజనం (bhojanam)",
+          "back": "Food / meal",
+          "pronunciation": "bhojanam",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "అన్నం (annam)",
+          "back": "Cooked rice / food",
+          "pronunciation": "annam",
+          "notes": "General word for a meal",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "నీరు (neeru)",
+          "back": "Water",
+          "pronunciation": "neeru",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "పాలు (paalu)",
+          "back": "Milk",
+          "pronunciation": "paalu",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "టీ (tee)",
+          "back": "Tea",
+          "pronunciation": "tee",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "కాఫీ (kaafi)",
+          "back": "Coffee",
+          "pronunciation": "kaafi",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "రొట్టె (rotte)",
+          "back": "Bread / roti",
+          "pronunciation": "rotte",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "బియ్యం (biyyam)",
+          "back": "Rice (uncooked)",
+          "pronunciation": "biyyam",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "సాంబార్ (saambar)",
+          "back": "Sambar",
+          "pronunciation": "saambar",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "దోస (dosa)",
+          "back": "Dosa",
+          "pronunciation": "dosa",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "ఇడ్లి (idli)",
+          "back": "Idli",
+          "pronunciation": "idli",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "పండు (pandu)",
+          "back": "Fruit",
+          "pronunciation": "pandu",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "కూరగాయ (kooragaaya)",
+          "back": "Vegetable",
+          "pronunciation": "kooragaaya",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "మాంసం (maamsam)",
+          "back": "Meat",
+          "pronunciation": "maamsam",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "చేప (chepa)",
+          "back": "Fish",
+          "pronunciation": "chepa",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "తీపి (teepi)",
+          "back": "Sweet",
+          "pronunciation": "teepi",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "ఎర్రగా (erragaa)",
+          "back": "Spicy / hot",
+          "pronunciation": "erragaa",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "రుచి (ruchi)",
+          "back": "Taste / flavor",
+          "pronunciation": "ruchi",
+          "tags": [
+            "food"
+          ]
+        },
+        {
+          "front": "ఆకలి (aakali)",
+          "back": "Hunger / hungry",
+          "pronunciation": "aakali",
+          "example": "ఆకలి వేసింది.",
+          "tags": [
+            "food"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Home & Objects",
+      "description": "Home, rooms, and everyday objects",
+      "cards": [
+        {
+          "front": "ఇల్లు (illu)",
+          "back": "House / home",
+          "pronunciation": "illu",
+          "tags": [
+            "home"
+          ]
+        },
+        {
+          "front": "గది (gadi)",
+          "back": "Room",
+          "pronunciation": "gadi",
+          "tags": [
+            "home"
+          ]
+        },
+        {
+          "front": "వంటగది (vantagadi)",
+          "back": "Kitchen",
+          "pronunciation": "vantagadi",
+          "tags": [
+            "home"
+          ]
+        },
+        {
+          "front": "స్నానగది (snaanagadi)",
+          "back": "Bathroom",
+          "pronunciation": "snaanagadi",
+          "tags": [
+            "home"
+          ]
+        },
+        {
+          "front": "తలుపు (talupu)",
+          "back": "Door",
+          "pronunciation": "talupu",
+          "tags": [
+            "home"
+          ]
+        },
+        {
+          "front": "కిటికీ (kitiki)",
+          "back": "Window",
+          "pronunciation": "kitiki",
+          "tags": [
+            "home"
+          ]
+        },
+        {
+          "front": "మంచం (mancham)",
+          "back": "Bed",
+          "pronunciation": "mancham",
+          "tags": [
+            "home"
+          ]
+        },
+        {
+          "front": "బల్ల (balla)",
+          "back": "Table",
+          "pronunciation": "balla",
+          "tags": [
+            "home"
+          ]
+        },
+        {
+          "front": "కుర్చీ (kurchi)",
+          "back": "Chair",
+          "pronunciation": "kurchi",
+          "tags": [
+            "home"
+          ]
+        },
+        {
+          "front": "దీపం (deepam)",
+          "back": "Lamp / light",
+          "pronunciation": "deepam",
+          "tags": [
+            "home"
+          ]
+        },
+        {
+          "front": "పుస్తకం (pustakam)",
+          "back": "Book",
+          "pronunciation": "pustakam",
+          "tags": [
+            "home"
+          ]
+        },
+        {
+          "front": "ఫోన్ (phone)",
+          "back": "Phone",
+          "pronunciation": "phone",
+          "tags": [
+            "home"
+          ]
+        },
+        {
+          "front": "తాళం (thaalam)",
+          "back": "Key / lock",
+          "pronunciation": "thaalam",
+          "tags": [
+            "home"
+          ]
+        },
+        {
+          "front": "సంచి (sanchi)",
+          "back": "Bag",
+          "pronunciation": "sanchi",
+          "tags": [
+            "home"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Clothes",
+      "description": "Clothing",
+      "cards": [
+        {
+          "front": "బట్ట (batta)",
+          "back": "Cloth / clothes",
+          "pronunciation": "batta",
+          "tags": [
+            "clothes"
+          ]
+        },
+        {
+          "front": "చొక్కా (chokkaa)",
+          "back": "Shirt",
+          "pronunciation": "chokkaa",
+          "tags": [
+            "clothes"
+          ]
+        },
+        {
+          "front": "ప్యాంటు (pyaantu)",
+          "back": "Pants",
+          "pronunciation": "pyaantu",
+          "tags": [
+            "clothes"
+          ]
+        },
+        {
+          "front": "చీర (cheera)",
+          "back": "Saree",
+          "pronunciation": "cheera",
+          "tags": [
+            "clothes"
+          ]
+        },
+        {
+          "front": "షర్టు (shirtu)",
+          "back": "Shirt",
+          "pronunciation": "shirtu",
+          "tags": [
+            "clothes"
+          ]
+        },
+        {
+          "front": "బూట్లు (bootlu)",
+          "back": "Shoes",
+          "pronunciation": "bootlu",
+          "tags": [
+            "clothes"
+          ]
+        },
+        {
+          "front": "టోపీ (topi)",
+          "back": "Hat / cap",
+          "pronunciation": "topi",
+          "tags": [
+            "clothes"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Nature & Weather",
+      "description": "Nature, animals, and weather",
+      "cards": [
+        {
+          "front": "సూర్యుడు (sooryudu)",
+          "back": "Sun",
+          "pronunciation": "sooryudu",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "చంద్రుడు (chandrudu)",
+          "back": "Moon",
+          "pronunciation": "chandrudu",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "నక్షత్రం (nakshatram)",
+          "back": "Star",
+          "pronunciation": "nakshatram",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "వర్షం (varsham)",
+          "back": "Rain",
+          "pronunciation": "varsham",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "గాలి (gaali)",
+          "back": "Wind",
+          "pronunciation": "gaali",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "కొండ (konda)",
+          "back": "Hill / mountain",
+          "pronunciation": "konda",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "నది (nadi)",
+          "back": "River",
+          "pronunciation": "nadi",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "సముద్రం (samudram)",
+          "back": "Sea / ocean",
+          "pronunciation": "samudram",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "చెట్టు (chettu)",
+          "back": "Tree",
+          "pronunciation": "chettu",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "పువ్వు (puvvu)",
+          "back": "Flower",
+          "pronunciation": "puvvu",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "కుక్క (kukka)",
+          "back": "Dog",
+          "pronunciation": "kukka",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "పిల్లి (pilli)",
+          "back": "Cat",
+          "pronunciation": "pilli",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "ఆవు (aavu)",
+          "back": "Cow",
+          "pronunciation": "aavu",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "పక్షి (pakshi)",
+          "back": "Bird",
+          "pronunciation": "pakshi",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "వేడ (veda)",
+          "back": "Heat / hot",
+          "pronunciation": "veda",
+          "tags": [
+            "nature"
+          ]
+        },
+        {
+          "front": "చలి (chali)",
+          "back": "Cold",
+          "pronunciation": "chali",
+          "tags": [
+            "nature"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Places & Directions",
+      "description": "Places and getting around",
+      "cards": [
+        {
+          "front": "నగరం (nagaram)",
+          "back": "City",
+          "pronunciation": "nagaram",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "గ్రామం (graamam)",
+          "back": "Village",
+          "pronunciation": "graamam",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "రోడ్డు (roddu)",
+          "back": "Road / street",
+          "pronunciation": "roddu",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "ఆసుపత్రి (aasupatri)",
+          "back": "Hospital",
+          "pronunciation": "aasupatri",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "ఆదుంపం (adupam)",
+          "back": "School",
+          "pronunciation": "adupam",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "అప్పుపికం (appupikam)",
+          "back": "Office",
+          "pronunciation": "appupikam",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "సంతపురం (santapuram)",
+          "back": "Market",
+          "pronunciation": "santapuram",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "నిలదీం (niladeem)",
+          "back": "Station / stop",
+          "pronunciation": "niladeem",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "ఎడం (edam)",
+          "back": "Left",
+          "pronunciation": "edam",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "బయం (bayam)",
+          "back": "Right",
+          "pronunciation": "bayam",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "నేరం (neram)",
+          "back": "Straight",
+          "pronunciation": "neram",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "దగ్గరం (daggar)",
+          "back": "Near",
+          "pronunciation": "daggar",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "దూరం (dooram)",
+          "back": "Far",
+          "pronunciation": "dooram",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "ఇక్కడ (ikkada)",
+          "back": "Here",
+          "pronunciation": "ikkada",
+          "tags": [
+            "places"
+          ]
+        },
+        {
+          "front": "అక్కడ (akkada)",
+          "back": "There",
+          "pronunciation": "akkada",
+          "tags": [
+            "places"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Transport",
+      "description": "Vehicles and travel",
+      "cards": [
+        {
+          "front": "బస్సు (bassu)",
+          "back": "Bus",
+          "pronunciation": "bassu",
+          "tags": [
+            "transport"
+          ]
+        },
+        {
+          "front": "రైలు (railu)",
+          "back": "Train",
+          "pronunciation": "railu",
+          "tags": [
+            "transport"
+          ]
+        },
+        {
+          "front": "కారు (kaaru)",
+          "back": "Car",
+          "pronunciation": "kaaru",
+          "tags": [
+            "transport"
+          ]
+        },
+        {
+          "front": "బైక్ (baik)",
+          "back": "Bike / motorcycle",
+          "pronunciation": "baik",
+          "tags": [
+            "transport"
+          ]
+        },
+        {
+          "front": "సైకిల్ (saikil)",
+          "back": "Bicycle",
+          "pronunciation": "saikil",
+          "tags": [
+            "transport"
+          ]
+        },
+        {
+          "front": "టాక్సీ (taaksi)",
+          "back": "Taxi",
+          "pronunciation": "taaksi",
+          "tags": [
+            "transport"
+          ]
+        },
+        {
+          "front": "విమానం (vimaanam)",
+          "back": "Airplane",
+          "pronunciation": "vimaanam",
+          "tags": [
+            "transport"
+          ]
+        },
+        {
+          "front": "టికెట్ (tiket)",
+          "back": "Ticket",
+          "pronunciation": "tiket",
+          "tags": [
+            "transport"
+          ]
+        },
+        {
+          "front": "ప్రయాణం (prayaanam)",
+          "back": "Journey / travel",
+          "pronunciation": "prayaanam",
+          "tags": [
+            "transport"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Common Verbs",
+      "description": "Everyday action verbs",
+      "cards": [
+        {
+          "front": "వెళ్ళు (vellu)",
+          "back": "Go",
+          "pronunciation": "vellu",
+          "example": "నేను ఇంటికి వెళ్తున్నాను.",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "రా (raa)",
+          "back": "Come",
+          "pronunciation": "raa",
+          "example": "మీరు రండి.",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "తిను (tinu)",
+          "back": "Eat",
+          "pronunciation": "tinu",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "తాగు (thaagu)",
+          "back": "Drink",
+          "pronunciation": "thaagu",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "చూడు (choodu)",
+          "back": "See / look",
+          "pronunciation": "choodu",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "వినవు (vinavu)",
+          "back": "Listen / ask",
+          "pronunciation": "vinavu",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "మాటలాడు (maatalaadu)",
+          "back": "Speak",
+          "pronunciation": "maatalaadu",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "రాయి (raayi)",
+          "back": "Write",
+          "pronunciation": "raayi",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "చదువు (chaduvu)",
+          "back": "Read",
+          "pronunciation": "chaduvu",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "నేర్చుకో (nerchuko)",
+          "back": "Learn",
+          "pronunciation": "nerchuko",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "పని (pani)",
+          "back": "Work",
+          "pronunciation": "pani",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "నిద్ర (nidra)",
+          "back": "Sleep",
+          "pronunciation": "nidra",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "లేవు (levu)",
+          "back": "Wake up",
+          "pronunciation": "levu",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "నడచు (nadachu)",
+          "back": "Walk",
+          "pronunciation": "nadachu",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "పరిగే (parige)",
+          "back": "Run",
+          "pronunciation": "parige",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "ఇవ్వు (ivvu)",
+          "back": "Give",
+          "pronunciation": "ivvu",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "తీసుకో (teesuko)",
+          "back": "Take",
+          "pronunciation": "teesuko",
+          "tags": [
+            "verbs"
+          ]
+        },
+        {
+          "front": "తెలుసుకో (telusuko)",
+          "back": "Know / understand",
+          "pronunciation": "telusuko",
+          "tags": [
+            "verbs"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Adjectives & Feelings",
+      "description": "Describing things and emotions",
+      "cards": [
+        {
+          "front": "బాగుంది (baagundi)",
+          "back": "Good / fine",
+          "pronunciation": "baagundi",
+          "tags": [
+            "adjectives"
+          ]
+        },
+        {
+          "front": "చెడు (chedu)",
+          "back": "Bad",
+          "pronunciation": "chedu",
+          "tags": [
+            "adjectives"
+          ]
+        },
+        {
+          "front": "పెద్ద (pedda)",
+          "back": "Big",
+          "pronunciation": "pedda",
+          "tags": [
+            "adjectives"
+          ]
+        },
+        {
+          "front": "చిన్న (chinna)",
+          "back": "Small",
+          "pronunciation": "chinna",
+          "tags": [
+            "adjectives"
+          ]
+        },
+        {
+          "front": "కొత్త (kotta)",
+          "back": "New",
+          "pronunciation": "kotta",
+          "tags": [
+            "adjectives"
+          ]
+        },
+        {
+          "front": "పాత (paata)",
+          "back": "Old",
+          "pronunciation": "paata",
+          "tags": [
+            "adjectives"
+          ]
+        },
+        {
+          "front": "అందం (andam)",
+          "back": "Beautiful",
+          "pronunciation": "andam",
+          "tags": [
+            "adjectives"
+          ]
+        },
+        {
+          "front": "సంతోషం (santosham)",
+          "back": "Happy / happiness",
+          "pronunciation": "santosham",
+          "tags": [
+            "adjectives"
+          ]
+        },
+        {
+          "front": "దుఃఖం (duhkham)",
+          "back": "Sad / sorrow",
+          "pronunciation": "duhkham",
+          "tags": [
+            "adjectives"
+          ]
+        },
+        {
+          "front": "ఆశ (aasha)",
+          "back": "Hope / desire",
+          "pronunciation": "aasha",
+          "tags": [
+            "adjectives"
+          ]
+        },
+        {
+          "front": "భయం (bhayam)",
+          "back": "Fear",
+          "pronunciation": "bhayam",
+          "tags": [
+            "adjectives"
+          ]
+        },
+        {
+          "front": "వేడి (vedi)",
+          "back": "Hot",
+          "pronunciation": "vedi",
+          "tags": [
+            "adjectives"
+          ]
+        },
+        {
+          "front": "చలిపని (chalipani)",
+          "back": "Cool",
+          "pronunciation": "chalipani",
+          "tags": [
+            "adjectives"
+          ]
+        },
+        {
+          "front": "చాలా (chaalaa)",
+          "back": "Very / a lot",
+          "pronunciation": "chaalaa",
+          "tags": [
+            "adjectives"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Useful Phrases",
+      "description": "High-frequency sentences for daily life",
+      "cards": [
+        {
+          "front": "నాకు అర్థం కాదు (naaku artham kaadu)",
+          "back": "I don't understand",
+          "pronunciation": "naaku artham kaadu",
+          "tags": [
+            "phrases"
+          ]
+        },
+        {
+          "front": "దయచేసి నిధానంగా మాటలాడండి (dayacheesi nidhaanamgaa maatalaandandi)",
+          "back": "Please speak slowly",
+          "pronunciation": "dayacheesi nidhaanamgaa maatalaandandi",
+          "tags": [
+            "phrases"
+          ]
+        },
+        {
+          "front": "ఇది ఎంత (idi entha)",
+          "back": "How much is this?",
+          "pronunciation": "idi entha",
+          "tags": [
+            "phrases"
+          ]
+        },
+        {
+          "front": "మీరు ఇంగ్లీష్ మాటలాడతారా? (meeru inglish maatalaadataara?)",
+          "back": "Do you speak English?",
+          "pronunciation": "meeru inglish maatalaadataara?",
+          "tags": [
+            "phrases"
+          ]
+        },
+        {
+          "front": "నాకు సహాయం కావాలి (naaku sahaayam kaavali)",
+          "back": "I need help",
+          "pronunciation": "naaku sahaayam kaavali",
+          "tags": [
+            "phrases"
+          ]
+        },
+        {
+          "front": "ఆపాయము ఎక్కడ (aapaayamu ekkada)",
+          "back": "Where is the restroom?",
+          "pronunciation": "aapaayamu ekkada",
+          "tags": [
+            "phrases"
+          ]
+        },
+        {
+          "front": "నేను తిప్పుకున్నాను (nenu tippukunnaanu)",
+          "back": "I am lost",
+          "pronunciation": "nenu tippukunnaanu",
+          "tags": [
+            "phrases"
+          ]
+        },
+        {
+          "front": "ఒక నిమిషం (oka nimisham)",
+          "back": "One moment",
+          "pronunciation": "oka nimisham",
+          "tags": [
+            "phrases"
+          ]
+        },
+        {
+          "front": "మళ్లీ చేపండి (mallee cheppandi)",
+          "back": "Say it again",
+          "pronunciation": "mallee cheppandi",
+          "tags": [
+            "phrases"
+          ]
+        },
+        {
+          "front": "సరే (sare)",
+          "back": "Okay / correct",
+          "pronunciation": "sare",
+          "tags": [
+            "phrases"
+          ]
+        },
+        {
+          "front": "సమయం అయింది (samayam ayindi)",
+          "back": "Time is up / it's late",
+          "pronunciation": "samayam ayindi",
+          "tags": [
+            "phrases"
+          ]
+        },
+        {
+          "front": "ఆమాయము మంచి రోజు (aamaayamu manchi roju)",
+          "back": "Have a good day",
+          "pronunciation": "aamaayamu manchi roju",
+          "tags": [
+            "phrases"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Telugu Culture & States",
+      "description": "Language, states, and cultural context",
+      "cards": [
+        {
+          "front": "తెలుగు (telugu)",
+          "back": "Telugu (language)",
+          "pronunciation": "telugu",
+          "tags": [
+            "culture"
+          ]
+        },
+        {
+          "front": "ఆంధ్రప్రదేశం (andhrapradesham)",
+          "back": "Andhra Pradesh (state)",
+          "pronunciation": "andhrapradesham",
+          "tags": [
+            "culture"
+          ]
+        },
+        {
+          "front": "తెలంగాణం (telangaana)",
+          "back": "Telangana (state)",
+          "pronunciation": "telangaana",
+          "tags": [
+            "culture"
+          ]
+        },
+        {
+          "front": "హైదరాబాదు (hyderabad)",
+          "back": "Hyderabad",
+          "pronunciation": "hyderabad",
+          "tags": [
+            "culture"
+          ]
+        },
+        {
+          "front": "విజయవాడ (vijayavaada)",
+          "back": "Vijayawada",
+          "pronunciation": "vijayavaada",
+          "tags": [
+            "culture"
+          ]
+        },
+        {
+          "front": "ఉగాది (ugaadi)",
+          "back": "Telugu New Year festival",
+          "pronunciation": "ugaadi",
+          "tags": [
+            "culture"
+          ]
+        },
+        {
+          "front": "సంక్రాంతం (sankraantham)",
+          "back": "Sankranti festival",
+          "pronunciation": "sankraantham",
+          "tags": [
+            "culture"
+          ]
+        },
+        {
+          "front": "కర్నాటక సంగీతం (karnataka sangeetam)",
+          "back": "Carnatic music tradition",
+          "pronunciation": "karnataka sangeetam",
+          "tags": [
+            "culture"
+          ]
+        },
+        {
+          "front": "తెలుగు సాహిత్యం (telugu saahityam)",
+          "back": "Telugu literature",
+          "pronunciation": "telugu saahityam",
+          "tags": [
+            "culture"
+          ]
+        },
+        {
+          "front": "రాష్ట్ర భాష (raashtra bhaasha)",
+          "back": "State language",
+          "pronunciation": "raashtra bhaasha",
+          "tags": [
+            "culture"
+          ]
+        },
+        {
+          "front": "ప్రాచీన భాష (praachina bhaasha)",
+          "back": "Classical language",
+          "pronunciation": "praachina bhaasha",
+          "tags": [
+            "culture"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Money & Shopping",
+      "description": "Buying, selling, and money",
+      "cards": [
+        {
+          "front": "డాబు (daabu)",
+          "back": "Money",
+          "pronunciation": "daabu",
+          "tags": [
+            "shopping"
+          ]
+        },
+        {
+          "front": "ధర (dhara)",
+          "back": "Price",
+          "pronunciation": "dhara",
+          "tags": [
+            "shopping"
+          ]
+        },
+        {
+          "front": "కొణుగు (konugu)",
+          "back": "Purchase / buy",
+          "pronunciation": "konugu",
+          "tags": [
+            "shopping"
+          ]
+        },
+        {
+          "front": "అమ్మకం (ammakam)",
+          "back": "Sale / sell",
+          "pronunciation": "ammakam",
+          "tags": [
+            "shopping"
+          ]
+        },
+        {
+          "front": "రూపాయి (roopaayi)",
+          "back": "Rupee",
+          "pronunciation": "roopaayi",
+          "tags": [
+            "shopping"
+          ]
+        },
+        {
+          "front": "దోరుకుంది (dorukundi)",
+          "back": "Available / you get",
+          "pronunciation": "dorukundi",
+          "tags": [
+            "shopping"
+          ]
+        },
+        {
+          "front": "కావాలి (kaavali)",
+          "back": "Want / need",
+          "pronunciation": "kaavali",
+          "tags": [
+            "shopping"
+          ]
+        },
+        {
+          "front": "వద్దు (vaddu)",
+          "back": "Don't want / not needed",
+          "pronunciation": "vaddu",
+          "tags": [
+            "shopping"
+          ]
+        },
+        {
+          "front": "దుకానం (dukaanam)",
+          "back": "Shop / store",
+          "pronunciation": "dukaanam",
+          "tags": [
+            "shopping"
+          ]
+        },
+        {
+          "front": "బిమ్ము (billu)",
+          "back": "Bill / receipt",
+          "pronunciation": "billu",
+          "tags": [
+            "shopping"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Health & Emergencies",
+      "description": "Health, doctor, and emergency phrases",
+      "cards": [
+        {
+          "front": "ఆరోగ్యం (aarogyam)",
+          "back": "Health",
+          "pronunciation": "aarogyam",
+          "tags": [
+            "health"
+          ]
+        },
+        {
+          "front": "వైద్యుడు (vaidyudu)",
+          "back": "Doctor",
+          "pronunciation": "vaidyudu",
+          "tags": [
+            "health"
+          ]
+        },
+        {
+          "front": "మందు (mandu)",
+          "back": "Medicine",
+          "pronunciation": "mandu",
+          "tags": [
+            "health"
+          ]
+        },
+        {
+          "front": "నోపి (nopi)",
+          "back": "Pain",
+          "pronunciation": "nopi",
+          "tags": [
+            "health"
+          ]
+        },
+        {
+          "front": "జ్వరం (jwaram)",
+          "back": "Fever",
+          "pronunciation": "jwaram",
+          "tags": [
+            "health"
+          ]
+        },
+        {
+          "front": "ఆసుపత్రికి కాల్ చేయంది (aasupatrikiki kaal cheyandi)",
+          "back": "Call the hospital",
+          "pronunciation": "aasupatrikiki kaal cheyandi",
+          "tags": [
+            "health"
+          ]
+        },
+        {
+          "front": "నాకు నోపం వస్తుంది (naaku noppi vastundi)",
+          "back": "I am in pain / it hurts",
+          "pronunciation": "naaku noppi vastundi",
+          "tags": [
+            "health"
+          ]
+        },
+        {
+          "front": "అపాయం (apaayam)",
+          "back": "Danger",
+          "pronunciation": "apaayam",
+          "tags": [
+            "health"
+          ]
+        },
+        {
+          "front": "సహాయం (sahaayam)",
+          "back": "Help",
+          "pronunciation": "sahaayam",
+          "tags": [
+            "health"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Work & Occupations",
+      "description": "Jobs and workplace words",
+      "cards": [
+        {
+          "front": "ఉద్యోగం (udyogam)",
+          "back": "Job / employment",
+          "pronunciation": "udyogam",
+          "tags": [
+            "work"
+          ]
+        },
+        {
+          "front": "విద్యార్థి (vidyaarthi)",
+          "back": "Student",
+          "pronunciation": "vidyaarthi",
+          "tags": [
+            "work"
+          ]
+        },
+        {
+          "front": "అధ్యాపకుడు (adhyaapakudu)",
+          "back": "Teacher (male)",
+          "pronunciation": "adhyaapakudu",
+          "tags": [
+            "work"
+          ]
+        },
+        {
+          "front": "అధ్యాపకురాలు (adhyaapakuraalu)",
+          "back": "Teacher (female)",
+          "pronunciation": "adhyaapakuraalu",
+          "tags": [
+            "work"
+          ]
+        },
+        {
+          "front": "ఇంజనీరు (injiniyaru)",
+          "back": "Engineer",
+          "pronunciation": "injiniyaru",
+          "tags": [
+            "work"
+          ]
+        },
+        {
+          "front": "వ్యాపారుడు (vyaapaarudu)",
+          "back": "Businessperson / merchant",
+          "pronunciation": "vyaapaarudu",
+          "tags": [
+            "work"
+          ]
+        },
+        {
+          "front": "రైతు (raitu)",
+          "back": "Farmer",
+          "pronunciation": "raitu",
+          "tags": [
+            "work"
+          ]
+        },
+        {
+          "front": "అప్పుపికం (appupikam)",
+          "back": "Office",
+          "pronunciation": "appupikam",
+          "tags": [
+            "work"
+          ]
+        },
+        {
+          "front": "సభ (sabha)",
+          "back": "Meeting",
+          "pronunciation": "sabha",
+          "tags": [
+            "work"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Grammar Essentials",
+      "description": "Postpositions, conjunctions, and sentence glue",
+      "cards": [
+        {
+          "front": "మరియు (mariyu)",
+          "back": "And",
+          "pronunciation": "mariyu",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "కానీ (kaani)",
+          "back": "But",
+          "pronunciation": "kaani",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "లేదా (ledaa)",
+          "back": "Or",
+          "pronunciation": "ledaa",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ఎందుకంటే (endukante)",
+          "back": "Because",
+          "pronunciation": "endukante",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "నుంది (nundi)",
+          "back": "From / since",
+          "pronunciation": "nundi",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "కు (ku)",
+          "back": "To / for (dative suffix)",
+          "pronunciation": "ku",
+          "notes": "Used after nouns",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "లో (lo)",
+          "back": "In / at (locative suffix)",
+          "pronunciation": "lo",
+          "notes": "Used after nouns",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "లేదు (ledu)",
+          "back": "Not / there isn't",
+          "pronunciation": "ledu",
+          "notes": "Same word as 'no' in many contexts",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ఉంది (undi)",
+          "back": "Is / exists",
+          "pronunciation": "undi",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "కదు (kada)",
+          "back": "Isn't it? / right?",
+          "pronunciation": "kada",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "చాలా (chaalaa)",
+          "back": "Very / much",
+          "pronunciation": "chaalaa",
+          "tags": [
+            "grammar"
+          ]
+        },
+        {
+          "front": "ఇంకా (inka)",
+          "back": "Still / yet / more",
+          "pronunciation": "inka",
+          "tags": [
+            "grammar"
+          ]
+        }
+      ]
+    }
+  ]
+}
