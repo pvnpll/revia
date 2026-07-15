@@ -5,16 +5,18 @@ import { ArrowLeft, Globe, Sparkles, UserRound } from "lucide-react";
 
 import { DeckVisibilityToggle } from "@/features/decks/components/deck-visibility-toggle";
 import { ImportPublicDeckButton } from "@/features/decks/components/import-public-deck-button";
-import { useDeck } from "@/features/decks/hooks/use-decks";
+import { useDeck, useUpdateDeck } from "@/features/decks/hooks/use-decks";
 import { useLessons } from "@/features/lessons/hooks/use-lessons";
 import { LessonsSection } from "@/features/lessons/components/lesson-list";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { InlineTitleEditor } from "@/components/ui/inline-title-editor";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function DeckDetailContent({ deckId }: { deckId: string }) {
   const { data: deck, isLoading: deckLoading, isError, error } = useDeck(deckId);
+  const updateDeck = useUpdateDeck(deckId);
   useLessons(deckId);
 
   if (deckLoading) {
@@ -54,7 +56,23 @@ export function DeckDetailContent({ deckId }: { deckId: string }) {
             style={{ backgroundColor: deck.color }}
           />
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">{deck.title}</h1>
+            {deck.isOwner ? (
+              <InlineTitleEditor
+                value={deck.title}
+                titleClassName="text-3xl font-bold tracking-tight"
+                isSaving={updateDeck.isPending}
+                error={
+                  updateDeck.isError && updateDeck.error instanceof Error
+                    ? updateDeck.error.message
+                    : null
+                }
+                onSave={async (title) => {
+                  await updateDeck.mutateAsync({ title });
+                }}
+              />
+            ) : (
+              <h1 className="text-3xl font-bold tracking-tight">{deck.title}</h1>
+            )}
             {deck.subject && <p className="text-muted-foreground">{deck.subject}</p>}
             {deck.description && (
               <p className="mt-2 text-sm text-muted-foreground">{deck.description}</p>
@@ -90,7 +108,7 @@ export function DeckDetailContent({ deckId }: { deckId: string }) {
                 {deck.sourceAuthorUsername
                   ? `Originally by @${deck.sourceAuthorUsername}. `
                   : "Imported from a public deck. "}
-                Study and review here — your progress is saved to your library. Visibility is
+                Practice and run Daily Review here — your progress is saved to your library. Visibility is
                 controlled by the original author.
               </CardContent>
             </Card>
@@ -113,7 +131,7 @@ export function DeckDetailContent({ deckId }: { deckId: string }) {
           <CardHeader>
             <CardTitle>Add to your library</CardTitle>
             <CardDescription>
-              Import this deck to study, review, and save your own progress. The original author
+              Import this deck to practice, run Daily Review, and save your own progress. The original author
               stays credited on your copy.
             </CardDescription>
           </CardHeader>

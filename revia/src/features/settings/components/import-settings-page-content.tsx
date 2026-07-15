@@ -8,7 +8,7 @@ export function ImportSettingsPageContent() {
   return (
     <SettingsSubpage
       title="Import deck"
-      description="Upload a JSON or text file to add cards and lessons."
+      description="Upload a JSON or text file, then click Import JSON to add cards and lessons."
     >
       <Card>
         <CardContent className="pt-6">

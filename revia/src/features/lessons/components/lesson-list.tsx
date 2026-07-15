@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Layers } from "lucide-react";
 
-import { useLessons } from "@/features/lessons/hooks/use-lessons";
+import { useLessons, useUpdateLesson } from "@/features/lessons/hooks/use-lessons";
 import { CreateLessonForm } from "@/features/lessons/components/create-lesson-form";
 import { DeleteLessonButton } from "@/features/lessons/components/delete-lesson-button";
 import { PracticeSession } from "@/features/practice/components/practice-session";
@@ -11,6 +11,7 @@ import type { LessonWithStats } from "@/types/lesson";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { InlineTitleEditor } from "@/components/ui/inline-title-editor";
 import { ListSkeleton } from "@/components/ui/skeleton";
 
 interface ActiveLessonSession {
@@ -20,6 +21,7 @@ interface ActiveLessonSession {
 
 export function LessonList({ deckId, readOnly = false }: { deckId: string; readOnly?: boolean }) {
   const { data: lessons, isLoading, isError, error } = useLessons(deckId);
+  const updateLesson = useUpdateLesson(deckId);
   const [activeSession, setActiveSession] = useState<ActiveLessonSession | null>(null);
 
   if (isLoading) {
@@ -54,17 +56,33 @@ export function LessonList({ deckId, readOnly = false }: { deckId: string; readO
               key={lesson.id}
               className="group flex items-center justify-between gap-4 px-4 py-4 transition-colors active:bg-accent"
             >
-              <button
-                type="button"
-                className="min-w-0 flex-1 text-left"
-                onClick={() => setActiveSession({ lesson, reverseMode: false })}
-              >
-                <p className="font-semibold">{lesson.title}</p>
-                <p className="mt-0.5 text-xs text-muted-foreground">
+              <div className="min-w-0 flex-1 space-y-1">
+                {!readOnly ? (
+                  <InlineTitleEditor
+                    value={lesson.title}
+                    titleClassName="font-semibold"
+                    isSaving={updateLesson.isPending}
+                    error={
+                      updateLesson.isError && updateLesson.error instanceof Error
+                        ? updateLesson.error.message
+                        : null
+                    }
+                    onSave={async (title) => {
+                      await updateLesson.mutateAsync({ lessonId: lesson.id, input: { title } });
+                    }}
+                  />
+                ) : (
+                  <p className="font-semibold">{lesson.title}</p>
+                )}
+                <button
+                  type="button"
+                  className="text-left text-xs text-muted-foreground hover:text-foreground"
+                  onClick={() => setActiveSession({ lesson, reverseMode: false })}
+                >
                   {readOnly ? "Browse" : "Practice"} {lesson.cardCount} cards
                   {!readOnly && " · front to back"}
-                </p>
-              </button>
+                </button>
+              </div>
               <div className="flex shrink-0 flex-col items-end gap-2">
                 <Badge variant="secondary">{lesson.cardCount} cards</Badge>
                 <Button

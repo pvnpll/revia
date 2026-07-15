@@ -8,6 +8,28 @@ Release notes are **drafted** on each `main` merge; **published** only when expl
 
 ---
 
+## [v1.5.0] — 2026-07-15 (Published)
+
+**Content editing & import improvements** — rename decks and lessons; confirm before import; reliable large deck imports.
+
+→ [Full release notes](docs/releases/v1.5.0.md)
+
+### Added
+- Deck and lesson title editing with pencil icon on deck detail page
+- Sample Kannada and Telugu deck JSON in `content/decks/`
+
+### Changed
+- Import requires Import JSON click after file upload (no auto-import)
+- Large imports batched per lesson; import API timeout extended
+- About and import settings copy updated for Practice + Daily Review
+
+### Fixed
+- Slow initial app load (removed global practice prefetch)
+- Explore page stuck loading on refetch
+- Import cache invalidation for deck detail and lessons after import
+
+---
+
 ## [v1.4.0] — 2026-07-15 (Published)
 
 **Practice mode & Daily Review split** — endless adaptive practice as primary experience; SRS daily review secondary.
@@ -118,11 +140,10 @@ Release notes are **drafted** on each `main` merge; **published** only when expl
 
 | Version | Scope |
 |---------|--------|
-| v1.0.1 | Patch fixes and polish (if needed) |
-| v1.4.0 | Content editing UI (deck/lesson/card) |
-| v1.5.0 | JSON export |
-| v1.6.0 | Statistics page |
-| v1.7.0 | Tags |
-| v1.8.0 | Media on cards |
+| v1.6.0 | Deck description/color edit, lesson reorder, card UI on deck page |
+| v1.7.0 | JSON export |
+| v1.8.0 | Statistics page |
+| v1.9.0 | Tags |
+| v2.0.0 | Media on cards |
 
 See [progress-and-roadmap.md](docs/application/progress-and-roadmap.md) for details.

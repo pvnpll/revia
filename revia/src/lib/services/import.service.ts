@@ -15,6 +15,8 @@ export interface ImportDeckResult {
   tagCount: number;
 }
 
+const LESSON_IMPORT_TIMEOUT_MS = 30_000;
+
 function normalizeOptionalText(value: string | null | undefined): string | null {
   const trimmed = value?.trim();
   return trimmed ? trimmed : null;
@@ -43,13 +45,59 @@ async function upsertTags(
   return tagMap;
 }
 
+async function createImportedCard(
+  tx: Prisma.TransactionClient,
+  deckId: string,
+  lessonId: string,
+  cardInput: ImportDeckRequest["lessons"][number]["cards"][number],
+  tagMap: Map<string, string>,
+): Promise<void> {
+  const cardId = randomUUID();
+  const initialState = schedulingEngine.createInitialState(cardId, new Date());
+  const card = await tx.card.create({
+    data: {
+      id: cardId,
+      deckId,
+      lessonId,
+      front: cardInput.front,
+      back: cardInput.back,
+      pronunciation: normalizeOptionalText(cardInput.pronunciation),
+      exampleSentence: normalizeOptionalText(cardInput.exampleSentence ?? cardInput.example),
+      notes: normalizeOptionalText(cardInput.notes),
+      schedulingState: {
+        create: {
+          dueAt: initialState.dueAt,
+          intervalDays: initialState.intervalDays,
+          easeFactor: initialState.easeFactor,
+          repetitions: initialState.repetitions,
+          lapses: initialState.lapses,
+          lastReviewedAt: initialState.lastReviewedAt,
+          algorithmVersion: initialState.algorithmVersion,
+          algorithmState:
+            initialState.algorithmState === null
+              ? undefined
+              : (initialState.algorithmState as Prisma.InputJsonObject),
+        },
+      },
+    },
+  });
+
+  for (const tag of cardInput.tags) {
+    const tagId = tagMap.get(tag);
+    if (tagId) {
+      await tx.cardTag.create({ data: { cardId: card.id, tagId } });
+    }
+  }
+}
+
 export const importService = {
   async importDeck(userId: string, input: ImportDeckRequest): Promise<ImportDeckResult> {
-    return prisma.$transaction(async (tx) => {
-      const allTags = [
-        ...input.deck.tags,
-        ...input.lessons.flatMap((lesson) => lesson.cards.flatMap((card) => card.tags)),
-      ];
+    const allTags = [
+      ...input.deck.tags,
+      ...input.lessons.flatMap((lesson) => lesson.cards.flatMap((card) => card.tags)),
+    ];
+
+    const { deck, tagMap, sortOrderOffset } = await prisma.$transaction(async (tx) => {
       const tagMap = await upsertTags(tx, userId, allTags);
 
       const deck = input.targetDeckId
@@ -85,68 +133,40 @@ export const importService = {
           }))._max.sortOrder ?? -1) + 1
         : 0;
 
-      let cardCount = 0;
+      return { deck, tagMap, sortOrderOffset };
+    });
 
-      for (const [lessonIndex, lessonInput] of input.lessons.entries()) {
-        const lesson = await tx.lesson.create({
-          data: {
-            deckId: deck.id,
-            title: lessonInput.title,
-            sortOrder: sortOrderOffset + lessonIndex,
-          },
-        });
+    let cardCount = 0;
 
-        for (const cardInput of lessonInput.cards) {
-          const cardId = randomUUID();
-          const initialState = schedulingEngine.createInitialState(cardId, new Date());
-          const card = await tx.card.create({
+    for (const [lessonIndex, lessonInput] of input.lessons.entries()) {
+      const lessonCardCount = await prisma.$transaction(
+        async (tx) => {
+          const lesson = await tx.lesson.create({
             data: {
-              id: cardId,
               deckId: deck.id,
-              lessonId: lesson.id,
-              front: cardInput.front,
-              back: cardInput.back,
-              pronunciation: normalizeOptionalText(cardInput.pronunciation),
-              exampleSentence: normalizeOptionalText(
-                cardInput.exampleSentence ?? cardInput.example,
-              ),
-              notes: normalizeOptionalText(cardInput.notes),
-              schedulingState: {
-                create: {
-                  dueAt: initialState.dueAt,
-                  intervalDays: initialState.intervalDays,
-                  easeFactor: initialState.easeFactor,
-                  repetitions: initialState.repetitions,
-                  lapses: initialState.lapses,
-                  lastReviewedAt: initialState.lastReviewedAt,
-                  algorithmVersion: initialState.algorithmVersion,
-                  algorithmState:
-                    initialState.algorithmState === null
-                      ? undefined
-                      : (initialState.algorithmState as Prisma.InputJsonObject),
-                },
-              },
+              title: lessonInput.title,
+              sortOrder: sortOrderOffset + lessonIndex,
             },
           });
 
-          for (const tag of cardInput.tags) {
-            const tagId = tagMap.get(tag);
-            if (tagId) {
-              await tx.cardTag.create({ data: { cardId: card.id, tagId } });
-            }
+          for (const cardInput of lessonInput.cards) {
+            await createImportedCard(tx, deck.id, lesson.id, cardInput, tagMap);
           }
 
-          cardCount += 1;
-        }
-      }
+          return lessonInput.cards.length;
+        },
+        { timeout: LESSON_IMPORT_TIMEOUT_MS },
+      );
 
-      return {
-        deckId: deck.id,
-        deckTitle: deck.title,
-        lessonCount: input.lessons.length,
-        cardCount,
-        tagCount: tagMap.size,
-      };
-    });
+      cardCount += lessonCardCount;
+    }
+
+    return {
+      deckId: deck.id,
+      deckTitle: deck.title,
+      lessonCount: input.lessons.length,
+      cardCount,
+      tagCount: tagMap.size,
+    };
   },
 };

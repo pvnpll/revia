@@ -53,29 +53,32 @@ curl http://localhost:3000/api/health
 
 Expected: `{"status":"ok","timestamp":"..."}`
 
-## Manual Test Checklist (v1)
+## Manual Test Checklist (v1.5)
 
 ### Without Supabase (mock user)
 
 | Step | URL | Verify |
 |------|-----|--------|
-| 1 | `/dashboard` | Due count, streak, recent decks |
-| 2 | `/decks` | Lists seeded "Getting Started" deck |
-| 3 | `/decks/[id]` | Lessons list, tap lesson to study |
-| 4 | `/review` | Due cards, reveal, rate 1–5, next card advances quickly |
-| 5 | `/search` | Search "hello" or deck title |
-| 6 | `/settings` | Theme toggle, import form visible |
+| 1 | `/` or `/login` | Redirects to `/practice` with a card |
+| 2 | `/practice` | Reveal card, rate 1–5, next card loads |
+| 3 | `/dashboard` | Due count, streak, Practice + Daily Review buttons |
+| 4 | `/decks` | Lists seeded "Getting Started" deck |
+| 5 | `/decks/[id]` | Rename deck (pencil), lessons list, practice lesson |
+| 6 | `/review` | Due cards, reveal, rate 1–5 (Daily Review) |
+| 7 | `/settings/import` | Upload JSON loads text; Import JSON button required |
+| 8 | `/search` | Search "hello" or deck title |
+| 9 | `/settings` | Theme toggle, about text mentions Practice |
 
 ### With Supabase Auth
 
 | Step | URL | Verify |
 |------|-----|--------|
 | 1 | `/login` | Sign in with email/password |
-| 2 | `/auth/callback` | Redirects to dashboard after signup |
+| 2 | `/auth/callback` | Redirects to `/practice` after signup |
 | 3 | `/settings` | Account section shows email, sign out works |
 | 4 | Sign out → `/login` | Unauthenticated redirect |
 
-### After review session
+### After Daily Review session
 
 | Step | Verify |
 |------|--------|

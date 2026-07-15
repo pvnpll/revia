@@ -5,15 +5,16 @@
 Version 1 is designed for personal use. A signed-in user can:
 
 - Create and delete decks
+- Rename deck and lesson titles (pencil icon on deck detail)
 - Create and delete lessons
-- Study lessons (swipe card viewer)
-- Complete daily review sessions with ratings
+- **Practice** endlessly (primary mode on app open)
+- **Daily Review** for spaced repetition when cards are due
 - Track progress on the dashboard
-- Import learning content (JSON)
+- Import learning content (JSON — upload or paste, then confirm)
 - Search decks, lessons, and cards
 - Configure theme and sign out
 
-**Not in v1:** export, statistics charts, card edit UI on deck page, tags UI, sharing.
+**Not in v1:** export, statistics charts, card edit UI on deck page, tags UI, deck description/color edit UI.
 
 ---
 
@@ -40,8 +41,9 @@ Possible future roles (out of v1 scope):
 
 JSON import is supported via Settings → Import Deck.
 
-- File upload (`.json`, `.txt`) or paste
+- File upload (`.json`, `.txt`) or paste — click **Import JSON** to confirm (upload alone does not import)
 - Creates deck, lessons, cards, tags, and initial scheduling state
+- Large decks imported in batches per lesson
 - Generic format works for any subject
 
 **Not in v1:** CSV, Excel, Markdown, PDF, `.revia` package export/import.
@@ -63,9 +65,9 @@ JSON import is supported via Settings → Import Deck.
       "description": "Basic greetings",
       "cards": [
         {
-          "front": "Hello",
-          "back": "ನಮಸ್ಕಾರ",
-          "pronunciation": "Namaskara",
+          "front": "ನಮಸ್ಕಾರ (namaskara)",
+          "back": "Hello / Greetings",
+          "pronunciation": "namaskara",
           "example": "ನಮಸ್ಕಾರ, ಹೇಗಿದ್ದೀರ?",
           "notes": "Formal greeting",
           "tags": ["greeting", "beginner"]
@@ -98,8 +100,9 @@ Revia is a **mobile-first web application**.
 | Import JSON deck | ✅ |
 | Create decks manually | ✅ |
 | Organize into lessons | ✅ |
-| Study lessons | ✅ |
+| Practice mode (endless) | ✅ |
 | Daily review sessions | ✅ |
+| Rename deck / lesson titles | ✅ |
 | Track review progress | ✅ (dashboard) |
 | Deploy to browser (mobile) | ✅ |
 | Real user accounts | ✅ (Supabase) |

@@ -12,7 +12,7 @@ Revia v1 is a **mobile-first spaced repetition learning app**. A personal user c
 
 1. Sign up / sign in (Supabase Auth)
 2. Import or create decks with lessons and cards
-3. Study lessons with a swipe-based card viewer
+3. Practice cards endlessly and run Daily Review when due
 4. Complete daily review sessions with 1–5 ratings
 5. See progress on the dashboard (due count, streak, reviewed today)
 6. Search across decks, lessons, and cards
@@ -49,8 +49,8 @@ See [DEPLOY-VERCEL.md](../DEPLOY-VERCEL.md) for full deployment guide.
 | JSON import | ✅ Complete |
 | Supabase Auth | ✅ Complete |
 | Mobile shell + floating nav | ✅ Complete |
-| Deck edit UI | ⏳ API only |
-| Lesson edit/reorder UI | ⏳ API only |
+| Deck title edit | ✅ Complete |
+| Lesson title edit | ✅ Complete |
 | Card management UI on deck page | ⏳ API exists; UI not mounted |
 | Tags UI | ⏳ Schema + import only |
 | Export | ⏳ Not started |
