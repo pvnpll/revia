@@ -59,7 +59,7 @@ export function ExplorePageContent() {
           Explore
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Search your library and discover public decks from other learners.
+          Search your library and discover public decks from the community.
         </p>
       </div>
 
@@ -137,7 +137,7 @@ export function ExplorePageContent() {
             Public decks
           </h2>
           <p className="text-sm text-muted-foreground">
-            Decks published by other learners. Make yours public from any deck page.
+            Decks published to Explore — including your own when marked public.
           </p>
         </div>
 

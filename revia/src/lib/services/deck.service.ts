@@ -21,6 +21,7 @@ export const deckService = {
   async getReadable(userId: string, deckId: string): Promise<DeckDetail> {
     const owned = await deckRepository.findByIdForUser(deckId, userId);
     if (owned) {
+      void deckRepository.recordAccess(deckId, userId);
       return { ...owned, isOwner: true };
     }
 
@@ -44,11 +45,10 @@ export const deckService = {
     return deckService.assertOwner(userId, deckId);
   },
 
-  async explore(userId: string, input: ExploreInput): Promise<ExploreResponse> {
+  async explore(_userId: string, input: ExploreInput): Promise<ExploreResponse> {
     const decks = await deckRepository.findPublicDecks({
       query: input.q,
       limit: input.limit,
-      excludeUserId: userId,
     });
 
     return {
@@ -62,7 +62,14 @@ export const deckService = {
   },
 
   async update(userId: string, deckId: string, input: UpdateDeckInput): Promise<DeckDetail> {
-    await deckService.assertOwner(userId, deckId);
+    const owned = await deckService.assertOwner(userId, deckId);
+    if (owned.sourceDeckId && input.isPublic !== undefined) {
+      throw new ApiError(
+        400,
+        "VALIDATION",
+        "Imported decks cannot change visibility. Only the original author controls public sharing.",
+      );
+    }
     const deck = await deckRepository.update(deckId, input);
     return { ...deck, isOwner: true };
   },

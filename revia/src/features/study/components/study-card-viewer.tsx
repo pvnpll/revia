@@ -6,6 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { studySurface } from "@/lib/theme/app-theme";
 import { RATING_LABELS } from "@/lib/constants/rating-labels";
+import { RATING_BORDER_STYLES } from "@/lib/constants/rating-colors";
 import type { RatingValue } from "@/lib/scheduler";
 import { cn } from "@/lib/utils/cn";
 import { Button } from "@/components/ui/button";
@@ -219,9 +220,7 @@ export function StudyCardViewer({
                     onClick={() => handleRating(rating)}
                     className={cn(
                       "flex h-14 flex-col items-center justify-center rounded-xl border bg-card transition-colors active:scale-95 disabled:opacity-50",
-                      rating <= 2 && "border-destructive/30",
-                      rating === 3 && "border-border",
-                      rating >= 4 && "border-primary/30 bg-primary/5",
+                      RATING_BORDER_STYLES[rating],
                     )}
                   >
                     <span className="text-lg font-bold">{rating}</span>

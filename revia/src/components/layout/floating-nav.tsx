@@ -3,26 +3,26 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
-import { BookOpen, Compass, GraduationCap, LayoutDashboard } from "lucide-react";
+import { BookOpen, Compass, LayoutDashboard, Sparkles } from "lucide-react";
 
 import { dashboardQueryKeys } from "@/features/dashboard/hooks/use-dashboard";
 import { dashboardApi } from "@/features/dashboard/services/dashboard-api";
 import { deckQueryKeys } from "@/features/decks/hooks/use-decks";
 import { deckApi } from "@/features/decks/services/deck-api";
-import { reviewQueryKeys } from "@/features/review/hooks/use-review";
-import { reviewApi } from "@/features/review/services/review-api";
+import { practiceQueryKeys } from "@/features/practice/hooks/use-practice";
+import { practiceApi } from "@/features/practice/services/practice-api";
 import { cn } from "@/lib/utils/cn";
 
 const navItems = [
-  { href: "/dashboard", label: "Home", icon: LayoutDashboard, prefetchKey: "dashboard" as const },
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, prefetchKey: "dashboard" as const },
+  { href: "/practice", label: "Practice", icon: Sparkles, prefetchKey: "practice" as const },
   { href: "/decks", label: "Decks", icon: BookOpen, prefetchKey: "decks" as const },
-  { href: "/review", label: "Review", icon: GraduationCap, prefetchKey: "review" as const },
   { href: "/explore", label: "Explore", icon: Compass, prefetchKey: null },
 ];
 
 function prefetchRoute(
   queryClient: ReturnType<typeof useQueryClient>,
-  key: "dashboard" | "decks" | "review" | null,
+  key: "dashboard" | "decks" | "practice" | null,
 ) {
   if (key === "dashboard") {
     void queryClient.prefetchQuery({
@@ -42,11 +42,11 @@ function prefetchRoute(
     return;
   }
 
-  if (key === "review") {
+  if (key === "practice") {
     void queryClient.prefetchQuery({
-      queryKey: reviewQueryKeys.due(),
-      queryFn: () => reviewApi.getDueCards({ limit: 30 }),
-      staleTime: 30_000,
+      queryKey: practiceQueryKeys.cards(),
+      queryFn: () => practiceApi.getCards(),
+      staleTime: 60_000,
     });
   }
 }

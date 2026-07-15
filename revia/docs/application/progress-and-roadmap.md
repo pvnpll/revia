@@ -1,6 +1,6 @@
 # Progress and Roadmap
 
-**Last updated:** July 2026 — **v1.3.0** (import public decks & feedback)  
+**Last updated:** July 2026 — **v1.4.0** (Practice mode & Daily Review split)  
 **Versioning:** [release-versioning.md](./release-versioning.md) — SemVer; every `main` merge = new version  
 **Policy:** Plan features by target release. Implement after you approve. Publish release notes only when you ask.
 
@@ -15,14 +15,15 @@
 | **v1.2.0** | ✅ Published | Usernames, username login, dark default | Identity |
 | **v1.2.1** | ✅ Published | Settings hub, auth/email fixes | UX |
 | **v1.3.0** | ✅ Published | Import public decks, feedback | Sharing |
+| **v1.4.0** | ✅ Published | Practice mode, Daily Review split | Learning modes |
 | **v1.0.1** | Open | Patches: bugs, perf, deploy fixes | Ad-hoc |
-| **v1.4.0** | Planned | Content editing UI | Phase A |
-| **v1.5.0** | Planned | JSON export | Phase B |
-| **v1.6.0** | Planned | Statistics / charts | Phase C |
-| **v1.7.0** | Planned | Tags | Phase D |
-| **v1.8.0** | Planned | Image/audio cards | Phase E |
-| **v1.9.0** | Planned | CSV import, review filters | Phase F + G |
-| **v2.0.0** | Future | Breaking changes, roles, native API | Phase H / I |
+| **v1.5.0** | Planned | Content editing UI | Phase A |
+| **v1.6.0** | Planned | JSON export | Phase B |
+| **v1.7.0** | Planned | Statistics / charts | Phase C |
+| **v1.8.0** | Planned | Tags | Phase D |
+| **v1.9.0** | Planned | Image/audio cards | Phase E |
+| **v2.0.0** | Planned | CSV import, review filters | Phase F + G |
+| **v2.1.0** | Future | Breaking changes, roles, native API | Phase H / I |
 
 Release notes: [docs/releases/](../releases/) · Changelog: [CHANGELOG.md](../../CHANGELOG.md)
 
@@ -110,6 +111,33 @@ Explore public deck → Add to library → Study with your own progress → Auth
 
 ---
 
+## v1.4.0 Summary
+
+Revia **v1.4.0** splits learning into **Practice** and **Daily Review**:
+
+```text
+Open app → Practice card immediately → Rate 1–5 → Card re-queues adaptively
+Dashboard → Daily Review (due cards only) → Updates SRS schedule
+```
+
+| Area | v1.4.0 Status |
+|------|---------------|
+| Practice mode (endless, queue-based) | ✅ Shipped |
+| PracticeScheduler (client-side) | ✅ Shipped |
+| DailyReviewScheduler (SRS, unchanged behavior) | ✅ Shipped |
+| App opens to practice card | ✅ Shipped |
+| Nav: Dashboard → Practice → Decks → Explore | ✅ Shipped |
+| Recent-deck practice pool | ✅ Shipped |
+| Deck practice (all cards, any lesson) | ✅ Shipped |
+| Lesson practice (lesson-scoped only) | ✅ Shipped |
+| Imported deck visibility lock | ✅ Shipped |
+| Explore shows author's own public decks | ✅ Shipped |
+| Rating button color accents | ✅ Shipped |
+
+**Release notes:** [v1.4.0.md](../releases/v1.4.0.md) (**Published**)
+
+---
+
 ## Completed Phases (v1.0.0)
 
 ### Phase 0 — Architecture
@@ -176,7 +204,7 @@ Explore public deck → Add to library → Study with your own progress → Auth
 
 ### Phase 11 — Mobile shell + branding
 
-- Floating bottom nav (Home, Decks, Review, Search)
+- Floating bottom nav (Dashboard, Practice, Decks, Explore)
 - Desktop gate ("mobile-first" message)
 - Revia branding and theme system
 

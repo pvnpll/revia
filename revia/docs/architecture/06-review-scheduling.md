@@ -1,6 +1,17 @@
 # 06 — Review Scheduling (v2)
 
-The scheduler lives entirely in **`src/lib/scheduler/`** — a pure TypeScript module with zero dependencies on Next.js, React, Prisma, or PostgreSQL.
+Scheduling lives in **`src/lib/scheduler/`** — pure TypeScript with no React, Next.js, or Prisma imports in algorithm code.
+
+---
+
+## Two Learning Modes (v1.4+)
+
+| Mode | Scheduler | Where | Persists to DB |
+|------|-----------|-------|--------------|
+| **Practice** | `PracticeScheduler` | Client (`PracticeSession`) | No |
+| **Daily Review** | `DailyReviewScheduler` | Server (`review.service.ts`) | Yes — `CardSchedulingState`, `ReviewLog` |
+
+Both use the same 1–5 ratings and shared `StudyCardViewer` UI.
 
 ---
 
@@ -8,64 +19,54 @@ The scheduler lives entirely in **`src/lib/scheduler/`** — a pure TypeScript m
 
 ```
 src/lib/scheduler/
-├── types.ts              # CardSchedulingState, ScheduleResult, SchedulingAlgorithm
-├── rating.ts             # RATING constants, validation
-├── engine.ts             # SchedulingEngine wrapper
+├── types.ts                  # RatingValue, CardSchedulingState, SchedulingAlgorithm
+├── engine.ts                 # SchedulingEngine wrapper
+├── practice-scheduler.ts     # Endless queue (client-only)
+├── daily-review-scheduler.ts # SRS wrapper for Daily Review
 ├── algorithms/
-│   ├── simple-interval.ts   # MVP default
-│   ├── sm2.ts                 # future
-│   └── fsrs.ts                # future
-└── index.ts              # public exports
+│   └── simple-interval.ts    # simple-v1 (Daily Review)
+└── index.ts                  # public exports
 ```
 
 ---
 
-## Isolation Rules
+## PracticeScheduler (client)
 
-| Rule | Enforcement |
-|------|-------------|
-| No `import` from `next`, `react`, `@prisma/client` | ESLint + code review |
-| No file I/O or network | Pure functions only |
-| No card content fields in inputs | TypeScript interfaces |
-| Unit tests run without database | Vitest |
+- **Initial queue:** shuffled card IDs
+- **On rating:** remove current card, reinsert after randomized gap
+- **Gap ranges (cards before reappearance):**
+
+| Rating | Approx. gap |
+|--------|-------------|
+| 1 | 2–4 |
+| 2 | 5–9 |
+| 3 | 10–18 |
+| 4 | 19–35 |
+| 5 | 36–55 |
+
+Does **not** read or write `dueAt` / `nextReviewDate`.
+
+Tests: `tests/unit/lib/scheduler/practice-scheduler.test.ts`
 
 ---
 
-## Usage (server-side only)
+## DailyReviewScheduler (server)
 
-Only `lib/services/review.service.ts` calls the scheduler:
+Wraps `SchedulingEngine` + `SimpleIntervalAlgorithm` (`simple-v1`).
+
+Only `review.service.ts` calls it:
 
 ```typescript
-import { schedulingEngine } from "@/lib/scheduler";
+import { DailyReviewScheduler } from "@/lib/scheduler/daily-review-scheduler";
 
-const result = schedulingEngine.submitReview({
-  state,
-  rating: input.rating,
-  reviewHistory: history,
-  now: new Date(),
-});
+DailyReviewScheduler.submitReview({ state, rating, reviewHistory, now });
 ```
 
-Route Handlers call `reviewService` — never the scheduler directly.  
-Mobile apps call `POST /api/review` — same service path.
+Route handlers call `reviewService` — not schedulers directly.
 
 ---
 
-## Algorithm Swap
-
-```typescript
-// lib/scheduler/index.ts
-import { SimpleIntervalAlgorithm } from "./algorithms/simple-interval";
-
-const algorithm = new SimpleIntervalAlgorithm();
-export const schedulingEngine = new SchedulingEngine(algorithm);
-```
-
-To swap to FSRS: change one import. Services and API unchanged.
-
----
-
-## Rating → Interval (Simple Interval v1)
+## Rating → Interval (Simple Interval v1, Daily Review only)
 
 | Rating | Label | Behavior |
 |--------|-------|----------|
@@ -77,7 +78,15 @@ To swap to FSRS: change one import. Services and API unchanged.
 
 Monotonicity: `interval(1) ≤ interval(2) ≤ … ≤ interval(5)` for same state.
 
-See v1 doc for full pseudocode — algorithm logic unchanged, only location moved to `lib/scheduler/`.
+---
+
+## Isolation Rules
+
+| Rule | Enforcement |
+|------|-------------|
+| No `import` from `next`, `react`, `@prisma/client` in scheduler | Code review |
+| Practice queue state stays on client | `PracticeSession` only |
+| Daily Review state in Postgres | `review.repository.ts` |
 
 ---
 
@@ -85,6 +94,7 @@ See v1 doc for full pseudocode — algorithm logic unchanged, only location move
 
 ```
 tests/unit/lib/scheduler/simple-interval.test.ts
+tests/unit/lib/scheduler/practice-scheduler.test.ts
 ```
 
 Must pass with zero database dependency.

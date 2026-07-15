@@ -26,7 +26,7 @@ async function bootstrapAccount() {
 export function AuthForm({ mode }: { mode: AuthMode }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirect") ?? "/dashboard";
+  const redirectTo = searchParams.get("redirect") ?? "/practice";
 
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");

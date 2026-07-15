@@ -5,16 +5,16 @@ import { usePathname } from "next/navigation";
 import {
   BookOpen,
   Compass,
-  GraduationCap,
   LayoutDashboard,
+  Sparkles,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils/cn";
 
 const navItems = [
-  { href: "/dashboard", label: "Home", icon: LayoutDashboard, ready: true },
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, ready: true },
+  { href: "/practice", label: "Practice", icon: Sparkles, ready: true },
   { href: "/decks", label: "Decks", icon: BookOpen, ready: true },
-  { href: "/review", label: "Review", icon: GraduationCap, ready: true },
   { href: "/explore", label: "Explore", icon: Compass, ready: true },
 ];
 
@@ -25,7 +25,7 @@ export function AppSidebar() {
     <>
       <header className="fixed inset-x-0 top-0 z-20 flex h-14 items-center justify-between border-b bg-background/95 px-4 backdrop-blur">
         <div className="flex items-center gap-2">
-          <GraduationCap className="h-6 w-6 text-primary" />
+          <Sparkles className="h-6 w-6 text-primary" />
           <span className="text-lg font-semibold tracking-tight">Revia</span>
         </div>
         <span className="rounded-full bg-muted px-3 py-1 text-xs text-muted-foreground">
@@ -66,7 +66,7 @@ export function LegacyAppSidebar() {
   return (
     <aside className="flex h-full w-64 flex-col border-r bg-sidebar">
       <div className="flex h-14 items-center gap-2 px-6">
-        <GraduationCap className="h-6 w-6 text-primary" />
+        <Sparkles className="h-6 w-6 text-primary" />
         <span className="text-lg font-semibold tracking-tight">Revia</span>
       </div>
       <nav className="flex flex-1 flex-col gap-1 p-4">

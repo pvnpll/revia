@@ -1,5 +1,5 @@
 import { reviewRepository } from "@/lib/repositories/review.repository";
-import { schedulingEngine } from "@/lib/scheduler";
+import { DailyReviewScheduler } from "@/lib/scheduler/daily-review-scheduler";
 import type { GetDueReviewCardsInput, SubmitReviewInput } from "@/lib/validators/review.schema";
 import { ApiError } from "@/types/api";
 import type { ReviewQueue, SubmitReviewResult } from "@/types/review";
@@ -23,7 +23,7 @@ export const reviewService = {
       durationMs: input.durationMs,
       now,
       calculateNext: (state) =>
-        schedulingEngine.submitReview({
+        DailyReviewScheduler.submitReview({
           state,
           rating: input.rating,
           reviewHistory: [],

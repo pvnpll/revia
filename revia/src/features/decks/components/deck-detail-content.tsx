@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, Globe, UserRound } from "lucide-react";
+import { ArrowLeft, Globe, Sparkles, UserRound } from "lucide-react";
 
 import { DeckVisibilityToggle } from "@/features/decks/components/deck-visibility-toggle";
 import { ImportPublicDeckButton } from "@/features/decks/components/import-public-deck-button";
@@ -62,6 +62,12 @@ export function DeckDetailContent({ deckId }: { deckId: string }) {
           </div>
         </div>
         <div className="mt-4 flex flex-wrap items-center gap-2">
+          <Button asChild size="lg">
+            <Link href={`/practice?deckId=${deckId}`}>
+              <Sparkles className="h-4 w-4" />
+              Practice deck
+            </Link>
+          </Button>
           {deck.isPublic && deck.isOwner && (
             <Badge variant="outline" className="gap-1">
               <Globe className="h-3 w-3" />
@@ -78,25 +84,29 @@ export function DeckDetailContent({ deckId }: { deckId: string }) {
 
       {deck.isOwner ? (
         <>
-          {deck.sourceAuthorUsername ? (
+          {deck.sourceDeckId ? (
             <Card>
               <CardContent className="py-6 text-sm text-muted-foreground">
-                Originally by @{deck.sourceAuthorUsername}. Study and review here — your progress
-                is saved to your library.
+                {deck.sourceAuthorUsername
+                  ? `Originally by @${deck.sourceAuthorUsername}. `
+                  : "Imported from a public deck. "}
+                Study and review here — your progress is saved to your library. Visibility is
+                controlled by the original author.
               </CardContent>
             </Card>
-          ) : null}
-          <Card>
-            <CardHeader>
-              <CardTitle>Visibility</CardTitle>
-              <CardDescription>
-                Choose whether this deck appears in Explore for other learners.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <DeckVisibilityToggle deckId={deckId} isPublic={deck.isPublic} />
-            </CardContent>
-          </Card>
+          ) : (
+            <Card>
+              <CardHeader>
+                <CardTitle>Visibility</CardTitle>
+                <CardDescription>
+                  Choose whether this deck appears in Explore for other learners.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <DeckVisibilityToggle deckId={deckId} isPublic={deck.isPublic} />
+              </CardContent>
+            </Card>
+          )}
         </>
       ) : (
         <Card>
