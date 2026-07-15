@@ -159,7 +159,7 @@ export function ExplorePageContent() {
           </p>
         )}
 
-        {publicExplore.isFetching ? (
+        {publicExplore.isPending ? (
           <Card>
             <CardContent className="py-8 text-center text-sm text-muted-foreground">
               Loading public decks...

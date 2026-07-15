@@ -50,6 +50,22 @@ const cardInclude = Prisma.validator<Prisma.CardInclude>()({
   schedulingState: true,
 });
 
+const practiceCardInclude = Prisma.validator<Prisma.CardInclude>()({
+  lesson: { select: { id: true, title: true } },
+});
+
+type PracticeCardRow = PrismaCard & {
+  lesson: { id: string; title: string } | null;
+};
+
+function toPracticeCard(row: PracticeCardRow): CardWithScheduling {
+  return {
+    ...toCard(row),
+    lesson: row.lesson,
+    schedulingState: null,
+  };
+}
+
 export const cardRepository = {
   async findByDeck(deckId: string, lessonId?: string): Promise<CardWithScheduling[]> {
     const rows = await prisma.card.findMany({
@@ -75,27 +91,47 @@ export const cardRepository = {
         ...(options?.lessonId ? { lessonId: options.lessonId } : {}),
       },
       orderBy: { createdAt: "asc" },
-      include: cardInclude,
+      include: practiceCardInclude,
     });
 
-    return rows.map(toCardWithScheduling);
+    return rows.map((row) => toPracticeCard(row as PracticeCardRow));
   },
 
-  async findForPracticeByDeckIds(deckIds: string[]): Promise<CardWithScheduling[]> {
+  async findForPracticeByDeckIds(
+    deckIds: string[],
+    options?: { limit?: number },
+  ): Promise<CardWithScheduling[]> {
     if (deckIds.length === 0) {
       return [];
     }
 
-    const rows = await prisma.card.findMany({
-      where: {
-        deckId: { in: deckIds },
-        isSuspended: false,
-      },
-      orderBy: [{ deckId: "asc" }, { createdAt: "asc" }],
-      include: cardInclude,
-    });
+    const limit = options?.limit;
+    if (!limit) {
+      const rows = await prisma.card.findMany({
+        where: {
+          deckId: { in: deckIds },
+          isSuspended: false,
+        },
+        orderBy: [{ deckId: "asc" }, { createdAt: "asc" }],
+        include: practiceCardInclude,
+      });
+      return rows.map((row) => toPracticeCard(row as PracticeCardRow));
+    }
 
-    return rows.map(toCardWithScheduling);
+    const cards: CardWithScheduling[] = [];
+    for (const deckId of deckIds) {
+      if (cards.length >= limit) {
+        break;
+      }
+      const rows = await prisma.card.findMany({
+        where: { deckId, isSuspended: false },
+        orderBy: { createdAt: "asc" },
+        take: limit - cards.length,
+        include: practiceCardInclude,
+      });
+      cards.push(...rows.map((row) => toPracticeCard(row as PracticeCardRow)));
+    }
+    return cards;
   },
 
   async findByIdForDeck(id: string, deckId: string): Promise<CardWithScheduling | null> {
