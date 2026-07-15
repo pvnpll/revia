@@ -13,8 +13,10 @@ import { Button } from "@/components/ui/button";
 import type { StudyCardItem } from "@/features/study/types";
 
 const ratings: RatingValue[] = [1, 2, 3, 4, 5];
-const SWIPE_THRESHOLD_PX = 48;
+const SWIPE_THRESHOLD_PX = 72;
 const TAP_THRESHOLD_PX = 12;
+const GESTURE_LOCK_PX = 10;
+const SWIPE_EXIT_MS = 220;
 
 type StudyMode = "practice" | "review";
 type NavigationMode = "ratings" | "swipe";
@@ -54,12 +56,26 @@ export function StudyCardViewer({
 }: StudyCardViewerProps) {
   const touchStart = useRef<{ x: number; y: number } | null>(null);
   const mainRef = useRef<HTMLElement | null>(null);
+  const pointerStart = useRef<{ x: number; y: number } | null>(null);
+  const gestureLocked = useRef<"horizontal" | "vertical" | null>(null);
+  const isPointerDragging = useRef(false);
+
   const [revealedIds, setRevealedIds] = useState<Set<string>>(() => new Set());
+  const [dragX, setDragX] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isExiting, setIsExiting] = useState(false);
 
   const current = cards[currentIndex];
   const isRevealed = current ? revealedIds.has(current.id) : false;
   const isSwipeNavigation = navigationMode === "swipe";
   const progress = `${currentIndex + 1} / ${cards.length}`;
+
+  const nextIndex =
+    cards.length > 0 ? (currentIndex + 1) % cards.length : 0;
+  const previousIndex =
+    cards.length > 0 ? (currentIndex - 1 + cards.length) % cards.length : 0;
+  const nextCard = cards[nextIndex];
+  const previousCard = cards[previousIndex];
 
   useEffect(() => {
     if (fullscreen) {
@@ -72,6 +88,12 @@ export function StudyCardViewer({
 
   useEffect(() => {
     setRevealedIds(new Set());
+    setDragX(0);
+    setIsDragging(false);
+    setIsExiting(false);
+    pointerStart.current = null;
+    gestureLocked.current = null;
+    isPointerDragging.current = false;
   }, [current?.id]);
 
   function resetRevealState() {
@@ -84,10 +106,15 @@ export function StudyCardViewer({
   }
 
   function goToIndex(index: number) {
-    const clamped = Math.max(0, Math.min(index, cards.length - 1));
-    if (clamped !== currentIndex) {
+    if (cards.length === 0) return;
+
+    const target = isSwipeNavigation
+      ? ((index % cards.length) + cards.length) % cards.length
+      : Math.max(0, Math.min(index, cards.length - 1));
+
+    if (target !== currentIndex) {
       resetRevealState();
-      onIndexChange(clamped);
+      onIndexChange(target);
     }
   }
 
@@ -127,13 +154,124 @@ export function StudyCardViewer({
     }
   }
 
+  function getSwipeThreshold() {
+    const width = mainRef.current?.clientWidth ?? 320;
+    return Math.min(SWIPE_THRESHOLD_PX, width * 0.22);
+  }
+
+  function commitSwipe(direction: "next" | "previous") {
+    const width = mainRef.current?.clientWidth ?? 320;
+    const exitX = direction === "next" ? -width * 1.15 : width * 1.15;
+
+    setIsDragging(false);
+    setIsExiting(true);
+    setDragX(exitX);
+    isPointerDragging.current = false;
+    pointerStart.current = null;
+    gestureLocked.current = null;
+
+    window.setTimeout(() => {
+      if (direction === "next") {
+        goNext();
+      } else {
+        goPrevious();
+      }
+      setDragX(0);
+      setIsExiting(false);
+    }, SWIPE_EXIT_MS);
+  }
+
+  function resetDrag(animateSnapBack = false) {
+    setIsDragging(false);
+    isPointerDragging.current = false;
+    pointerStart.current = null;
+    gestureLocked.current = null;
+
+    if (animateSnapBack) {
+      requestAnimationFrame(() => setDragX(0));
+      return;
+    }
+
+    setDragX(0);
+  }
+
+  function handleSwipePointerDown(event: React.PointerEvent<HTMLDivElement>) {
+    if (isExiting || cards.length <= 1) return;
+
+    pointerStart.current = { x: event.clientX, y: event.clientY };
+    gestureLocked.current = null;
+    isPointerDragging.current = true;
+    setIsDragging(false);
+    event.currentTarget.setPointerCapture(event.pointerId);
+  }
+
+  function handleSwipePointerMove(event: React.PointerEvent<HTMLDivElement>) {
+    if (!isPointerDragging.current || isExiting || pointerStart.current === null) return;
+
+    const deltaX = event.clientX - pointerStart.current.x;
+    const deltaY = event.clientY - pointerStart.current.y;
+
+    if (gestureLocked.current === null) {
+      if (
+        Math.abs(deltaX) < GESTURE_LOCK_PX &&
+        Math.abs(deltaY) < GESTURE_LOCK_PX
+      ) {
+        return;
+      }
+      gestureLocked.current =
+        Math.abs(deltaX) > Math.abs(deltaY) ? "horizontal" : "vertical";
+    }
+
+    if (gestureLocked.current === "vertical") return;
+
+    event.preventDefault();
+    setIsDragging(true);
+    setDragX(deltaX);
+  }
+
+  function handleSwipePointerUp(event: React.PointerEvent<HTMLDivElement>) {
+    if (!isPointerDragging.current || pointerStart.current === null) return;
+
+    const deltaX = event.clientX - pointerStart.current.x;
+    const deltaY = event.clientY - pointerStart.current.y;
+    const startX = pointerStart.current.x;
+    const threshold = getSwipeThreshold();
+    const wasHorizontal = gestureLocked.current === "horizontal";
+
+    if (wasHorizontal && Math.abs(deltaX) >= threshold) {
+      if (deltaX < 0) {
+        commitSwipe("next");
+      } else {
+        commitSwipe("previous");
+      }
+      return;
+    }
+
+    if (
+      Math.abs(deltaX) < TAP_THRESHOLD_PX &&
+      Math.abs(deltaY) < TAP_THRESHOLD_PX
+    ) {
+      handleEdgeTap(startX);
+      resetDrag();
+      return;
+    }
+
+    resetDrag(true);
+  }
+
+  function handleSwipePointerCancel() {
+    resetDrag();
+  }
+
   function handleTouchStart(event: React.TouchEvent) {
+    if (isSwipeNavigation) return;
     const touch = event.touches[0];
     if (!touch) return;
     touchStart.current = { x: touch.clientX, y: touch.clientY };
   }
 
   function handleTouchEnd(event: React.TouchEvent) {
+    if (isSwipeNavigation) return;
     if (touchStart.current === null) return;
     const touch = event.changedTouches[0];
     if (!touch) return;
@@ -142,22 +280,6 @@ export function StudyCardViewer({
     const deltaY = touch.clientY - touchStart.current.y;
     const startX = touchStart.current.x;
     touchStart.current = null;
-
-    if (isSwipeNavigation) {
-      if (Math.abs(deltaX) >= SWIPE_THRESHOLD_PX && Math.abs(deltaX) > Math.abs(deltaY)) {
-        if (deltaX > 0) {
-          goNext();
-        } else {
-          goPrevious();
-        }
-        return;
-      }
-
-      if (Math.abs(deltaX) < TAP_THRESHOLD_PX && Math.abs(deltaY) < TAP_THRESHOLD_PX) {
-        handleEdgeTap(startX);
-      }
-      return;
-    }
 
     if (mode === "practice") {
       if (Math.abs(deltaX) < TAP_THRESHOLD_PX && Math.abs(deltaY) < TAP_THRESHOLD_PX) {
@@ -186,11 +308,60 @@ export function StudyCardViewer({
     }
   }
 
+  function renderCardBody(card: StudyCardItem, revealed: boolean) {
+    if (!revealed) {
+      return (
+        <div className="flex h-full flex-1 flex-col items-center justify-center px-6 text-center">
+          <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+            {mode === "practice" ? "Question" : "Front"}
+          </p>
+          <p className="mt-8 max-w-md whitespace-pre-wrap text-4xl font-semibold leading-tight">
+            {card.front}
+          </p>
+          <p className="mt-12 text-sm text-muted-foreground">Tap to reveal</p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex h-full flex-1 flex-col gap-4 overflow-auto px-5 py-4">
+        <div className="shrink-0 rounded-2xl border bg-muted/50 p-4 text-left">
+          <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+            {mode === "practice" ? "Question" : "Front"}
+          </p>
+          <p className="mt-2 whitespace-pre-wrap text-lg font-semibold leading-snug">
+            {card.front}
+          </p>
+        </div>
+
+        <div className="flex flex-1 flex-col rounded-2xl border bg-card p-5">
+          <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+            Answer
+          </p>
+          <p className="study-reveal-back mt-4 whitespace-pre-wrap text-3xl font-semibold leading-tight">
+            {card.back}
+          </p>
+          {(card.pronunciation || card.exampleSentence || card.notes) && (
+            <div className="mt-6 space-y-1 border-t pt-4 text-sm text-muted-foreground">
+              {card.pronunciation && <p>{card.pronunciation}</p>}
+              {card.exampleSentence && <p>{card.exampleSentence}</p>}
+              {card.notes && <p>{card.notes}</p>}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   if (!current) return null;
 
   const headerSubtitle =
     subtitle ??
     (isSwipeNavigation ? progress : mode === "practice" ? "Practice mode" : progress);
+
+  const dragRotation = Math.max(-14, Math.min(14, dragX * 0.04));
+  const dragOpacity = Math.max(0.72, 1 - Math.abs(dragX) / 900);
+  const showSwipeTransition = !isDragging;
 
   return (
     <div
@@ -229,34 +400,70 @@ export function StudyCardViewer({
 
       <main
         ref={mainRef}
-        className="relative flex flex-1 flex-col overflow-hidden px-6 pb-4"
-        style={isSwipeNavigation || mode === "practice" ? { touchAction: "pan-y" } : undefined}
+        className="relative flex flex-1 flex-col overflow-hidden px-4 pb-4"
+        style={!isSwipeNavigation && mode === "practice" ? { touchAction: "pan-y" } : undefined}
       >
-        {isSwipeNavigation && (
-          <>
-            <button
-              type="button"
-              aria-label="Previous card"
-              className="absolute inset-y-0 left-0 z-20 w-1/4"
-              onClick={goPrevious}
-            />
-            <button
-              type="button"
-              aria-label="Next card"
-              className="absolute inset-y-0 right-0 z-20 w-1/4"
-              onClick={goNext}
-            />
-          </>
-        )}
+        {isSwipeNavigation ? (
+          <div className="relative flex flex-1 items-stretch py-2">
+            {cards.length > 1 && (
+              <>
+                {dragX > 12 && previousCard && previousIndex !== currentIndex && (
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-x-6 top-4 bottom-4 rounded-3xl border bg-card/90 shadow-md"
+                    style={{
+                      transform: `scale(${0.94 + Math.min(dragX / 800, 0.04)})`,
+                      opacity: Math.min(dragX / 120, 0.85),
+                    }}
+                  >
+                    <div className="flex h-full items-center justify-center px-6 text-center opacity-60">
+                      <p className="line-clamp-4 text-lg font-semibold">{previousCard.front}</p>
+                    </div>
+                  </div>
+                )}
+                {dragX < -12 && nextCard && nextIndex !== currentIndex && (
+                  <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-x-6 top-4 bottom-4 rounded-3xl border bg-card/90 shadow-md"
+                    style={{
+                      transform: `scale(${0.94 + Math.min(Math.abs(dragX) / 800, 0.04)})`,
+                      opacity: Math.min(Math.abs(dragX) / 120, 0.85),
+                    }}
+                  >
+                    <div className="flex h-full items-center justify-center px-6 text-center opacity-60">
+                      <p className="line-clamp-4 text-lg font-semibold">{nextCard.front}</p>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
 
-        {!isRevealed ? (
+            <div
+              key={current.id}
+              className={cn(
+                "relative z-10 flex min-h-0 flex-1 touch-none select-none flex-col overflow-hidden rounded-3xl border bg-card shadow-xl",
+                !isDragging && !isExiting && "study-card-enter",
+              )}
+              style={{
+                transform: `translateX(${dragX}px) rotate(${dragRotation}deg)`,
+                opacity: dragOpacity,
+                transition: showSwipeTransition
+                  ? `transform ${SWIPE_EXIT_MS}ms cubic-bezier(0.4, 0, 0.2, 1), opacity ${SWIPE_EXIT_MS}ms ease-out`
+                  : "none",
+              }}
+              onPointerDown={handleSwipePointerDown}
+              onPointerMove={handleSwipePointerMove}
+              onPointerUp={handleSwipePointerUp}
+              onPointerCancel={handleSwipePointerCancel}
+            >
+              {renderCardBody(current, isRevealed)}
+            </div>
+          </div>
+        ) : !isRevealed ? (
           <button
             type="button"
             onClick={revealCurrent}
-            className={cn(
-              "study-card-enter flex flex-1 flex-col items-center justify-center text-center",
-              isSwipeNavigation && "relative z-10 mx-auto w-1/2 min-w-0",
-            )}
+            className="study-card-enter flex flex-1 flex-col items-center justify-center px-6 text-center"
           >
             <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
               {mode === "practice" ? "Question" : "Front"}
@@ -267,12 +474,7 @@ export function StudyCardViewer({
             <p className="mt-12 text-sm text-muted-foreground">Tap to reveal</p>
           </button>
         ) : (
-          <div
-            className={cn(
-              "study-card-enter flex flex-1 flex-col gap-4 overflow-auto py-4",
-              isSwipeNavigation && "relative z-10",
-            )}
-          >
+          <div className="study-card-enter flex flex-1 flex-col gap-4 overflow-auto px-2 py-4">
             <div className="shrink-0 rounded-2xl border bg-muted/50 p-4 text-left">
               <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
                 {mode === "practice" ? "Question" : "Front"}
@@ -303,7 +505,7 @@ export function StudyCardViewer({
 
       {isSwipeNavigation ? (
         <footer className="shrink-0 border-t bg-background px-4 pb-8 pt-3 text-center text-xs text-muted-foreground">
-          Swipe or tap left/right for previous and next · tap center to reveal
+          Drag left for next · drag right for previous · loops endlessly · tap center to reveal
         </footer>
       ) : null}
 

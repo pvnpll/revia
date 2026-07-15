@@ -8,6 +8,23 @@ Release notes are **drafted** on each `main` merge; **published** only when expl
 
 ---
 
+## [v1.7.0] — 2026-07-15 (Published)
+
+**Swipe deck UX** — Bumble-style drag cards, corrected swipe direction, and endless loop in guest practice.
+
+→ [Full release notes](docs/releases/v1.7.0.md)
+
+### Added
+- Drag-to-swipe card stack with rotation and fly-off animation
+- Peek of next/previous card while dragging
+- Endless loop through lesson cards in guest swipe practice
+
+### Changed
+- Swipe left = next, swipe right = previous
+- Snap-back when release is below swipe threshold
+
+---
+
 ## [v1.6.1] — 2026-07-15 (Published)
 
 **Touch UX & lesson navigation** — consistent lesson row taps, improved swipe/tap on practice cards, sign out returns to Explore.
