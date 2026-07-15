@@ -19,7 +19,7 @@ Personal learners who want a simple daily study habit on their phone:
 
 You can keep decks private, publish them to **Explore**, or import public decks from other learners into your library.
 
-**No account needed to start:** open the app, browse public decks in Explore, and practice cards with swipe navigation. Sign in when you want your own library, Daily Review, and saved progress.
+**No account needed to start:** open the app, browse public decks in Explore, and drag through cards like a stack. Sign in when you want your own library, Daily Review, and saved progress.
 
 ## The Problem It Solves
 
@@ -32,7 +32,7 @@ Revia gives you two modes:
 
 ## Main Things You Can Do
 
-- **Browse without signing in** — Explore public decks and practice with swipe (no saved progress)
+- **Browse without signing in** — Explore public decks and practice with drag/swipe cards (no saved progress)
 - **Sign up and sign in** with email, username, or password
 - **Practice immediately** when you open the app — a card is ready to go
 - **View your dashboard** — cards due today, streak, decks, Daily Review shortcut
