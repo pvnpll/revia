@@ -6,6 +6,32 @@ Release notes are **drafted** on each `main` merge; **published** only when expl
 
 ---
 
+---
+
+## [v1.4.0] — 2026-07-15 (Published)
+
+**Practice mode & Daily Review split** — endless adaptive practice as primary experience; SRS daily review secondary.
+
+→ [Full release notes](docs/releases/v1.4.0.md)
+
+### Added
+- Practice mode with `PracticeScheduler` (endless, queue-based, no due dates)
+- `GET /api/practice/cards` and `PracticeSession` component
+- Default practice from recently opened decks (all cards per deck)
+- Distinct minimal rating button colors (1–5)
+
+### Changed
+- App opens directly into practice with a card loaded
+- Nav order: Dashboard → Practice → Decks → Explore
+- Lessons use Practice (lesson-scoped); deck practice includes all cards
+- Daily Review demoted to dashboard secondary action
+- Imported decks cannot change visibility; Explore shows author's own public decks
+
+### Fixed
+- Practice session infinite render loop on card load
+
+---
+
 ## [v1.3.0] — 2026-07-15 (Published)
 
 **Import public decks & feedback** — add Explore decks to your library, author credits, in-app feedback.

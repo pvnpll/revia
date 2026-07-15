@@ -4,7 +4,7 @@
 
 Revia is a mobile-first app for learning and remembering information with digital flashcards.
 
-You organize study material into **decks**, split decks into **lessons**, and add **cards** with a front (question or prompt) and back (answer). The app schedules when each card should come back for review, so you spend time on what you still need to learn.
+You organize study material into **decks**, split decks into **lessons**, and add **cards** with a front (question or prompt) and back (answer). The app helps you practice continuously and review due cards on a schedule.
 
 Revia works for any subject — languages, exams, interview prep, professional knowledge, or anything that fits on a flashcard.
 
@@ -17,26 +17,30 @@ Personal learners who want a simple daily study habit on their phone:
 - Professionals keeping key facts fresh
 - Anyone who prefers small, focused review sessions over long study blocks
 
-Version 1 is for **personal use only** — no sharing, collaboration, or public decks.
+You can keep decks private, publish them to **Explore**, or import public decks from other learners into your library.
 
 ## The Problem It Solves
 
 Reading something once is not enough to remember it. Reviewing everything every day is tiring.
 
-Revia uses **spaced repetition**: cards you find easy appear less often; cards you struggle with come back sooner. You review what matters, when it matters.
+Revia gives you two modes:
+
+- **Practice** — keep learning without running out of cards; harder cards come back sooner in the same session
+- **Daily Review** — spaced repetition for long-term memory; only cards that are due today
 
 ## Main Things You Can Do
 
-In v1 you can:
-
-- **Sign up and sign in** with email and password
-- **View your dashboard** — cards due today, streak, decks, recent activity
+- **Sign up and sign in** with email, username, or password
+- **Practice immediately** when you open the app — a card is ready to go
+- **View your dashboard** — cards due today, streak, decks, Daily Review shortcut
 - **Create and manage decks** — topic containers with color and subject
-- **Add lessons** inside a deck and **study** them (swipe through cards, normal or reverse mode)
-- **Run daily review** — rate each card 1–5 after revealing the answer
+- **Add lessons** and **practice** them (all deck cards or one lesson at a time)
+- **Run Daily Review** — rate each due card 1–5; scheduling updates for next time
+- **Explore public decks** — browse, import to your library, author stays credited
 - **Import decks** from JSON (file upload or paste) in Settings
-- **Search** decks, lessons, and cards
-- **Switch theme** (light/dark) and **sign out** in Settings
+- **Search** your library and public decks in Explore
+- **Send feedback** (suggestions and bugs) in Settings
+- **Switch theme** (light/dark) and manage account in Settings
 
 ## How The App Works
 
@@ -46,35 +50,38 @@ Three levels of organization:
 2. **Lesson** — section inside a deck (e.g. "Greetings")
 3. **Card** — one item to learn (front: "Hola" → back: "Hello")
 
-When you rate a card during review, the app updates its schedule. Cards due today appear on the dashboard and in the Review tab.
+**Practice** uses your rating (1–5) to decide when the same card appears again in the current session — not calendar dates.
+
+**Daily Review** uses your rating to set the **next review date** for long-term spaced repetition.
 
 ## User Journey Diagram
 
 ```mermaid
 flowchart TD
   A[Open Revia] --> B[Sign In]
-  B --> C[Dashboard]
-  C --> D[Create or Import a Deck]
-  D --> E[Add Lessons and Cards]
-  E --> F[Study a Lesson]
-  C --> G[Daily Review]
-  G --> H[Reveal Card and Rate 1-5]
-  H --> I[Next Card Scheduled]
-  I --> C
-  C --> J[Search Library]
+  B --> C[Practice — card ready]
+  C --> D[Reveal and Rate 1-5]
+  D --> C
+  C --> E[Dashboard]
+  E --> F[Daily Review when due]
+  F --> G[Rate updates schedule]
+  E --> H[Decks and Lessons]
+  H --> I[Practice deck or lesson]
+  E --> J[Explore public decks]
 ```
 
 ## Feature Map
 
 ```mermaid
 flowchart LR
-  Dashboard[Dashboard] --> Decks[Decks]
+  Practice[Practice] --> Cards[Flashcards]
+  Dashboard[Dashboard] --> DailyReview[Daily Review]
+  DailyReview --> Scheduling[Next Review Date]
+  Dashboard --> Decks[Decks]
   Decks --> Lessons[Lessons]
-  Lessons --> Study[Study Session]
-  Dashboard --> Review[Daily Review]
-  Review --> Scheduling[Next Review Date]
+  Lessons --> Practice
+  Explore[Explore] --> PublicDecks[Public Decks]
   Settings[Settings] --> Import[JSON Import]
-  Search[Search] --> Decks
 ```
 
 ## Important Terms
@@ -84,40 +91,35 @@ flowchart LR
 | **Deck** | A collection for one topic or goal |
 | **Lesson** | A section inside a deck |
 | **Card** | A flashcard with front and back |
-| **Due card** | Ready to review today |
-| **Review** | Session where you reveal and rate cards |
+| **Practice** | Endless session; cards cycle back based on how well you rated them |
+| **Daily Review** | Review only cards due today; updates long-term schedule |
+| **Due card** | Ready for Daily Review today |
 | **Rating (1–5)** | How well you remembered (1 = forgot, 5 = perfect) |
-| **Spaced repetition** | Showing cards at intervals based on difficulty |
-| **Streak** | Consecutive days with at least one review |
+| **Spaced repetition** | Showing cards at intervals based on difficulty (Daily Review) |
+| **Streak** | Consecutive days with at least one Daily Review |
 
-## What Is Available Now (v1)
+## What Is Available Now (v1.4)
 
+- **Practice mode** — opens on launch; cards from your recent decks
+- **Daily Review** — secondary spaced-repetition sessions from dashboard
 - Dashboard with due count, reviewed today, streak, deck/card totals
-- Deck list, create, delete, and detail view
-- Lessons: create, delete, tap to study with swipe navigation
-- Daily review with full-screen card viewer and 1–5 ratings
-- JSON deck import (Settings)
-- Search across your library
-- Light/dark theme
-- Account sign-in, sign-up, and sign-out
+- Deck list, create, delete, detail, and **Practice deck**
+- Lessons: create, delete, tap to practice (lesson-scoped)
+- Public/private decks, Explore, import public decks to library
+- Usernames, sign in with username, author credits on shared decks
+- JSON deck import, feedback, light/dark theme
 - Live deployment at [revialearn.vercel.app](https://revialearn.vercel.app)
 
 ## What Is Coming Later
 
-These are **candidates for future versions** — not committed until you review and approve:
+See [progress-and-roadmap.md](./progress-and-roadmap.md) for the full phased plan. Candidates include:
 
 - Edit deck title, description, and color in the UI
-- Reorder and rename lessons
-- Add and edit cards directly on the deck page (API exists today)
+- Add and edit cards directly on the deck page
 - Export decks as JSON
-- Statistics page with charts and history
-- Tags for organizing decks and cards
-- Image and audio on cards
-- More import formats (CSV, Markdown, etc.)
-- Optional admin tools and roles
-
-See [progress-and-roadmap.md](./progress-and-roadmap.md) for the full phased plan.
+- Statistics page with charts
+- Tags, image/audio on cards, more import formats
 
 ## Current App Status In One Sentence
 
-**Revia v1 is a stable personal learning app: import or build content, study lessons, complete daily reviews, and track progress on your phone.**
+**Revia v1.4 is a mobile learning app: practice endlessly on launch, run Daily Review when cards are due, and manage or share decks from your phone.**

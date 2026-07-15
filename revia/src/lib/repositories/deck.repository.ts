@@ -97,9 +97,16 @@ export const deckRepository = {
     }));
   },
 
+  async recordAccess(deckId: string, userId: string): Promise<void> {
+    await prisma.deck.updateMany({
+      where: { id: deckId, userId, isArchived: false },
+      data: { updatedAt: new Date() },
+    });
+  },
+
   async findPublicById(id: string): Promise<(Deck & { authorUsername: string }) | null> {
     const row = await prisma.deck.findFirst({
-      where: { id, isPublic: true, isArchived: false },
+      where: { id, isPublic: true, isArchived: false, sourceDeckId: null },
       include: { user: { select: { username: true } } },
     });
     if (!row) return null;
@@ -112,14 +119,13 @@ export const deckRepository = {
   async findPublicDecks(input: {
     query: string;
     limit: number;
-    excludeUserId?: string;
   }): Promise<PublicDeckSummary[]> {
     const normalized = input.query.trim();
     const rows = await prisma.deck.findMany({
       where: {
         isPublic: true,
         isArchived: false,
-        ...(input.excludeUserId ? { userId: { not: input.excludeUserId } } : {}),
+        sourceDeckId: null,
         ...(normalized
           ? {
               OR: [

@@ -28,7 +28,7 @@ export function getPublicAppUrl(fallbackOrigin?: string): string {
   return DEFAULT_PRODUCTION_URL;
 }
 
-export function getAuthCallbackUrl(nextPath = "/dashboard"): string {
+export function getAuthCallbackUrl(nextPath = "/practice"): string {
   const base = getPublicAppUrl();
   const next = nextPath.startsWith("/") ? nextPath : `/${nextPath}`;
   return `${base}/auth/callback?next=${encodeURIComponent(next)}`;

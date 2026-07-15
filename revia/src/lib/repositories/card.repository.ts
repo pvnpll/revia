@@ -64,6 +64,40 @@ export const cardRepository = {
     return rows.map(toCardWithScheduling);
   },
 
+  async findForPractice(
+    deckId: string,
+    options?: { lessonId?: string },
+  ): Promise<CardWithScheduling[]> {
+    const rows = await prisma.card.findMany({
+      where: {
+        deckId,
+        isSuspended: false,
+        ...(options?.lessonId ? { lessonId: options.lessonId } : {}),
+      },
+      orderBy: { createdAt: "asc" },
+      include: cardInclude,
+    });
+
+    return rows.map(toCardWithScheduling);
+  },
+
+  async findForPracticeByDeckIds(deckIds: string[]): Promise<CardWithScheduling[]> {
+    if (deckIds.length === 0) {
+      return [];
+    }
+
+    const rows = await prisma.card.findMany({
+      where: {
+        deckId: { in: deckIds },
+        isSuspended: false,
+      },
+      orderBy: [{ deckId: "asc" }, { createdAt: "asc" }],
+      include: cardInclude,
+    });
+
+    return rows.map(toCardWithScheduling);
+  },
+
   async findByIdForDeck(id: string, deckId: string): Promise<CardWithScheduling | null> {
     const row = await prisma.card.findFirst({
       where: { id, deckId },

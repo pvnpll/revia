@@ -2,16 +2,16 @@
 
 A mobile-first, subject-agnostic spaced repetition learning platform.
 
-**v1.0** — Stable baseline deployed at [revialearn.vercel.app](https://revialearn.vercel.app)
+**v1.4** — Practice mode + Daily Review at [revialearn.vercel.app](https://revialearn.vercel.app)
 
 ## What You Can Do
 
-- Create and import decks with lessons and flashcards
-- Study lessons with swipe navigation
-- Complete daily spaced-repetition review sessions
+- **Practice** endlessly on app open (adaptive queue, recent decks)
+- **Daily Review** for spaced repetition when cards are due
+- Create, import, and share decks with lessons and flashcards
+- Explore and import public decks from other learners
 - Track progress on the dashboard (due count, streak, totals)
-- Search your library
-- Sign in with Supabase Auth
+- Sign in with Supabase Auth (email or username)
 
 ## Documentation
 
@@ -51,12 +51,12 @@ Add redirect URL `http://localhost:3000/auth/callback` in Supabase dashboard.
 
 | Feature | Status |
 |---------|--------|
+| Practice | ✅ |
+| Daily Review | ✅ |
 | Dashboard | ✅ |
-| Decks | ✅ |
-| Lessons + study | ✅ |
-| Review | ✅ |
-| Search | ✅ |
-| Settings + import | ✅ |
+| Decks + Explore | ✅ |
+| Lessons + practice | ✅ |
+| Settings + import + feedback | ✅ |
 | Supabase Auth | ✅ |
 | Deck/lesson edit UI | ⏳ API only |
 | Card UI on deck page | ⏳ API only |

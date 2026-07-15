@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { GraduationCap, Layers, ListChecks, Flame } from "lucide-react";
+import { GraduationCap, Layers, ListChecks, Flame, Sparkles } from "lucide-react";
 
 import { useDashboard } from "@/features/dashboard/hooks/use-dashboard";
 import { Badge } from "@/components/ui/badge";
@@ -31,12 +31,26 @@ export function DashboardContent() {
           <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
           <p className="mt-2 text-muted-foreground">Your daily learning overview</p>
         </div>
-        <Button asChild size="lg" variant={data.dueToday > 0 ? "default" : "secondary"}>
-          <Link href={data.dueToday > 0 ? "/review" : "/decks"}>
-            <GraduationCap className="h-4 w-4" />
-            {data.dueToday > 0 ? `Review ${data.dueToday} cards` : "Browse Decks"}
-          </Link>
-        </Button>
+        <div className="flex flex-col gap-2 sm:flex-row">
+          <Button asChild size="lg">
+            <Link href="/practice">
+              <Sparkles className="h-4 w-4" />
+              Start Practice
+            </Link>
+          </Button>
+          <Button
+            asChild
+            size="lg"
+            variant={data.dueToday > 0 ? "default" : "outline"}
+          >
+            <Link href="/review">
+              <GraduationCap className="h-4 w-4" />
+              {data.dueToday > 0
+                ? `Daily Review (${data.dueToday})`
+                : "Daily Review"}
+            </Link>
+          </Button>
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">

@@ -10,7 +10,7 @@ Revia is a subject-agnostic spaced repetition learning platform.
 User → Deck → Lesson → Card → Scheduling State → Review Log
 ```
 
-**v1 status:** Core loop is complete — content management, lesson study, daily review, dashboard, search, import, and Supabase auth are implemented and deployed.
+**v1 status:** Core loop is complete — Practice mode, Daily Review, content management, dashboard, explore, import, and Supabase auth are implemented and deployed.
 
 **Architecture pattern:**
 
@@ -39,13 +39,14 @@ Pages/Components → TanStack Query Hooks → API Route Handlers
 
 | Feature | Status | Notes |
 |---------|--------|-------|
-| Dashboard | Complete | Stats, recent decks, review CTA |
-| Decks | Complete | List, create, delete, detail; PATCH API without edit UI |
-| Lessons | Complete | Create, delete, study viewer; PATCH API without edit UI |
-| Review | Complete | Due queue, ratings, `simple-v1` scheduler, optimistic UI |
-| Explore | Complete | Library search + public decks (`/explore`) |
-| Settings | Complete | Theme, import, create deck, account, about |
-| Import | Complete | JSON/text via `POST /api/import/deck` |
+| Practice | Complete | Endless adaptive sessions; `PracticeScheduler`; `/practice` |
+| Daily Review | Complete | Due queue, SRS via `DailyReviewScheduler`; `/review` |
+| Dashboard | Complete | Stats, recent decks, Practice + Daily Review CTAs |
+| Decks | Complete | List, create, delete, detail, practice deck; PATCH without edit UI |
+| Lessons | Complete | Create, delete, lesson-scoped practice; PATCH without edit UI |
+| Explore | Complete | Library search + public decks (includes author's own) |
+| Settings | Complete | Theme, import, create deck, account, feedback, about |
+| Import | Complete | JSON/text + public deck import to library |
 | Auth | Complete | Supabase email/password; mock user fallback locally |
 | Cards CRUD | Partial | Full API; `CardsSection` not mounted on deck page |
 | Tags | Partial | Prisma + import; no UI or tag API routes |
@@ -69,18 +70,20 @@ revia/
       cards/                Card hooks and forms (not on deck page yet)
       dashboard/
       decks/
+      explore/
       import/
       lessons/
-      review/
+      practice/             Practice hooks, API client, PracticeSession
+      review/               Daily Review only
       search/
       settings/
-      study/                StudyCardViewer (shared by review + lessons)
+      study/                StudyCardViewer (shared by practice + daily review)
     lib/
       api/                  auth.ts, response.ts
       db/                   Prisma client
       repositories/         Database access
       services/             Business logic
-      scheduler/            Pure SRS algorithm
+      scheduler/            PracticeScheduler, DailyReviewScheduler, SRS engine
       validators/           Zod schemas
       supabase/             Client, server, middleware
       query/                Prefetch helpers
@@ -93,33 +96,39 @@ revia/
 
 ## User Flows
 
-### Content + Study Flow (implemented)
+### Practice Flow (implemented)
 
 ```mermaid
 flowchart TD
-  A[Dashboard] --> B[Decks]
-  B --> C[Deck Detail]
-  C --> D[Create Lesson]
-  C --> E[Tap Lesson to Study]
-  E --> F[StudyCardViewer]
-  F --> G[Swipe / Rate Cards]
-  A --> H[Settings Import JSON]
-  H --> B
+  A[Open App / Login] --> B[/practice]
+  B --> C[Load cards from recent decks]
+  C --> D[Show Card Front]
+  D --> E[Tap to Reveal]
+  E --> F[Rate 1-5]
+  F --> G[PracticeScheduler reinserts card]
+  G --> D
+  H[Deck Detail] --> I[/practice?deckId=]
+  I --> J[All deck cards]
+  K[Lesson Tap] --> L[PracticeSession lessonId]
+  L --> M[Lesson cards only]
 ```
 
-### Review Flow (implemented)
+Practice does **not** update `CardSchedulingState`. Queue position controls reappearance.
+
+### Daily Review Flow (implemented)
 
 ```mermaid
 flowchart TD
-  A[Review Tab] --> B[Load Due Queue]
+  A[Dashboard → Daily Review] --> B[Load Due Queue]
   B --> C[Show Card Front]
   C --> D[Tap to Reveal]
   D --> E[Rate 1-5]
   E --> F[Advance Immediately]
   F --> G[Submit Rating in Background]
-  G --> H{More Due?}
-  H -->|Yes| C
-  H -->|No| I[All Caught Up]
+  G --> H{DailyReviewScheduler updates dueAt}
+  H --> I{More Due?}
+  I -->|Yes| C
+  I -->|No| J[All Caught Up]
 ```
 
 Optimistic advance: UI moves to the next card before the API responds. See `review-page-content.tsx`.
@@ -154,8 +163,9 @@ All data routes call `getUserId()` from `src/lib/api/auth.ts` (Supabase session 
 | GET/PATCH/DELETE | `/api/decks/:deckId/lessons/:lessonId` | Lesson CRUD |
 | GET/POST | `/api/decks/:deckId/cards` | List/create cards (`?lessonId=` filter) |
 | GET/PATCH/DELETE | `/api/decks/:deckId/cards/:cardId` | Card CRUD |
-| GET | `/api/review/due` | Due queue (`deckId`, `limit` query) |
-| POST | `/api/review` | Submit rating, update scheduling |
+| GET | `/api/practice/cards` | Practice cards (`deckId`, `lessonId` optional; default = recent decks) |
+| GET | `/api/review/due` | Daily Review due queue (`deckId`, `limit` query) |
+| POST | `/api/review` | Submit Daily Review rating, update scheduling |
 | GET | `/api/search` | Search your library (`q`, `limit`) |
 | GET | `/api/explore` | List public decks (`q`, `limit`) |
 | GET/PATCH/POST | `/api/account` | Profile, username update, account sync |
@@ -174,7 +184,14 @@ All data routes call `getUserId()` from `src/lib/api/auth.ts` (Supabase session 
 }
 ```
 
-Ratings: 1 (forgot) through 5 (perfect). Scheduler: `SimpleIntervalAlgorithm` (`simple-v1`).
+Ratings: 1 (forgot) through 5 (perfect).
+
+**Schedulers:**
+
+| Mode | Module | Persists SRS |
+|------|--------|--------------|
+| Practice | `PracticeScheduler` | No — client queue only |
+| Daily Review | `DailyReviewScheduler` → `SimpleIntervalAlgorithm` (`simple-v1`) | Yes |
 
 ## Data Model
 
@@ -235,7 +252,7 @@ flowchart LR
 **TanStack Query** (`query-provider.tsx`):
 
 - Default `staleTime`: 60s, `gcTime`: 10min
-- Dashboard: 2min, Decks: 5min, Review due: 30s
+- Dashboard: 2min, Decks: 5min, Practice cards: 60s
 - Prefetch on app shell mount and nav tap (`prefetch-app-data.ts`)
 
 **Forms:** React Hook Form + shared Zod schemas from `src/lib/validators/`.
@@ -285,7 +302,7 @@ Without Supabase env vars, the app uses the mock user (no login required).
 
 | Type | Location | Run |
 |------|----------|-----|
-| Unit | `tests/unit/lib/scheduler/` | `npm run test` |
+| Unit | `tests/unit/lib/scheduler/` | `npm run test` (simple-interval + practice-scheduler) |
 | E2E | `tests/e2e/*.spec.ts` | `npm run test:e2e` |
 | Full CI | — | `npm run check` |
 
