@@ -1,4 +1,4 @@
-import { getUserId } from "@/lib/api/auth";
+import { getOptionalUserId, getUserId } from "@/lib/api/auth";
 import { handleApiError, jsonResponse } from "@/lib/api/response";
 import { cardService } from "@/lib/services/card.service";
 import { createCardSchema } from "@/lib/validators/card.schema";
@@ -10,7 +10,7 @@ export async function GET(request: Request, context: RouteContext) {
     const { deckId } = await context.params;
     const { searchParams } = new URL(request.url);
     const lessonId = searchParams.get("lessonId") ?? undefined;
-    const cards = await cardService.list(await getUserId(), deckId, { lessonId });
+    const cards = await cardService.list(await getOptionalUserId(), deckId, { lessonId });
     return jsonResponse(cards);
   } catch (error) {
     return handleApiError(error);

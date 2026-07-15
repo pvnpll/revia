@@ -1,6 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
 
+import { isAuthRoute, requiresAuth } from "@/lib/auth/guest-routes";
+
 export async function updateSession(request: NextRequest) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -42,20 +44,14 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getSession();
   const user = session?.user ?? null;
 
-  const isAuthRoute =
-    pathname.startsWith("/login") ||
-    pathname.startsWith("/signup") ||
-    pathname.startsWith("/auth/");
-  const isPublicRoute = pathname === "/";
-
-  if (!user && !isAuthRoute && !isPublicRoute) {
+  if (!user && requiresAuth(pathname)) {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = "/login";
     loginUrl.searchParams.set("redirect", pathname);
     return NextResponse.redirect(loginUrl);
   }
 
-  if (user && (pathname === "/login" || pathname === "/signup")) {
+  if (user && isAuthRoute(pathname) && pathname !== "/auth/callback") {
     const dashboardUrl = request.nextUrl.clone();
     dashboardUrl.pathname = "/practice";
     dashboardUrl.search = "";

@@ -1,28 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
 import { Layers } from "lucide-react";
 
 import { useLessons, useUpdateLesson } from "@/features/lessons/hooks/use-lessons";
 import { CreateLessonForm } from "@/features/lessons/components/create-lesson-form";
 import { DeleteLessonButton } from "@/features/lessons/components/delete-lesson-button";
-import { PracticeSession } from "@/features/practice/components/practice-session";
-import type { LessonWithStats } from "@/types/lesson";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { InlineTitleEditor } from "@/components/ui/inline-title-editor";
 import { ListSkeleton } from "@/components/ui/skeleton";
 
-interface ActiveLessonSession {
-  lesson: LessonWithStats;
-  reverseMode: boolean;
+function practiceHref(deckId: string, lessonId: string, reverseMode: boolean) {
+  const params = new URLSearchParams({ deckId, lessonId });
+  if (reverseMode) {
+    params.set("reverse", "1");
+  }
+  return `/practice?${params.toString()}`;
 }
 
-export function LessonList({ deckId, readOnly = false }: { deckId: string; readOnly?: boolean }) {
+export function LessonList({ deckId, canEdit = false }: { deckId: string; canEdit?: boolean }) {
   const { data: lessons, isLoading, isError, error } = useLessons(deckId);
   const updateLesson = useUpdateLesson(deckId);
-  const [activeSession, setActiveSession] = useState<ActiveLessonSession | null>(null);
 
   if (isLoading) {
     return <ListSkeleton rows={3} />;
@@ -44,9 +44,9 @@ export function LessonList({ deckId, readOnly = false }: { deckId: string; readO
         <div className="flex flex-col items-center gap-3 py-8 text-center">
           <Layers className="h-8 w-8 text-muted-foreground" />
           <p className="text-sm text-muted-foreground">
-            {readOnly
-              ? "This deck has no lessons yet."
-              : "No lessons yet. Add one below to organize cards within this deck."}
+            {canEdit
+              ? "No lessons yet. Add one below to organize cards within this deck."
+              : "This deck has no lessons yet."}
           </p>
         </div>
       ) : (
@@ -57,7 +57,7 @@ export function LessonList({ deckId, readOnly = false }: { deckId: string; readO
               className="group flex items-center justify-between gap-4 px-4 py-4 transition-colors active:bg-accent"
             >
               <div className="min-w-0 flex-1 space-y-1">
-                {!readOnly ? (
+                {canEdit ? (
                   <InlineTitleEditor
                     value={lesson.title}
                     titleClassName="font-semibold"
@@ -74,26 +74,22 @@ export function LessonList({ deckId, readOnly = false }: { deckId: string; readO
                 ) : (
                   <p className="font-semibold">{lesson.title}</p>
                 )}
-                <button
-                  type="button"
-                  className="text-left text-xs text-muted-foreground hover:text-foreground"
-                  onClick={() => setActiveSession({ lesson, reverseMode: false })}
+                <Link
+                  href={practiceHref(deckId, lesson.id, false)}
+                  prefetch
+                  className="block text-left text-xs text-muted-foreground hover:text-foreground"
                 >
-                  {readOnly ? "Browse" : "Practice"} {lesson.cardCount} cards
-                  {!readOnly && " · front to back"}
-                </button>
+                  Practice {lesson.cardCount} cards · front to back
+                </Link>
               </div>
               <div className="flex shrink-0 flex-col items-end gap-2">
                 <Badge variant="secondary">{lesson.cardCount} cards</Badge>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setActiveSession({ lesson, reverseMode: true })}
-                >
-                  Reverse
+                <Button asChild variant="outline" size="sm">
+                  <Link href={practiceHref(deckId, lesson.id, true)} prefetch>
+                    Reverse
+                  </Link>
                 </Button>
-                {!readOnly && (
+                {canEdit && (
                   <DeleteLessonButton
                     deckId={deckId}
                     lessonId={lesson.id}
@@ -105,40 +101,30 @@ export function LessonList({ deckId, readOnly = false }: { deckId: string; readO
           ))}
         </ul>
       )}
-      {!readOnly && <CreateLessonForm deckId={deckId} />}
-      {activeSession && (
-        <PracticeSession
-          title={activeSession.lesson.title}
-          deckId={deckId}
-          lessonId={activeSession.lesson.id}
-          reverseMode={activeSession.reverseMode}
-          readOnly={readOnly}
-          onClose={() => setActiveSession(null)}
-        />
-      )}
+      {canEdit && <CreateLessonForm deckId={deckId} />}
     </div>
   );
 }
 
 export function LessonsSection({
   deckId,
-  readOnly = false,
+  canEdit = false,
 }: {
   deckId: string;
-  readOnly?: boolean;
+  canEdit?: boolean;
 }) {
   return (
     <Card>
       <CardHeader>
         <CardTitle>Lessons</CardTitle>
         <CardDescription>
-          {readOnly
-            ? "Browse lessons and cards in this shared deck."
-            : "Tap a lesson to start an endless practice session."}
+          {canEdit
+            ? "Tap a lesson to start an endless practice session."
+            : "Tap a lesson to practice with ratings. Session progress is not saved — sign in and add to your library for Daily Review."}
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <LessonList deckId={deckId} readOnly={readOnly} />
+        <LessonList deckId={deckId} canEdit={canEdit} />
       </CardContent>
     </Card>
   );

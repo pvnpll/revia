@@ -1,13 +1,13 @@
 # Revia Documentation Index
 
-**Version:** v1.5.0 (July 2026)
+**Version:** v1.6.0 (July 2026)
 
 ## Start Here
 
 | Document | Who it's for |
 |----------|--------------|
 | [release-versioning.md](./application/release-versioning.md) | How versions work (SemVer) |
-| [releases/v1.5.0.md](./releases/v1.5.0.md) | Latest release notes |
+| [releases/v1.6.0.md](./releases/v1.6.0.md) | Latest release notes |
 | [CHANGELOG.md](../CHANGELOG.md) | All shipped versions |
 | [v1-release.md](./application/v1-release.md) | Snapshot of what's shipped |
 | [layman-guide.md](./application/layman-guide.md) | Non-technical users |

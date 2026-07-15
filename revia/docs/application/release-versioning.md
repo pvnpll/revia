@@ -2,7 +2,7 @@
 
 **Policy owner:** You (product)  
 **Standard:** [Semantic Versioning 2.0.0](https://semver.org/) (`MAJOR.MINOR.PATCH`)  
-**Current release:** **v1.5.0** — Content editing & import improvements  
+**Current release:** **v1.6.0** — Guest mode & public browse  
 **Trigger:** Every merge to `main` that ships to production is a new version.
 
 ---
@@ -139,8 +139,9 @@ Use this to plan features by version. **Adjust when you review** — nothing shi
 | **v1.0.0** – **v1.3.0** | MINOR | Core app through import & feedback | Shipped ✅ |
 | **v1.4.0** | MINOR | Practice mode, Daily Review split | Shipped ✅ |
 | **v1.5.0** | MINOR | Deck/lesson rename, import UX & reliability | Shipped ✅ |
-| **v1.6.0** | MINOR | Deck description/color edit, lesson reorder, card UI on deck page | Phase A (rest) |
-| **v1.7.0** | MINOR | JSON export (deck + library) | Phase B |
+| **v1.6.0** | MINOR | Guest mode, public browse without login | Shipped ✅ |
+| **v1.7.0** | MINOR | Deck description/color edit, lesson reorder, card UI on deck page | Phase A (rest) |
+| **v1.8.0** | MINOR | JSON export (deck + library) | Phase B |
 | **v1.8.0** | MINOR | Statistics page, review charts | Phase C |
 | **v1.9.0** | MINOR | Tags API + UI | Phase D |
 | **v2.0.0** | MINOR | Image/audio on cards (Supabase Storage) | Phase E |

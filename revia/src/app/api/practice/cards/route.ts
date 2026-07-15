@@ -1,4 +1,4 @@
-import { getUserId } from "@/lib/api/auth";
+import { getOptionalUserId } from "@/lib/api/auth";
 import { handleApiError, jsonResponse } from "@/lib/api/response";
 import { practiceService } from "@/lib/services/practice.service";
 
@@ -8,7 +8,7 @@ export async function GET(request: Request) {
     const deckId = searchParams.get("deckId") ?? undefined;
     const lessonId = searchParams.get("lessonId") ?? undefined;
 
-    const cards = await practiceService.getCards(await getUserId(), {
+    const cards = await practiceService.getCards(await getOptionalUserId(), {
       deckId,
       lessonId,
     });

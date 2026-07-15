@@ -30,7 +30,7 @@ async function getRecentPracticeDeckIds(userId: string): Promise<string[]> {
 
 export const practiceService = {
   async getCards(
-    userId: string,
+    userId: string | null,
     options?: { deckId?: string; lessonId?: string },
   ): Promise<CardWithScheduling[]> {
     if (options?.deckId) {
@@ -44,6 +44,10 @@ export const practiceService = {
       }
 
       return cardRepository.findForPractice(options.deckId);
+    }
+
+    if (!userId) {
+      throw new ApiError(401, "UNAUTHORIZED", "Sign in to practice your library");
     }
 
     const deckIds = await getRecentPracticeDeckIds(userId);

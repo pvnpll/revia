@@ -18,17 +18,21 @@ export const deckService = {
     return deck;
   },
 
-  async getReadable(userId: string, deckId: string): Promise<DeckDetail> {
-    const owned = await deckRepository.findByIdForUser(deckId, userId);
-    if (owned) {
-      void deckRepository.recordAccess(deckId, userId);
-      return { ...owned, isOwner: true };
+  async getReadable(userId: string | null, deckId: string): Promise<DeckDetail> {
+    if (userId) {
+      const owned = await deckRepository.findByIdForUser(deckId, userId);
+      if (owned) {
+        void deckRepository.recordAccess(deckId, userId);
+        return { ...owned, isOwner: true };
+      }
     }
 
     const publicDeck = await deckRepository.findPublicById(deckId);
     if (publicDeck) {
       const { authorUsername, ...deck } = publicDeck;
-      const importedCopy = await deckRepository.findImportedCopy(userId, deckId);
+      const importedCopy = userId
+        ? await deckRepository.findImportedCopy(userId, deckId)
+        : null;
       return {
         ...deck,
         authorUsername,
@@ -45,7 +49,7 @@ export const deckService = {
     return deckService.assertOwner(userId, deckId);
   },
 
-  async explore(_userId: string, input: ExploreInput): Promise<ExploreResponse> {
+  async explore(userId: string | null, input: ExploreInput): Promise<ExploreResponse> {
     const decks = await deckRepository.findPublicDecks({
       query: input.q,
       limit: input.limit,

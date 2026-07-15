@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import { BookOpen, Compass, LayoutDashboard, Sparkles } from "lucide-react";
 
+import { useAuthSession } from "@/features/auth/hooks/use-auth-session";
 import { dashboardQueryKeys } from "@/features/dashboard/hooks/use-dashboard";
 import { dashboardApi } from "@/features/dashboard/services/dashboard-api";
 import { deckQueryKeys } from "@/features/decks/hooks/use-decks";
@@ -25,6 +26,7 @@ const navItems = [
 function prefetchRoute(
   queryClient: ReturnType<typeof useQueryClient>,
   key: "dashboard" | "decks" | "practice" | "explore" | null,
+  isAuthenticated: boolean,
 ) {
   if (key === "dashboard") {
     void queryClient.prefetchQuery({
@@ -45,6 +47,9 @@ function prefetchRoute(
   }
 
   if (key === "practice") {
+    if (!isAuthenticated) {
+      return;
+    }
     void queryClient.prefetchQuery({
       queryKey: practiceQueryKeys.cards(),
       queryFn: () => practiceApi.getCards(),
@@ -65,10 +70,15 @@ function prefetchRoute(
 export function FloatingNav() {
   const pathname = usePathname();
   const queryClient = useQueryClient();
+  const { isAuthenticated } = useAuthSession();
+
+  const visibleItems = isAuthenticated
+    ? navItems
+    : navItems.filter((item) => item.href === "/explore" || item.href === "/practice");
 
   return (
     <nav className="fixed inset-x-4 bottom-4 z-50 mx-auto flex max-w-sm items-center justify-around rounded-full border bg-card/95 px-2 py-2 shadow-lg backdrop-blur">
-      {navItems.map(({ href, label, icon: Icon, prefetchKey }) => {
+      {visibleItems.map(({ href, label, icon: Icon, prefetchKey }) => {
         const active = pathname === href || pathname.startsWith(`${href}/`);
         return (
           <Link
@@ -76,8 +86,8 @@ export function FloatingNav() {
             href={href}
             prefetch
             aria-label={label}
-            onTouchStart={() => prefetchRoute(queryClient, prefetchKey)}
-            onMouseEnter={() => prefetchRoute(queryClient, prefetchKey)}
+            onTouchStart={() => prefetchRoute(queryClient, prefetchKey, isAuthenticated)}
+            onMouseEnter={() => prefetchRoute(queryClient, prefetchKey, isAuthenticated)}
             className={cn(
               "flex h-11 w-11 items-center justify-center rounded-full transition-all duration-200 active:scale-90",
               active
