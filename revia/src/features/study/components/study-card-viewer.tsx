@@ -196,7 +196,7 @@ export function StudyCardViewer({
   }
 
   function handleSwipePointerDown(event: React.PointerEvent<HTMLDivElement>) {
-    if (isExiting || cards.length <= 1) return;
+    if (isExiting) return;
 
     pointerStart.current = { x: event.clientX, y: event.clientY };
     gestureLocked.current = null;
@@ -237,6 +237,19 @@ export function StudyCardViewer({
     const startX = pointerStart.current.x;
     const threshold = getSwipeThreshold();
     const wasHorizontal = gestureLocked.current === "horizontal";
+
+    // A one-card session cannot navigate, but it must still support tapping
+    // the card to reveal its answer.
+    if (cards.length <= 1) {
+      if (
+        Math.abs(deltaX) < TAP_THRESHOLD_PX &&
+        Math.abs(deltaY) < TAP_THRESHOLD_PX
+      ) {
+        handleEdgeTap(startX);
+      }
+      resetDrag();
+      return;
+    }
 
     if (wasHorizontal && Math.abs(deltaX) >= threshold) {
       if (deltaX < 0) {

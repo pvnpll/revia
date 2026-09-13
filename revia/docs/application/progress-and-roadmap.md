@@ -1,6 +1,6 @@
 # Progress and Roadmap
 
-**Last updated:** July 2026 — **v1.7.0** (Swipe deck UX)  
+**Last updated:** September 2026 — **v1.7.1** (Single-card guest practice fix)\
 **Versioning:** [release-versioning.md](./release-versioning.md) — SemVer; every `main` merge = new version  
 **Policy:** Plan features by target release. Implement after you approve. Publish release notes only when you ask.
 
@@ -20,6 +20,7 @@
 | **v1.6.0** | ✅ Published | Guest mode, public browse without login | Access |
 | **v1.6.1** | ✅ Published | Touch UX, lesson navigation, sign-out redirect | UX polish |
 | **v1.7.0** | ✅ Published | Swipe deck UX, endless guest practice loop | UX |
+| **v1.7.1** | ✅ Published | Single-card guest practice fix | UX reliability |
 | **v1.0.1** | Open | Patches: bugs, perf, deploy fixes | Ad-hoc |
 | **v1.8.0** | Planned | Deck description/color edit, lesson reorder, card UI on deck page | Phase A (rest) |
 | **v1.9.0** | Planned | JSON export | Phase B |
