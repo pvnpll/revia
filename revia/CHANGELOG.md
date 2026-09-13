@@ -8,6 +8,17 @@ Release notes are **drafted** on each `main` merge; **published** only when expl
 
 ---
 
+## [v1.7.1] — 2026-09-13 (Published)
+
+**Single-card guest practice fix** — Guest lessons with one card can now reveal their answer as expected.
+
+→ [Full release notes](docs/releases/v1.7.1.md)
+
+### Fixed
+- Restored tap-to-reveal for one-card lessons in guest swipe practice
+
+---
+
 ## [v1.7.0] — 2026-07-15 (Published)
 
 **Swipe deck UX** — Bumble-style drag cards, corrected swipe direction, and endless loop in guest practice.

@@ -2,7 +2,7 @@
 
 **Policy owner:** You (product)  
 **Standard:** [Semantic Versioning 2.0.0](https://semver.org/) (`MAJOR.MINOR.PATCH`)  
-**Current release:** **v1.7.0** — Swipe deck UX  
+**Current release:** **v1.7.1** — Single-card guest practice fix\
 **Trigger:** Every merge to `main` that ships to production is a new version.
 
 ---
@@ -142,6 +142,7 @@ Use this to plan features by version. **Adjust when you review** — nothing shi
 | **v1.6.0** | MINOR | Guest mode, public browse without login | Shipped ✅ |
 | **v1.6.1** | PATCH | Touch UX, lesson navigation, sign-out redirect | Shipped ✅ |
 | **v1.7.0** | MINOR | Swipe deck UX, endless guest practice loop | Shipped ✅ |
+| **v1.7.1** | PATCH | Single-card guest practice fix | Shipped ✅ |
 | **v1.8.0** | MINOR | Deck description/color edit, lesson reorder, card UI on deck page | Phase A (rest) |
 | **v1.9.0** | MINOR | JSON export (deck + library) | Phase B |
 | **v1.8.0** | MINOR | Statistics page, review charts | Phase C |
