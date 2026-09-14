@@ -5,7 +5,7 @@ import { ArrowLeft } from "lucide-react";
 
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { studySurface } from "@/lib/theme/app-theme";
-import { PRACTICE_RATING_PROMPT, RATING_LABELS } from "@/lib/constants/rating-labels";
+import { PRACTICE_RATING_PROMPT, RATING_SHORT_LABELS } from "@/lib/constants/rating-labels";
 import { RATING_BORDER_STYLES } from "@/lib/constants/rating-colors";
 import type { RatingValue } from "@/lib/scheduler";
 import { cn } from "@/lib/utils/cn";
@@ -56,9 +56,11 @@ export function StudyCardViewer({
 }: StudyCardViewerProps) {
   const touchStart = useRef<{ x: number; y: number } | null>(null);
   const mainRef = useRef<HTMLElement | null>(null);
+  const answerScrollRef = useRef<HTMLDivElement | null>(null);
   const pointerStart = useRef<{ x: number; y: number } | null>(null);
   const gestureLocked = useRef<"horizontal" | "vertical" | null>(null);
   const isPointerDragging = useRef(false);
+  const swipeTimer = useRef<number | null>(null);
 
   const [revealedIds, setRevealedIds] = useState<Set<string>>(() => new Set());
   const [dragX, setDragX] = useState(0);
@@ -95,6 +97,17 @@ export function StudyCardViewer({
     gestureLocked.current = null;
     isPointerDragging.current = false;
   }, [current?.id]);
+
+  // Clear any pending swipe-commit timer on unmount so a stale timer can
+  // never advance the deck after the viewer is gone.
+  useEffect(() => {
+    return () => {
+      if (swipeTimer.current !== null) {
+        window.clearTimeout(swipeTimer.current);
+        swipeTimer.current = null;
+      }
+    };
+  }, []);
 
   function resetRevealState() {
     setRevealedIds(new Set());
@@ -135,14 +148,16 @@ export function StudyCardViewer({
     const width = rect.width;
     const canNavigateByTap = isSwipeNavigation || allowFreeNavigation;
 
-    if (x < width * 0.25) {
+    // Narrower edge zones (~15% each side) so taps aimed at the card body
+    // reveal instead of accidentally navigating to prev/next.
+    if (x < width * 0.15) {
       if (canNavigateByTap) {
         goPrevious();
       }
       return;
     }
 
-    if (x > width * 0.75) {
+    if (x > width * 0.85) {
       if (canNavigateByTap) {
         goNext();
       }
@@ -160,6 +175,14 @@ export function StudyCardViewer({
   }
 
   function commitSwipe(direction: "next" | "previous") {
+    // Guard against double-commit: a swipe already exiting must finish first,
+    // and any stale pending timer is cancelled before scheduling a new one.
+    if (isExiting) return;
+    if (swipeTimer.current !== null) {
+      window.clearTimeout(swipeTimer.current);
+      swipeTimer.current = null;
+    }
+
     const width = mainRef.current?.clientWidth ?? 320;
     const exitX = direction === "next" ? -width * 1.15 : width * 1.15;
 
@@ -170,7 +193,8 @@ export function StudyCardViewer({
     pointerStart.current = null;
     gestureLocked.current = null;
 
-    window.setTimeout(() => {
+    swipeTimer.current = window.setTimeout(() => {
+      swipeTimer.current = null;
       if (direction === "next") {
         goNext();
       } else {
@@ -301,6 +325,23 @@ export function StudyCardViewer({
       return;
     }
 
+    // If the gesture started inside the scrollable answer pane and that pane
+    // can still scroll in the swipe direction, let it scroll natively instead
+    // of navigating. Navigation only fires when the pane is at its edge
+    // (or the gesture started outside the pane entirely).
+    const scroller = answerScrollRef.current;
+    const gestureTarget = event.target instanceof Node ? event.target : null;
+    if (scroller && gestureTarget && scroller.contains(gestureTarget)) {
+      const atTop = scroller.scrollTop <= 0;
+      const atBottom = scroller.scrollHeight - scroller.scrollTop - scroller.clientHeight <= 1;
+      const contentOverflows = scroller.scrollHeight > scroller.clientHeight + 1;
+      if (contentOverflows) {
+        // Swipe down (deltaY < 0) needs room above; swipe up (deltaY > 0) room below.
+        if (deltaY < 0 && !atTop) return;
+        if (deltaY > 0 && !atBottom) return;
+      }
+    }
+
     if (deltaY > 55) {
       if (allowFreeNavigation || isRevealed) {
         goNext();
@@ -385,8 +426,6 @@ export function StudyCardViewer({
           : "min-h-[70vh] rounded-xl border",
         studySurface,
       )}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
     >
       <div className="mx-auto flex min-h-0 w-full max-w-md flex-1 flex-col bg-background md:border-x md:border-border md:shadow-sm">
       <header className="flex h-14 shrink-0 items-center justify-between px-4">
@@ -409,8 +448,8 @@ export function StudyCardViewer({
           )}
           <p className="text-xs text-muted-foreground">{headerSubtitle}</p>
         </div>
-        <span className="w-10 text-right text-sm font-medium tabular-nums text-muted-foreground">
-          {progress}
+        <span className="w-10 shrink-0 text-right text-sm font-medium tabular-nums text-muted-foreground">
+          {isSwipeNavigation ? null : progress}
         </span>
       </header>
 
@@ -418,6 +457,8 @@ export function StudyCardViewer({
         ref={mainRef}
         className="relative flex flex-1 flex-col overflow-hidden px-4 pb-4"
         style={!isSwipeNavigation && mode === "practice" ? { touchAction: "pan-y" } : undefined}
+        onTouchStart={isSwipeNavigation ? undefined : handleTouchStart}
+        onTouchEnd={isSwipeNavigation ? undefined : handleTouchEnd}
       >
         {isSwipeNavigation ? (
           <div className="relative flex flex-1 items-stretch py-2">
@@ -457,7 +498,8 @@ export function StudyCardViewer({
             <div
               key={current.id}
               className={cn(
-                "relative z-10 flex min-h-0 flex-1 touch-none select-none flex-col overflow-hidden rounded-3xl border bg-card shadow-xl",
+                "relative z-10 flex min-h-0 flex-1 select-none flex-col overflow-hidden rounded-3xl border bg-card shadow-xl",
+                isRevealed ? "touch-pan-y" : "touch-none",
                 !isDragging && !isExiting && "study-card-enter",
               )}
               style={{
@@ -490,7 +532,11 @@ export function StudyCardViewer({
             <p className="mt-12 text-sm text-muted-foreground">Tap to reveal</p>
           </button>
         ) : (
-          <div className="study-card-enter flex flex-1 flex-col gap-4 overflow-auto px-2 py-4">
+          <div
+            ref={answerScrollRef}
+            data-study-answer-pane
+            className="study-card-enter flex flex-1 flex-col gap-4 overflow-auto px-2 py-4"
+          >
             <div className="shrink-0 rounded-2xl border bg-muted/50 p-4 text-left">
               <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
                 {mode === "practice" ? "Question" : "Front"}
@@ -520,8 +566,13 @@ export function StudyCardViewer({
       </main>
 
       {isSwipeNavigation ? (
-        <footer className="shrink-0 border-t bg-background px-4 pb-8 pt-3 text-center text-xs text-muted-foreground">
-          Drag left for next · drag right for previous · loops endlessly · tap center to reveal
+        <footer className="shrink-0 border-t bg-background px-4 pb-10 pt-3 text-center">
+          <p className="text-xs font-medium text-muted-foreground">
+            Drag <span className="text-foreground">←</span> next · <span className="text-foreground">→</span> previous · tap card to reveal
+          </p>
+          <p className="mt-1 text-[11px] text-muted-foreground/70">
+            Tip: edge taps also turn pages
+          </p>
         </footer>
       ) : null}
 
@@ -553,18 +604,17 @@ export function StudyCardViewer({
                     type="button"
                     disabled={isSubmitting}
                     onClick={() => handleRating(rating)}
+                    aria-label={`${rating} — ${RATING_SHORT_LABELS[rating]}`}
                     className={cn(
-                      "flex h-14 flex-col items-center justify-center rounded-xl border bg-card transition-colors active:scale-95 disabled:opacity-50",
+                      "flex h-16 flex-col items-center justify-center gap-0.5 rounded-xl border bg-card px-1 transition-colors active:scale-95 disabled:opacity-50",
                       RATING_BORDER_STYLES[rating],
                     )}
                   >
-                    <span className="text-lg font-bold">{rating}</span>
+                    <span className="text-lg font-bold leading-none">{rating}</span>
+                    <span className="max-w-full truncate text-[10px] font-medium leading-tight text-muted-foreground">
+                      {RATING_SHORT_LABELS[rating]}
+                    </span>
                   </button>
-                ))}
-              </div>
-              <div className="mt-2 grid grid-cols-5 gap-1 text-center text-[9px] leading-tight text-muted-foreground">
-                {ratings.map((rating) => (
-                  <span key={rating}>{RATING_LABELS[rating]}</span>
                 ))}
               </div>
               {errorMessage && (

@@ -2,7 +2,7 @@
 
 **Policy owner:** You (product)  
 **Standard:** [Semantic Versioning 2.0.0](https://semver.org/) (`MAJOR.MINOR.PATCH`)  
-**Current release:** **v1.7.2** — Desktop shell & Explore UX polish\
+**Current release:** **v1.7.3** — Study viewer gesture & rating fixes\
 **Trigger:** Every merge to `main` that ships to production is a new version.
 
 ---
@@ -144,6 +144,7 @@ Use this to plan features by version. **Adjust when you review** — nothing shi
 | **v1.7.0** | MINOR | Swipe deck UX, endless guest practice loop | Shipped ✅ |
 | **v1.7.1** | PATCH | Single-card guest practice fix | Shipped ✅ |
 | **v1.7.2** | PATCH | Desktop shell, practice viewer width, Explore UX polish | Shipped ✅ |
+| **v1.7.3** | PATCH | Study viewer gesture & rating fixes (Fix #3) | Shipped ✅ |
 | **v1.8.0** | MINOR | Deck description/color edit, lesson reorder, card UI on deck page | Phase A (rest) |
 | **v1.9.0** | MINOR | JSON export (deck + library) | Phase B |
 | **v1.8.0** | MINOR | Statistics page, review charts | Phase C |

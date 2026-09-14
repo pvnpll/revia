@@ -1,6 +1,6 @@
 # Progress and Roadmap
 
-**Last updated:** September 2026 — **v1.7.2** (Desktop shell & Explore UX polish)\
+**Last updated:** September 2026 — **v1.7.3** (Study viewer gesture & rating fixes)\
 **Versioning:** [release-versioning.md](./release-versioning.md) — SemVer; every `main` merge = new version  
 **Policy:** Plan features by target release. Implement after you approve. Publish release notes only when you ask.
 
@@ -22,6 +22,7 @@
 | **v1.7.0** | ✅ Published | Swipe deck UX, endless guest practice loop | UX |
 | **v1.7.1** | ✅ Published | Single-card guest practice fix | UX reliability |
 | **v1.7.2** | ✅ Published | Desktop shell, practice viewer width, Explore UX polish | UX polish |
+| **v1.7.3** | ✅ Published | Study viewer gesture & rating fixes (Fix #3) | UX polish |
 | **v1.0.1** | Open | Patches: bugs, perf, deploy fixes | Ad-hoc |
 | **v1.8.0** | Planned | Deck description/color edit, lesson reorder, card UI on deck page | Phase A (rest) |
 | **v1.9.0** | Planned | JSON export | Phase B |
