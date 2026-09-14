@@ -18,12 +18,14 @@ export function AppShellClient({ children }: { children: React.ReactNode }) {
   }, [queryClient, isAuthenticated, isLoading]);
 
   return (
-    <div className="min-h-screen bg-background text-foreground md:hidden">
-      <AppHeader />
-      <main className="min-h-screen pb-28 pt-16">
-        <div className="px-4 py-5">{children}</div>
-      </main>
-      <FloatingNav />
+    <div className="min-h-dvh bg-background text-foreground md:bg-muted/50">
+      <div className="mx-auto min-h-dvh w-full max-w-md bg-background md:border-x md:border-border md:shadow-sm">
+        <AppHeader />
+        <main className="min-h-dvh pb-28 pt-16">
+          <div className="px-4 py-5">{children}</div>
+        </main>
+        <FloatingNav />
+      </div>
     </div>
   );
 }

@@ -33,13 +33,15 @@ function ReviewState({
   onBack: () => void;
 }) {
   return (
-    <div className="fixed inset-0 z-[100] flex flex-col bg-background">
+    <div className="fixed inset-0 z-[100] flex flex-col bg-background md:bg-muted/50">
+      <div className="mx-auto flex min-h-0 w-full max-w-md flex-1 flex-col bg-background md:border-x md:border-border md:shadow-sm">
       <header className="flex h-14 shrink-0 items-center px-4">
         <Button variant="ghost" size="icon" onClick={onBack} className="h-10 w-10" aria-label="Back">
           <ArrowLeft className="h-5 w-5" />
         </Button>
       </header>
       <div className="flex flex-1 flex-col items-center justify-center px-8 text-center">{children}</div>
+      </div>
     </div>
   );
 }

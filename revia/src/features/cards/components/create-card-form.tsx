@@ -44,7 +44,7 @@ export function CreateCardForm({ deckId }: { deckId: string }) {
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4">
         <div className="space-y-2">
           <Label htmlFor="card-front">Front</Label>
           <Textarea
@@ -65,7 +65,7 @@ export function CreateCardForm({ deckId }: { deckId: string }) {
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4">
         <div className="space-y-2">
           <Label htmlFor="card-lesson">Lesson</Label>
           <select

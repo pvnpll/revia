@@ -380,12 +380,15 @@ export function StudyCardViewer({
     <div
       className={cn(
         "study-viewer flex flex-col",
-        fullscreen ? "fixed inset-0 z-[100]" : "min-h-[70vh] rounded-xl border",
+        fullscreen
+          ? "fixed inset-0 z-[100] md:bg-muted/50"
+          : "min-h-[70vh] rounded-xl border",
         studySurface,
       )}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
+      <div className="mx-auto flex min-h-0 w-full max-w-md flex-1 flex-col bg-background md:border-x md:border-border md:shadow-sm">
       <header className="flex h-14 shrink-0 items-center justify-between px-4">
         {onClose ? (
           <Button
@@ -571,6 +574,7 @@ export function StudyCardViewer({
           )}
         </footer>
       )}
+      </div>
     </div>
   );
 }

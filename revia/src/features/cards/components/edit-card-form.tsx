@@ -70,7 +70,7 @@ export function EditCardForm({ deckId, card, onDone }: EditCardFormProps) {
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 rounded-lg border p-4">
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4">
         <div className="space-y-2">
           <Label htmlFor={`edit-front-${card.id}`}>Front</Label>
           <Textarea id={`edit-front-${card.id}`} {...form.register("front")} />
@@ -87,7 +87,7 @@ export function EditCardForm({ deckId, card, onDone }: EditCardFormProps) {
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4">
         <div className="space-y-2">
           <Label htmlFor={`edit-lesson-${card.id}`}>Lesson</Label>
           <select

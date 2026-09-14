@@ -17,7 +17,7 @@ interface DeckListProps {
 export function DeckList({ decks, isLoading }: DeckListProps) {
   if (isLoading) {
     return (
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4">
         {Array.from({ length: 4 }).map((_, index) => (
           <Skeleton key={index} className="h-32 rounded-2xl" />
         ))}
@@ -37,7 +37,7 @@ export function DeckList({ decks, isLoading }: DeckListProps) {
   }
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2">
+    <div className="grid gap-4">
       {decks.map((deck) => (
         <DeckListCard key={deck.id} deck={deck} />
       ))}

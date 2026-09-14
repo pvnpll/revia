@@ -23,7 +23,7 @@ export function CreateLessonForm({ deckId }: { deckId: string }) {
   }
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-3 sm:flex-row sm:items-end">
+    <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-3">
       <div className="flex-1 space-y-2">
         <Label htmlFor="lesson-title">New lesson</Label>
         <Input
@@ -36,13 +36,13 @@ export function CreateLessonForm({ deckId }: { deckId: string }) {
         )}
       </div>
       {createLesson.isError && (
-        <p className="text-sm text-destructive sm:col-span-2">
+        <p className="text-sm text-destructive">
           {createLesson.error instanceof Error
             ? createLesson.error.message
             : "Failed to create lesson"}
         </p>
       )}
-      <Button type="submit" disabled={createLesson.isPending} className="sm:w-auto">
+      <Button type="submit" disabled={createLesson.isPending}>
         {createLesson.isPending ? "Adding..." : "Add Lesson"}
       </Button>
     </form>

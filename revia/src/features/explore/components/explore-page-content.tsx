@@ -88,7 +88,6 @@ export function ExplorePageContent() {
               onChange={(event) => setPublicQuery(event.target.value)}
               placeholder="Filter public decks by title, subject..."
               className="h-12 rounded-2xl pl-10 text-base"
-              autoFocus
             />
           </div>
 
@@ -115,7 +114,7 @@ export function ExplorePageContent() {
               </CardContent>
             </Card>
           ) : (
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-4">
               {publicDecks.map((deck) => (
                 <PublicDeckCard key={deck.id} deck={deck} />
               ))}
@@ -148,7 +147,6 @@ export function ExplorePageContent() {
             onChange={(event) => setLibraryQuery(event.target.value)}
             placeholder="Search cards, lessons, decks..."
             className="h-12 rounded-2xl pl-10 text-base"
-            autoFocus
           />
         </div>
 
@@ -246,7 +244,7 @@ export function ExplorePageContent() {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4">
             {publicDecks.map((deck) => (
               <PublicDeckCard key={deck.id} deck={deck} />
             ))}
@@ -310,7 +308,7 @@ function SearchResultItem({ result }: { result: SearchResult }) {
 
 function PublicDeckCard({ deck }: { deck: PublicDeckSummary }) {
   return (
-    <Card className="transition-colors hover:bg-accent/30">
+    <Card className="relative transition-colors hover:bg-accent/30">
       <CardHeader className="pb-3">
         <div className="flex items-start gap-3">
           <div
@@ -320,7 +318,11 @@ function PublicDeckCard({ deck }: { deck: PublicDeckSummary }) {
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
               <CardTitle className="text-lg">
-                <Link href={`/decks/${deck.id}`} prefetch className="hover:underline">
+                <Link
+                  href={`/decks/${deck.id}`}
+                  prefetch
+                  className="hover:underline after:absolute after:inset-0 after:rounded-2xl after:content-['']"
+                >
                   {deck.title}
                 </Link>
               </CardTitle>

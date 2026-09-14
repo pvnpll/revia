@@ -13,7 +13,7 @@ export function AppHeader() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-20 flex h-14 items-center justify-between border-b bg-background/90 px-4 backdrop-blur",
+        "fixed left-1/2 top-0 z-20 flex h-14 w-full max-w-md -translate-x-1/2 items-center justify-between border-b bg-background/90 px-4 backdrop-blur md:border-x md:border-border",
       )}
     >
       <Link href={isAuthenticated ? "/practice" : "/explore"} className="flex items-center gap-2">

@@ -143,8 +143,10 @@ export function PracticeSession({
   if (canFetch && isLoading) {
     return (
       <PracticeOverlay>
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background md:bg-muted/50">
+          <div className="mx-auto flex min-h-0 w-full max-w-md flex-1 flex-col items-center justify-center bg-background px-6 text-center md:border-x md:border-border md:shadow-sm">
           <p className="text-muted-foreground">Loading cards...</p>
+          </div>
         </div>
       </PracticeOverlay>
     );
@@ -153,13 +155,15 @@ export function PracticeSession({
   if (canFetch && isError) {
     return (
       <PracticeOverlay>
-        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-4 bg-background px-6 text-center">
+        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-4 bg-background px-6 text-center md:bg-muted/50">
+          <div className="mx-auto flex min-h-0 w-full max-w-md flex-1 flex-col items-center justify-center gap-4 bg-background px-6 text-center md:border-x md:border-border md:shadow-sm">
           <p className="text-destructive">
             {error instanceof Error ? error.message : "Failed to load practice cards"}
           </p>
           <Button variant="ghost" onClick={onClose}>
             Go back
           </Button>
+          </div>
         </div>
       </PracticeOverlay>
     );
@@ -168,8 +172,10 @@ export function PracticeSession({
   if (!initialized) {
     return (
       <PracticeOverlay>
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background md:bg-muted/50">
+          <div className="mx-auto flex min-h-0 w-full max-w-md flex-1 flex-col items-center justify-center bg-background px-6 text-center md:border-x md:border-border md:shadow-sm">
           <p className="text-muted-foreground">Preparing session...</p>
+          </div>
         </div>
       </PracticeOverlay>
     );
@@ -178,11 +184,13 @@ export function PracticeSession({
   if (studyCards.length === 0) {
     return (
       <PracticeOverlay>
-        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-4 bg-background px-6 text-center">
+        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-4 bg-background px-6 text-center md:bg-muted/50">
+          <div className="mx-auto flex min-h-0 w-full max-w-md flex-1 flex-col items-center justify-center gap-4 bg-background px-6 text-center md:border-x md:border-border md:shadow-sm">
           <p className="text-muted-foreground">No cards available to practice yet.</p>
           <Button variant="ghost" onClick={onClose}>
             Go back
           </Button>
+          </div>
         </div>
       </PracticeOverlay>
     );
@@ -191,8 +199,10 @@ export function PracticeSession({
   if (authLoading && !readOnly) {
     return (
       <PracticeOverlay>
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background md:bg-muted/50">
+          <div className="mx-auto flex min-h-0 w-full max-w-md flex-1 flex-col items-center justify-center bg-background px-6 text-center md:border-x md:border-border md:shadow-sm">
           <p className="text-muted-foreground">Preparing session...</p>
+          </div>
         </div>
       </PracticeOverlay>
     );

@@ -26,13 +26,13 @@ export function DashboardContent() {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
           <p className="mt-2 text-muted-foreground">Your daily learning overview</p>
         </div>
-        <div className="flex flex-col gap-2 sm:flex-row">
-          <Button asChild size="lg">
+        <div className="flex flex-col gap-2">
+          <Button asChild size="lg" className="w-full">
             <Link href="/practice">
               <Sparkles className="h-4 w-4" />
               Start Practice
@@ -41,6 +41,7 @@ export function DashboardContent() {
           <Button
             asChild
             size="lg"
+            className="w-full"
             variant={data.dueToday > 0 ? "default" : "outline"}
           >
             <Link href="/review">
@@ -53,7 +54,7 @@ export function DashboardContent() {
         </div>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="grid grid-cols-2 gap-4">
         <StatCard title="Due Today" value={data.dueToday} description="Cards ready for review" />
         <StatCard title="Reviewed Today" value={data.reviewedToday} description="Completed reviews" />
         <StatCard

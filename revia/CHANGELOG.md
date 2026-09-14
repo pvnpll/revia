@@ -8,6 +8,24 @@ Release notes are **drafted** on each `main` merge; **published** only when expl
 
 ---
 
+## [v1.7.2] — 2026-09-14 (Published)
+
+**Desktop shell & Explore UX polish** — App renders on desktop in a centered phone-width column; practice/review viewers match; Explore search no longer autofocuses; whole deck cards tappable.
+
+→ [Full release notes](docs/releases/v1.7.2.md)
+
+### Changed
+- Removed mobile-only gate; centered `max-w-md` column on all screens
+- Practice/review fullscreen overlays constrained to the column on desktop
+- Dashboard 2-column stats, full-width stacked buttons, single-column deck grids
+- Explore search inputs no longer autofocus on load
+- Entire public deck card is tappable (stretched-link)
+
+### Removed
+- Dead `AppSidebar` / `LegacyAppSidebar` components
+
+---
+
 ## [v1.7.1] — 2026-09-13 (Published)
 
 **Single-card guest practice fix** — Guest lessons with one card can now reveal their answer as expected.

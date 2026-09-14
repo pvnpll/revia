@@ -32,11 +32,11 @@ export function LoginRequired({
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-col gap-2 sm:flex-row sm:justify-center">
-        <Button asChild className="w-full sm:w-auto">
+      <CardContent className="flex flex-col gap-2">
+        <Button asChild className="w-full">
           <Link href={loginHref}>Sign in</Link>
         </Button>
-        <Button asChild variant="outline" className="w-full sm:w-auto">
+        <Button asChild variant="outline" className="w-full">
           <Link href={signupHref}>Create account</Link>
         </Button>
       </CardContent>

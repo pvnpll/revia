@@ -21,14 +21,14 @@ export function ImportPublicDeckButton({ deckId, importedDeckId }: ImportPublicD
 
   if (!isAuthenticated) {
     return (
-      <div className="flex flex-col gap-2 sm:flex-row">
-        <Button asChild className="w-full sm:w-auto">
+      <div className="flex flex-col gap-2">
+        <Button asChild className="w-full">
           <Link href={loginHref}>
             <LogIn className="h-4 w-4" />
             Sign in to add
           </Link>
         </Button>
-        <Button asChild variant="outline" className="w-full sm:w-auto">
+        <Button asChild variant="outline" className="w-full">
           <Link href={signupHref}>Create account</Link>
         </Button>
       </div>
@@ -37,7 +37,7 @@ export function ImportPublicDeckButton({ deckId, importedDeckId }: ImportPublicD
 
   if (importedDeckId) {
     return (
-      <Button asChild className="w-full sm:w-auto">
+      <Button asChild className="w-full">
         <Link href={`/decks/${importedDeckId}`}>Open in your library</Link>
       </Button>
     );
@@ -47,7 +47,7 @@ export function ImportPublicDeckButton({ deckId, importedDeckId }: ImportPublicD
     <div className="space-y-2">
       <Button
         type="button"
-        className="w-full sm:w-auto"
+        className="w-full"
         disabled={importDeck.isPending}
         onClick={() => importDeck.mutate()}
       >
