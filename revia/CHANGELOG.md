@@ -8,9 +8,9 @@ Release notes are **drafted** on each `main` merge; **published** only when expl
 
 ---
 
-## [v1.7.3] — 2026-09-14 (Draft, develop preview)
+## [v1.7.3] — 2026-09-14 (Published)
 
-**Study viewer gesture & rating fixes** — Swipe double-commit guard, self-labeled rating buttons, scrollable revealed answers, edge-aware review nav, narrower edge-tap zones. **On `develop` only, not in production.**
+**Study viewer gesture & rating fixes** — Swipe double-commit guard, self-labeled rating buttons, scrollable revealed answers, edge-aware review nav, narrower edge-tap zones.
 
 → [Full release notes](docs/releases/v1.7.3.md)
 
