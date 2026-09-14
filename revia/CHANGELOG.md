@@ -8,6 +8,21 @@ Release notes are **drafted** on each `main` merge; **published** only when expl
 
 ---
 
+## [v1.7.3] — 2026-09-14 (Draft, develop preview)
+
+**Study viewer gesture & rating fixes** — Swipe double-commit guard, self-labeled rating buttons, scrollable revealed answers, edge-aware review nav, narrower edge-tap zones. **On `develop` only, not in production.**
+
+→ [Full release notes](docs/releases/v1.7.3.md)
+
+### Fixed
+- Rapid double-swipe advancing two cards (timer ref + exiting guard + unmount cleanup)
+- Rating numbers divorced from 9px labels (single self-labeled grid, screen-reader labels)
+- Long revealed answers unscrollable in swipe mode (`touch-pan-y` when revealed)
+- Review vertical-swipe hijacking answer scroll (edge-aware navigation)
+- Invisible 25% edge-tap zones (narrowed to ~15%, documented in footer, duplicate header counter removed)
+
+---
+
 ## [v1.7.2] — 2026-09-14 (Published)
 
 **Desktop shell & Explore UX polish** — App renders on desktop in a centered phone-width column; practice/review viewers match; Explore search no longer autofocuses; whole deck cards tappable.
