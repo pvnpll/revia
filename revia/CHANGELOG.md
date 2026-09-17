@@ -8,6 +8,18 @@ Release notes are **drafted** on each `main` merge; **published** only when expl
 
 ---
 
+## [v1.7.4] — 2026-09-17 (Published)
+
+**Labeled nav & guest escape hatch** — Bottom nav shows icon + label; every auth wall links back to Explore for guests.
+
+→ [Full release notes](docs/releases/v1.7.4.md)
+
+### Changed
+- Floating nav items show icon + text label (was icon-only)
+- "Continue as guest" escape hatch on `LoginRequired` cards, login/signup forms, and deck import prompt
+
+---
+
 ## [v1.7.3] — 2026-09-14 (Published)
 
 **Study viewer gesture & rating fixes** — Swipe double-commit guard, self-labeled rating buttons, scrollable revealed answers, edge-aware review nav, narrower edge-tap zones.
