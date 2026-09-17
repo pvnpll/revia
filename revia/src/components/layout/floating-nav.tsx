@@ -89,13 +89,14 @@ export function FloatingNav() {
             onTouchStart={() => prefetchRoute(queryClient, prefetchKey, isAuthenticated)}
             onMouseEnter={() => prefetchRoute(queryClient, prefetchKey, isAuthenticated)}
             className={cn(
-              "flex h-11 w-11 items-center justify-center rounded-full transition-all duration-200 active:scale-90",
+              "flex min-h-11 min-w-11 flex-col items-center justify-center gap-0.5 rounded-2xl px-3 py-1.5 text-[10px] font-medium transition-all duration-200 active:scale-90",
               active
                 ? "bg-primary text-primary-foreground shadow-md"
                 : "text-muted-foreground hover:bg-accent hover:text-foreground",
             )}
           >
-            <Icon className="h-5 w-5" />
+            <Icon className="h-5 w-5" aria-hidden />
+            <span className="leading-none">{label}</span>
           </Link>
         );
       })}

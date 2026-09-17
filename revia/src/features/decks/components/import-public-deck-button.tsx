@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Download, Loader2, LogIn } from "lucide-react";
+import { Compass, Download, Loader2, LogIn } from "lucide-react";
 
 import { useAuthSession } from "@/features/auth/hooks/use-auth-session";
 import { useImportPublicDeck } from "@/features/decks/hooks/use-decks";
@@ -30,6 +30,12 @@ export function ImportPublicDeckButton({ deckId, importedDeckId }: ImportPublicD
         </Button>
         <Button asChild variant="outline" className="w-full">
           <Link href={signupHref}>Create account</Link>
+        </Button>
+        <Button asChild variant="ghost" className="w-full">
+          <Link href="/explore">
+            <Compass className="h-4 w-4" />
+            Continue as guest
+          </Link>
         </Button>
       </div>
     );

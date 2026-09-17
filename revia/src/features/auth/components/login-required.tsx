@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LogIn } from "lucide-react";
+import { Compass, LogIn } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,12 +11,15 @@ interface LoginRequiredProps {
   title?: string;
   description?: string;
   redirectPath?: string;
+  /** Show a "Continue as guest" link back to Explore. Defaults to true. */
+  showGuestLink?: boolean;
 }
 
 export function LoginRequired({
   title = "Sign in to continue",
   description = "Create a free account or sign in to use this feature. Browsing and practicing public decks does not require an account.",
   redirectPath,
+  showGuestLink = true,
 }: LoginRequiredProps) {
   const pathname = usePathname();
   const redirect = redirectPath ?? pathname;
@@ -39,6 +42,14 @@ export function LoginRequired({
         <Button asChild variant="outline" className="w-full">
           <Link href={signupHref}>Create account</Link>
         </Button>
+        {showGuestLink && (
+          <Button asChild variant="ghost" className="w-full">
+            <Link href="/explore">
+              <Compass className="h-4 w-4" />
+              Continue as guest
+            </Link>
+          </Button>
+        )}
       </CardContent>
     </Card>
   );
