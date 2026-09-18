@@ -454,19 +454,19 @@ export function StudyCardViewer({
       )}
     >
       <div className="mx-auto flex min-h-0 w-full max-w-md flex-1 flex-col bg-background md:border-x md:border-border md:shadow-sm">
-      <header className="flex h-14 shrink-0 items-center justify-between px-4">
+      <header className="flex h-14 shrink-0 items-center justify-between gap-2 px-4">
         {onClose ? (
           <Button
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="h-10 w-10"
+            className="h-10 w-10 shrink-0"
             aria-label="Back"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
         ) : (
-          <ThemeToggle />
+          <span className="w-10 shrink-0" aria-hidden />
         )}
         <div className="min-w-0 flex-1 px-3 text-center">
           {title && (
@@ -477,6 +477,7 @@ export function StudyCardViewer({
         <span className="w-10 shrink-0 text-right text-sm font-medium tabular-nums text-muted-foreground">
           {isSwipeNavigation ? null : progress}
         </span>
+        <ThemeToggle className="shrink-0" />
       </header>
 
       <main

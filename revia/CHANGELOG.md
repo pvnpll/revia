@@ -8,6 +8,21 @@ Release notes are **drafted** on each `main` merge; **published** only when expl
 
 ---
 
+## [v1.8.1] — 2026-09-18 (Published)
+
+**UI polish batch** — Viewer header Back + theme toggle together, header loading skeletons, keyboard focus states, 44px title-edit target with retry-safe saves, guest copy and practice landing polish.
+
+→ [Full release notes](docs/releases/v1.8.1.md)
+
+### Changed
+- Study viewer header always shows Back + theme toggle; safe truncation
+- App header shows skeleton pills while auth loads (no layout shift)
+- Deck cards and search rows get visible keyboard focus states
+- Title-edit pencil enlarged to 44px; failed saves stay open for retry
+- Guest lesson copy and practice landing clarified
+
+---
+
 ## [v1.8.0] — 2026-09-18 (Published)
 
 **Unified swipe UI for practice & review** — Signed-in practice and Daily Review use the same swipe cards as guests; ratings footer appears after reveal. Scheduling unchanged.

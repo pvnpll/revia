@@ -5,6 +5,7 @@ import { GraduationCap, LogIn, Settings } from "lucide-react";
 
 import { useAuthSession } from "@/features/auth/hooks/use-auth-session";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils/cn";
 
 export function AppHeader() {
@@ -24,7 +25,10 @@ export function AppHeader() {
       </Link>
 
       {isLoading ? (
-        <div className="h-9 w-20" />
+        <div className="flex items-center gap-2" aria-hidden>
+          <Skeleton className="h-9 w-9 rounded-md" />
+          <Skeleton className="h-9 w-20 rounded-md" />
+        </div>
       ) : isAuthenticated ? (
         <Link
           href="/settings"

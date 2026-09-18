@@ -283,7 +283,10 @@ function SearchResultItem({ result }: { result: SearchResult }) {
 
   return (
     <li>
-      <Link href={result.href} className="flex gap-3 py-3">
+      <Link
+        href={result.href}
+        className="flex gap-3 rounded-lg py-3 transition-colors hover:bg-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      >
         <div className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-muted">
           <Icon className="h-4 w-4 text-muted-foreground" />
         </div>
@@ -308,7 +311,7 @@ function SearchResultItem({ result }: { result: SearchResult }) {
 
 function PublicDeckCard({ deck }: { deck: PublicDeckSummary }) {
   return (
-    <Card className="relative transition-colors hover:bg-accent/30">
+    <Card className="relative transition-colors hover:bg-accent/30 focus-within:ring-2 focus-within:ring-ring">
       <CardHeader className="pb-3">
         <div className="flex items-start gap-3">
           <div
@@ -321,7 +324,7 @@ function PublicDeckCard({ deck }: { deck: PublicDeckSummary }) {
                 <Link
                   href={`/decks/${deck.id}`}
                   prefetch
-                  className="hover:underline after:absolute after:inset-0 after:rounded-2xl after:content-['']"
+                  className="rounded-sm hover:underline focus-visible:outline-none after:absolute after:inset-0 after:rounded-2xl after:content-['']"
                 >
                   {deck.title}
                 </Link>
