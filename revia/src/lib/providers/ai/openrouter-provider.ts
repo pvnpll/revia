@@ -11,10 +11,17 @@ export interface OpenRouterProviderOptions {
   timeoutMs?: number;
 }
 
+const DEFAULT_FREE_MODELS = [
+  "google/gemma-4-31b-it:free",
+  "google/gemma-4-26b-a4b-it:free",
+  "qwen/qwen3.8-27b:free",
+  "deepseek/deepseek-v4-flash-0731:free",
+];
+
 export class OpenRouterProvider implements AIProvider {
   readonly name = "openrouter";
   private readonly apiKey: string;
-  private readonly model: string;
+  private readonly initialModel: string;
   private readonly timeoutMs: number;
 
   constructor(options: OpenRouterProviderOptions = {}) {
@@ -27,14 +34,56 @@ export class OpenRouterProvider implements AIProvider {
       );
     }
     this.apiKey = apiKey;
-    this.model =
+    this.initialModel =
       options.model ||
       process.env.OPENROUTER_MODEL ||
-      "meta-llama/llama-3.3-70b-instruct:free";
+      DEFAULT_FREE_MODELS[0];
     this.timeoutMs = options.timeoutMs || 30000;
   }
 
   async generateCards(
+    request: ProviderGenerateCardsRequest,
+  ): Promise<ProviderGenerateCardsResult> {
+    const modelsToTry = [
+      this.initialModel,
+      ...DEFAULT_FREE_MODELS.filter((m) => m !== this.initialModel),
+    ];
+
+    let lastError: AIProviderError | null = null;
+
+    for (const model of modelsToTry) {
+      try {
+        return await this.generateWithModel(model, request);
+      } catch (err) {
+        if (err instanceof AIProviderError) {
+          // If model is not found (404) or unavailable (503), try next model candidate
+          if (err.status === 404 || err.status === 503) {
+            console.warn(`OpenRouter model ${model} failed (${err.status}), trying next free model candidate...`);
+            lastError = err;
+            continue;
+          }
+          // Do not retry on rate limits (429) or auth errors (401/403)
+          if (err.status === 429 || err.status === 401 || err.status === 403) {
+            throw err;
+          }
+        }
+        lastError =
+          err instanceof AIProviderError
+            ? err
+            : new AIProviderError(
+                `OpenRouter error with ${model}: ${err instanceof Error ? err.message : String(err)}`,
+                "GENERATION_FAILED",
+                502,
+                err,
+              );
+      }
+    }
+
+    throw lastError || new AIProviderError("All OpenRouter candidate models failed", "PROVIDER_UNAVAILABLE", 503);
+  }
+
+  private async generateWithModel(
+    model: string,
     request: ProviderGenerateCardsRequest,
   ): Promise<ProviderGenerateCardsResult> {
     const url = "https://openrouter.ai/api/v1/chat/completions";
@@ -54,7 +103,7 @@ export class OpenRouterProvider implements AIProvider {
 Do not include markdown code block formatting (e.g. \`\`\`json). Return raw JSON only.`;
 
     const payload = {
-      model: this.model,
+      model,
       messages: [
         {
           role: "system",
@@ -115,6 +164,14 @@ Do not include markdown code block formatting (e.g. \`\`\`json). Return raw JSON
           `OpenRouter API key is invalid or unauthorized (${response.status}): ${errorBody}`,
           "PROVIDER_AUTH_FAILED",
           502,
+          errorBody,
+        );
+      }
+      if (response.status === 404) {
+        throw new AIProviderError(
+          `OpenRouter model unavailable (404): ${errorBody}`,
+          "PROVIDER_UNAVAILABLE",
+          404,
           errorBody,
         );
       }
@@ -214,10 +271,9 @@ Do not include markdown code block formatting (e.g. \`\`\`json). Return raw JSON
             promptTokens: usage.prompt_tokens,
             completionTokens: usage.completion_tokens,
             totalTokens: usage.total_tokens,
-            model: this.model,
+            model,
           }
         : undefined,
     };
   }
 }
-
