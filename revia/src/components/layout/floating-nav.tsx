@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
-import { BookOpen, Compass, LayoutDashboard, Sparkles } from "lucide-react";
+import { BookOpen, Bot, Compass, LayoutDashboard, Sparkles } from "lucide-react";
 
 import { useAuthSession } from "@/features/auth/hooks/use-auth-session";
 import { dashboardQueryKeys } from "@/features/dashboard/hooks/use-dashboard";
@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils/cn";
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, prefetchKey: "dashboard" as const },
   { href: "/practice", label: "Practice", icon: Sparkles, prefetchKey: "practice" as const },
+  { href: "/ai", label: "AI", icon: Bot, prefetchKey: null },
   { href: "/decks", label: "Decks", icon: BookOpen, prefetchKey: "decks" as const },
   { href: "/explore", label: "Explore", icon: Compass, prefetchKey: "explore" as const },
 ];
@@ -74,7 +75,7 @@ export function FloatingNav() {
 
   const visibleItems = isAuthenticated
     ? navItems
-    : navItems.filter((item) => item.href === "/explore" || item.href === "/practice");
+    : navItems.filter((item) => item.href === "/explore" || item.href === "/practice" || item.href === "/ai");
 
   return (
     <nav className="fixed bottom-4 left-1/2 z-50 flex w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 items-center justify-around rounded-full border bg-card/95 px-2 py-2 shadow-lg backdrop-blur">

@@ -72,3 +72,4 @@ export function buildGenerationPrompts(input: GenerationRequestInput): Generatio
     userPrompt: userSections.join("\n"),
   };
 }
+

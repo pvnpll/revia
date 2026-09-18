@@ -45,3 +45,4 @@ export interface AIProvider {
   readonly name: string;
   generateCards(request: ProviderGenerateCardsRequest): Promise<ProviderGenerateCardsResult>;
 }
+

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { GraduationCap, Layers, ListChecks, Flame, Sparkles } from "lucide-react";
+import { Bot, GraduationCap, Layers, ListChecks, Flame, Sparkles } from "lucide-react";
 
 import { useDashboard } from "@/features/dashboard/hooks/use-dashboard";
 import { Badge } from "@/components/ui/badge";
@@ -32,6 +32,12 @@ export function DashboardContent() {
           <p className="mt-2 text-muted-foreground">Your daily learning overview</p>
         </div>
         <div className="flex flex-col gap-2">
+          <Button asChild size="lg" className="w-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white shadow-sm font-semibold">
+            <Link href="/ai">
+              <Bot className="h-4 w-4" />
+              Revia AI (Generate & Learn)
+            </Link>
+          </Button>
           <Button asChild size="lg" className="w-full">
             <Link href="/practice">
               <Sparkles className="h-4 w-4" />

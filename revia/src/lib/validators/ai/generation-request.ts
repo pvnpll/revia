@@ -27,3 +27,4 @@ export const generationRequestSchema = z.object({
 
 export type GenerationLevel = z.infer<typeof generationLevelSchema>;
 export type GenerationRequestInput = z.infer<typeof generationRequestSchema>;
+

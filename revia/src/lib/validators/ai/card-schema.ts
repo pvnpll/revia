@@ -14,3 +14,4 @@ export const generatedCardsResultSchema = z.object({
 
 export type GeneratedCard = z.infer<typeof generatedCardSchema>;
 export type GeneratedCardsResult = z.infer<typeof generatedCardsResultSchema>;
+
