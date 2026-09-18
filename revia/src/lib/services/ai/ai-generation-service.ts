@@ -69,47 +69,86 @@ export class AIGenerationService {
     const systemPrompt = prompts.systemPrompt;
 
     let lastResult: ProviderGenerateCardsResult | null = null;
-    let validatedCards: GeneratedCard[] | null = null;
+    const cumulativeCards: GeneratedCard[] = [];
+    let totalDuplicatesFiltered = 0;
     let lastError: Error | null = null;
+    let currentUsage: ProviderTokenUsage = { model: "", promptTokens: 0, completionTokens: 0, totalTokens: 0 };
 
     for (let attempt = 0; attempt <= this.maxRetries; attempt++) {
+      if (cumulativeCards.length >= input.batchSize) {
+        break; // We have enough cards
+      }
+
+      const cardsNeeded = input.batchSize - cumulativeCards.length;
+
       try {
         lastResult = await provider.generateCards({
           goal: input.goal,
           topic: input.topic,
           level: input.level,
-          batchSize: input.batchSize,
-          context: input.context,
+          batchSize: cardsNeeded, // request only the remaining cards
+          context: {
+            ...input.context,
+            // Include newly accumulated cards in recentlySeen to prevent dupes in the same batch
+            recentlySeen: [
+              ...input.context.recentlySeen,
+              ...cumulativeCards.map((c) => c.front),
+            ],
+          },
           systemPrompt,
           userPrompt,
         });
+
+        // Accumulate token usage if available
+        if (lastResult.usage) {
+          currentUsage = {
+            model: lastResult.usage.model,
+            promptTokens: (currentUsage.promptTokens || 0) + (lastResult.usage.promptTokens || 0),
+            completionTokens: (currentUsage.completionTokens || 0) + (lastResult.usage.completionTokens || 0),
+            totalTokens: (currentUsage.totalTokens || 0) + (lastResult.usage.totalTokens || 0),
+          };
+        }
 
         const parseResult = generatedCardsResultSchema.safeParse({
           cards: lastResult.cards,
         });
 
         if (parseResult.success) {
-          validatedCards = parseResult.data.cards;
-          break;
+          const newlyGenerated = parseResult.data.cards;
+          
+          // Dedup right away
+          const dedupResult = filterDuplicateCards(newlyGenerated, {
+            known: input.context.known,
+            recentlySeen: [
+              ...input.context.recentlySeen,
+              ...cumulativeCards.map((c) => c.front),
+            ],
+          });
+
+          cumulativeCards.push(...dedupResult.cards);
+          totalDuplicatesFiltered += dedupResult.duplicatesRemoved;
+
+          if (cumulativeCards.length >= input.batchSize) {
+            break; // Done
+          } else {
+            // Not enough cards! Modify prompt to push harder for new concepts
+            userPrompt += `\n\nNOTE: You just generated ${dedupResult.duplicatesRemoved} duplicate concepts that we already know. PLEASE generate ${input.batchSize - cumulativeCards.length} COMPLETELY DIFFERENT and NOVEL concepts about ${input.topic} that are NOT in the recently seen or known lists!`;
+          }
+        } else {
+          lastError = new Error(
+            `Validation failed: ${parseResult.error.errors.map((e) => e.message).join(", ")}`,
+          );
+          // Adjust prompt for next retry
+          userPrompt += `\n\nNOTE: The previous generation failed schema validation (${parseResult.error.errors[0]?.message}). Please strictly return valid JSON according to the schema.`;
         }
-
-        lastError = new Error(
-          `Validation failed: ${parseResult.error.errors.map((e) => e.message).join(", ")}`,
-        );
-
-        // Adjust prompt for next retry
-        userPrompt += `\n\nNOTE: The previous generation failed schema validation (${parseResult.error.errors[0]?.message}). Please strictly return valid JSON according to the schema.`;
       } catch (err) {
         if (err instanceof AIProviderError && err.code === "RATE_LIMITED") {
-          // Do not retry on rate limits
           throw err;
         }
         if (err instanceof AIProviderError && err.code === "PROVIDER_AUTH_FAILED") {
-          // Do not retry on auth failures
           throw err;
         }
 
-        // If primary provider is unavailable (503 / high demand) and fallback exists, switch!
         if (
           fallbackProvider &&
           err instanceof AIProviderError &&
@@ -127,9 +166,17 @@ export class AIGenerationService {
       }
     }
 
-    if (!validatedCards || validatedCards.length === 0) {
+    if (cumulativeCards.length === 0) {
       if (lastError instanceof AIProviderError) {
         throw lastError;
+      }
+      // If we filtered out EVERYTHING but had no parsing errors
+      if (totalDuplicatesFiltered > 0 && !lastError) {
+        throw new AIProviderError(
+          "All generated cards were duplicates of existing known or recently seen content",
+          "EMPTY_GENERATION",
+          502,
+        );
       }
       throw new AIProviderError(
         `AI card generation failed after ${this.maxRetries + 1} attempts: ${lastError?.message || "Invalid output"}`,
@@ -139,35 +186,25 @@ export class AIGenerationService {
       );
     }
 
-    // Apply programmatic deduplication
-    const dedupResult = filterDuplicateCards(validatedCards, {
-      known: input.context.known,
-      recentlySeen: input.context.recentlySeen,
-    });
-
-    if (dedupResult.cards.length === 0) {
-      throw new AIProviderError(
-        "All generated cards were duplicates of existing known or recently seen content",
-        "EMPTY_GENERATION",
-        502,
-      );
-    }
-
     const modelName =
+      (currentUsage.model ? currentUsage.model : undefined) ||
       lastResult?.usage?.model ||
       (provider.name === "openrouter"
         ? "meta-llama/llama-3.3-70b-instruct:free"
         : "gemini-3.6-flash");
 
+    // Enforce exactly batchSize if somehow we exceeded it
+    const finalCards = cumulativeCards.slice(0, input.batchSize);
+
     return {
-      cards: dedupResult.cards,
+      cards: finalCards,
       meta: {
         provider: provider.name,
         model: modelName,
-        batchSize: dedupResult.cards.length,
+        batchSize: finalCards.length,
         generatedAt: new Date().toISOString(),
-        duplicatesFiltered: dedupResult.duplicatesRemoved,
-        usage: lastResult?.usage,
+        duplicatesFiltered: totalDuplicatesFiltered,
+        usage: currentUsage.model ? currentUsage : lastResult?.usage,
       },
     };
   }

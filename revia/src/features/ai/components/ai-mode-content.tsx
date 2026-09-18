@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useAIGenerate } from "../hooks/use-ai-generate";
 import { AISessionState, GenerateCardsApiParams } from "../types/ai-session";
@@ -36,8 +36,8 @@ export function AIModeContent() {
     });
   }
 
-  function handleNextBatch() {
-    if (!session) return;
+  const handleNextBatch = useCallback(() => {
+    if (!session || generateMutation.isPending) return;
 
     generateMutation.mutate(
       {
@@ -54,14 +54,24 @@ export function AIModeContent() {
             if (!prev) return null;
             return {
               ...prev,
-              cards: data.cards,
-              currentIndex: 0,
+              cards: [...prev.cards, ...data.cards], // Append cards instead of replacing
+              // Do NOT reset currentIndex; let the user continue seamlessly
             };
           });
         },
       },
     );
-  }
+  }, [session, generateMutation]);
+
+  // Background prefetch when getting close to the end of the current queue
+  useEffect(() => {
+    if (!session || generateMutation.isPending) return;
+    
+    const cardsRemaining = session.cards.length - 1 - session.currentIndex;
+    if (cardsRemaining <= 4 && cardsRemaining >= 0) {
+      handleNextBatch();
+    }
+  }, [session, generateMutation.isPending, handleNextBatch]);
 
   if (session && session.cards.length > 0) {
     return (
