@@ -92,3 +92,4 @@ describe("OpenRouterProvider", () => {
     expect(result.cards[0]).toEqual({ front: "Apple", back: "Sebu" });
   });
 });
+
