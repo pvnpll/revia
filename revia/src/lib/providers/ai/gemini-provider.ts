@@ -27,7 +27,7 @@ export class GeminiProvider implements AIProvider {
       );
     }
     this.apiKey = apiKey;
-    this.model = options.model || process.env.GEMINI_MODEL || "gemini-2.0-flash";
+    this.model = options.model || process.env.GEMINI_MODEL || "gemini-3.6-flash";
     this.timeoutMs = options.timeoutMs || 30000;
   }
 

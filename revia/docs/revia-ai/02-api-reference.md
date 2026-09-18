@@ -56,7 +56,7 @@
     ],
     "meta": {
       "provider": "gemini",
-      "model": "gemini-2.0-flash",
+      "model": "gemini-3.6-flash",
       "batchSize": 10,
       "generatedAt": "2026-09-18T15:30:00.000Z"
     }

@@ -10,7 +10,7 @@ The initial implementation assumes free-tier limits. All cost controls are desig
 
 | Provider | Model | Free Tier Limit | Notes |
 | :--- | :--- | :--- | :--- |
-| Gemini | gemini-2.0-flash | 15 RPM, 1M TPD, 1500 RPD | Best free option for structured JSON |
+| Gemini | gemini-3.6-flash | 15 RPM, 1M TPD, 1500 RPD | Best free option for structured JSON |
 | OpenRouter | Various free models | Model-dependent, typically ~20 RPM | Quality varies; test before committing |
 
 *RPM = requests per minute, TPD = tokens per day, RPD = requests per day*
@@ -76,7 +76,7 @@ flowchart TD
   "event": "ai_generation_completed",
   "userId": "usr_12345",
   "provider": "gemini",
-  "model": "gemini-2.0-flash",
+  "model": "gemini-3.6-flash",
   "usage": {
     "promptTokens": 6200,
     "completionTokens": 3800,

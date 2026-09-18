@@ -33,7 +33,7 @@ describe("AIGenerationService", () => {
           promptTokens: 120,
           completionTokens: 80,
           totalTokens: 200,
-          model: "gemini-2.0-flash",
+          model: "gemini-3.6-flash",
         },
       } satisfies ProviderGenerateCardsResult),
     };
@@ -48,7 +48,7 @@ describe("AIGenerationService", () => {
 
     expect(result.cards).toHaveLength(5);
     expect(result.meta.provider).toBe("mock-gemini");
-    expect(result.meta.model).toBe("gemini-2.0-flash");
+    expect(result.meta.model).toBe("gemini-3.6-flash");
     expect(result.meta.batchSize).toBe(5);
     expect(result.meta.duplicatesFiltered).toBe(0);
     expect(result.meta.usage?.totalTokens).toBe(200);

@@ -40,7 +40,7 @@ export interface AIProvider {
 
 ### GeminiProvider
 - Uses `@google/genai` SDK (Gemini API)
-- Initial model: `gemini-2.0-flash` (free tier)
+- Initial model: `gemini-3.6-flash` (free tier)
 - Supports structured JSON output mode
 - Environment: `GEMINI_API_KEY`
 

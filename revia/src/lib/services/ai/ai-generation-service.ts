@@ -120,7 +120,7 @@ export class AIGenerationService {
       );
     }
 
-    const modelName = lastResult?.usage?.model || "gemini-2.0-flash";
+    const modelName = lastResult?.usage?.model || "gemini-3.6-flash";
 
     return {
       cards: dedupResult.cards,
