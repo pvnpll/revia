@@ -54,6 +54,24 @@ Result:
 
 > **Note:** A separate named "develop environment" (custom domain, separate env vars) requires Vercel **Pro** (Custom Environments). On the free plan, `develop` uses the **Preview** environment, which is the standard workflow.
 
+### Two Vercel projects
+
+| Vercel project | Production branch | Domain | Root Directory |
+|----------------|-------------------|--------|----------------|
+| `revia` | `main` | `revialearn.vercel.app` | `revia` |
+| `revia-ai` | `mainAI` | `revialearn-ai.vercel.app` | `revia` ← **must be set** |
+
+Both projects deploy from the same GitHub repo (`pvnpll/revia`), where the app lives in the `revia/` subfolder. **`Root Directory` must be `revia` on every project**, or the build runs against the repo root (which has no `package.json`) and ships nothing — see the troubleshooting row below.
+
+`revia-ai` is the project used for the `mainAI` / `developAI` branches. Verify it with:
+
+```bash
+npx vercel projects ls                       # list linked projects
+curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
+  "https://api.vercel.com/v9/projects/revia-ai?teamId=$TEAM_ID" \
+  | python3 -m json.tool | grep -E 'rootDirectory|framework|productionBranch'
+```
+
 Optional automation (requires a Vercel token):
 
 ```bash
@@ -180,6 +198,8 @@ If you ever need a different region, create a new Supabase project there, run `n
 | Email confirmation opens wrong domain | Site URL must be `https://revialearn.vercel.app` (with dot) |
 | `email rate limit exceeded` on signup | Supabase free tier caps auth emails (~4/hour). Wait ~1 hour, manually confirm user in Supabase → Users, or run `npm run supabase:fix-production-url` to enable auto-confirm (skips confirmation emails) |
 | Build shows 0ms / site 404 | Set **Root Directory** to `revia` under [Build and Deployment](https://vercel.com/pvnplls-projects/revia/settings/build-and-deployment), then redeploy |
+| `revia-ai` (mainAI) deploys are **READY** and aliased, but the domain returns `404 NOT_FOUND` | `Root Directory` is unset on the `revia-ai` project, so the build log reads `Build Completed in /vercel/output [605ms]` — nothing was compiled. Set **Root Directory** to `revia` on **that** project (each Vercel project has its own setting), keep Framework Preset **Next.js**, then redeploy the latest `mainAI` commit |
+| Need to re-trigger a build without pushing a new commit | `curl -X POST -H "Authorization: Bearer $VERCEL_TOKEN" -H 'Content-Type: application/json' -d '{"name":"revia-ai","deploymentId":"<dpl_id>","target":"production"}' "https://api.vercel.com/v13/deployments?teamId=$TEAM_ID"` |
 | Can't find Root Directory | It's under **Settings → Build and Deployment**, not General |
 | `develop` should not go to production | Set Production branch to `main` and Preview branch tracking to `develop` under [Environments](https://vercel.com/pvnplls-projects/revia/settings/environments) |
 | Slow API on mobile | Confirm `regions: ["bom1"]` in `vercel.json` is deployed |
