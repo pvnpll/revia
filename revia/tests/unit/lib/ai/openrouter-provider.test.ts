@@ -17,27 +17,30 @@ describe("OpenRouterProvider", () => {
       model: "meta-llama/llama-3.3-70b-instruct:free",
     });
 
+    const mockResponseBody = JSON.stringify({
+      choices: [
+        {
+          message: {
+            content: JSON.stringify({
+              cards: [
+                { front: "Hello", back: "Namaskara" },
+                { front: "Water", back: "Neeru" },
+              ],
+            }),
+          },
+        },
+      ],
+      usage: {
+        prompt_tokens: 100,
+        completion_tokens: 50,
+        total_tokens: 150,
+      },
+    });
+
     const mockFetch = vi.fn().mockResolvedValue({
       ok: true,
-      json: async () => ({
-        choices: [
-          {
-            message: {
-              content: JSON.stringify({
-                cards: [
-                  { front: "Hello", back: "Namaskara" },
-                  { front: "Water", back: "Neeru" },
-                ],
-              }),
-            },
-          },
-        ],
-        usage: {
-          prompt_tokens: 100,
-          completion_tokens: 50,
-          total_tokens: 150,
-        },
-      }),
+      text: async () => mockResponseBody,
+      json: async () => JSON.parse(mockResponseBody),
     });
 
     global.fetch = mockFetch;
@@ -65,17 +68,20 @@ describe("OpenRouterProvider", () => {
       cards: [{ front: "Apple", back: "Sebu" }],
     });
 
+    const markdownResponseBody = JSON.stringify({
+      choices: [
+        {
+          message: {
+            content: `\`\`\`json\n${jsonString}\n\`\`\``,
+          },
+        },
+      ],
+    });
+
     global.fetch = vi.fn().mockResolvedValue({
       ok: true,
-      json: async () => ({
-        choices: [
-          {
-            message: {
-              content: `\`\`\`json\n${jsonString}\n\`\`\``,
-            },
-          },
-        ],
-      }),
+      text: async () => markdownResponseBody,
+      json: async () => JSON.parse(markdownResponseBody),
     });
 
     const result = await provider.generateCards({

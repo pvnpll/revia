@@ -19,6 +19,21 @@ const DEFAULT_FREE_MODELS = [
   "nvidia/nemotron-3.5-lightning:free",
 ];
 
+function extractJsonSubstring(text: string): string {
+  let cleaned = text.trim();
+  // Strip code block markers
+  if (cleaned.startsWith("```")) {
+    cleaned = cleaned.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "").trim();
+  }
+  // Find outermost JSON object
+  const firstBrace = cleaned.indexOf("{");
+  const lastBrace = cleaned.lastIndexOf("}");
+  if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+    return cleaned.substring(firstBrace, lastBrace + 1);
+  }
+  return cleaned;
+}
+
 export class OpenRouterProvider implements AIProvider {
   readonly name = "openrouter";
   private readonly apiKey: string;
@@ -126,6 +141,7 @@ Do not include markdown code block formatting (e.g. \`\`\`json). Return raw JSON
       ],
       response_format: { type: "json_object" },
       temperature: 0.3,
+      stream: false,
     };
 
     let response: Response;
@@ -202,6 +218,18 @@ Do not include markdown code block formatting (e.g. \`\`\`json). Return raw JSON
       );
     }
 
+    let rawResponseBody = "";
+    try {
+      rawResponseBody = await response.text();
+    } catch (err) {
+      throw new AIProviderError(
+        "Failed to read OpenRouter response body",
+        "GENERATION_FAILED",
+        502,
+        err,
+      );
+    }
+
     let json: {
       choices?: Array<{
         message?: {
@@ -213,20 +241,48 @@ Do not include markdown code block formatting (e.g. \`\`\`json). Return raw JSON
         completion_tokens?: number;
         total_tokens?: number;
       };
-    };
+    } | null = null;
 
     try {
-      json = (await response.json()) as typeof json;
-    } catch (err) {
+      json = JSON.parse(rawResponseBody);
+    } catch {
+      // Check if response was returned as Server-Sent Events (SSE) lines
+      if (rawResponseBody.includes("data: ")) {
+        try {
+          const lines = rawResponseBody.split("\n");
+          let accumulatedContent = "";
+          for (const line of lines) {
+            const trimmed = line.trim();
+            if (trimmed.startsWith("data: ") && trimmed !== "data: [DONE]") {
+              const chunk = JSON.parse(trimmed.slice(6));
+              const delta =
+                chunk.choices?.[0]?.delta?.content ||
+                chunk.choices?.[0]?.message?.content ||
+                "";
+              accumulatedContent += delta;
+            }
+          }
+          if (accumulatedContent) {
+            json = {
+              choices: [{ message: { content: accumulatedContent } }],
+            };
+          }
+        } catch {
+          // fallback
+        }
+      }
+    }
+
+    if (!json) {
       throw new AIProviderError(
-        "Failed to parse OpenRouter response as JSON",
+        `Failed to parse OpenRouter response as JSON: ${rawResponseBody.slice(0, 300)}`,
         "GENERATION_FAILED",
         502,
-        err,
+        rawResponseBody,
       );
     }
 
-    let rawText = json.choices?.[0]?.message?.content?.trim() || "";
+    const rawText = json.choices?.[0]?.message?.content?.trim() || "";
     if (!rawText) {
       throw new AIProviderError(
         "OpenRouter returned an empty generation response",
@@ -236,14 +292,11 @@ Do not include markdown code block formatting (e.g. \`\`\`json). Return raw JSON
       );
     }
 
-    // Strip markdown code block wrappers if present (e.g. ```json ... ```)
-    if (rawText.startsWith("```")) {
-      rawText = rawText.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "");
-    }
+    const jsonText = extractJsonSubstring(rawText);
 
     let parsed: unknown;
     try {
-      parsed = JSON.parse(rawText);
+      parsed = JSON.parse(jsonText);
     } catch (err) {
       throw new AIProviderError(
         `Failed to parse generated JSON from OpenRouter: ${err instanceof Error ? err.message : String(err)}`,
