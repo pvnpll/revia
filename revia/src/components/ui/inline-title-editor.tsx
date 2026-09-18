@@ -41,8 +41,14 @@ export function InlineTitleEditor({
       return;
     }
 
-    await onSave(trimmed);
-    setEditing(false);
+    try {
+      await onSave(trimmed);
+      setEditing(false);
+    } catch {
+      // Keep the editor open on failure so the user can retry; the error
+      // text is rendered below the input via the `error` prop.
+      setDraft(trimmed);
+    }
   }
 
   if (disabled) {
@@ -107,7 +113,7 @@ export function InlineTitleEditor({
         type="button"
         variant="ghost"
         size="icon"
-        className="h-8 w-8 shrink-0"
+        className="h-11 w-11 shrink-0"
         onClick={() => setEditing(true)}
         aria-label="Edit title"
       >

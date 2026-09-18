@@ -85,6 +85,12 @@ export function ReviewPageContent() {
     setStartedAt(Date.now());
   }, [current?.id]);
 
+  function handleSwipeMove(index: number) {
+    // Swipe navigation moves within the due queue without submitting a
+    // rating — the card stays due until rated 1–5 in the footer.
+    setCurrentIndex(index);
+  }
+
   function handleRating(rating: RatingValue) {
     if (!current) return;
 
@@ -185,10 +191,12 @@ export function ReviewPageContent() {
       title="Daily Review"
       subtitle={`${completedCount + 1} of ${completedCount + totalDue} due`}
       mode="review"
-      onIndexChange={setCurrentIndex}
+      navigationMode="swipe"
+      onIndexChange={handleSwipeMove}
       onRate={handleRating}
       onClose={exitReview}
       fullscreen
+      noLoop
       errorMessage={
         submitReview.isError
           ? submitReview.error instanceof Error

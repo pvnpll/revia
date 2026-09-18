@@ -183,6 +183,12 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
           </Button>
         </form>
 
+        <p className="mt-4 text-center text-sm">
+          <Link href="/explore" className="text-muted-foreground underline-offset-4 hover:underline">
+            Continue as guest instead
+          </Link>
+        </p>
+
         <p className="mt-6 text-center text-sm text-muted-foreground">
           {isSignup ? (
             <>

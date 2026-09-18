@@ -1,6 +1,6 @@
 # Progress and Roadmap
 
-**Last updated:** September 2026 — **v1.7.3** (Study viewer gesture & rating fixes)\
+**Last updated:** September 2026 — **v1.8.1** (UI polish batch)\
 **Versioning:** [release-versioning.md](./release-versioning.md) — SemVer; every `main` merge = new version  
 **Policy:** Plan features by target release. Implement after you approve. Publish release notes only when you ask.
 
@@ -23,6 +23,9 @@
 | **v1.7.1** | ✅ Published | Single-card guest practice fix | UX reliability |
 | **v1.7.2** | ✅ Published | Desktop shell, practice viewer width, Explore UX polish | UX polish |
 | **v1.7.3** | ✅ Published | Study viewer gesture & rating fixes (Fix #3) | UX polish |
+| **v1.7.4** | ✅ Published | Labeled nav & guest escape hatch (Fix #5) | UX polish |
+| **v1.8.0** | ✅ Published | Unified swipe UI for practice & review | UX |
+| **v1.8.1** | ✅ Published | UI polish batch (header, focus, title edit, guest copy) | UX polish |
 | **v1.0.1** | Open | Patches: bugs, perf, deploy fixes | Ad-hoc |
 | **v1.8.0** | Planned | Deck description/color edit, lesson reorder, card UI on deck page | Phase A (rest) |
 | **v1.9.0** | Planned | JSON export | Phase B |

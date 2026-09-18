@@ -8,6 +8,46 @@ Release notes are **drafted** on each `main` merge; **published** only when expl
 
 ---
 
+## [v1.8.1] — 2026-09-18 (Published)
+
+**UI polish batch** — Viewer header Back + theme toggle together, header loading skeletons, keyboard focus states, 44px title-edit target with retry-safe saves, guest copy and practice landing polish.
+
+→ [Full release notes](docs/releases/v1.8.1.md)
+
+### Changed
+- Study viewer header always shows Back + theme toggle; safe truncation
+- App header shows skeleton pills while auth loads (no layout shift)
+- Deck cards and search rows get visible keyboard focus states
+- Title-edit pencil enlarged to 44px; failed saves stay open for retry
+- Guest lesson copy and practice landing clarified
+
+---
+
+## [v1.8.0] — 2026-09-18 (Published)
+
+**Unified swipe UI for practice & review** — Signed-in practice and Daily Review use the same swipe cards as guests; ratings footer appears after reveal. Scheduling unchanged.
+
+→ [Full release notes](docs/releases/v1.8.0.md)
+
+### Changed
+- Signed-in practice renders the full swipe deck (drag, peek, edge-tap identical to guest mode)
+- Daily Review uses swipe cards clamped to the due queue (no endless loop)
+- Ratings footer renders in swipe mode; per-mode footer hints; `noLoop`/`hideSwipeHint` viewer props
+
+---
+
+## [v1.7.4] — 2026-09-17 (Published)
+
+**Labeled nav & guest escape hatch** — Bottom nav shows icon + label; every auth wall links back to Explore for guests.
+
+→ [Full release notes](docs/releases/v1.7.4.md)
+
+### Changed
+- Floating nav items show icon + text label (was icon-only)
+- "Continue as guest" escape hatch on `LoginRequired` cards, login/signup forms, and deck import prompt
+
+---
+
 ## [v1.7.3] — 2026-09-14 (Published)
 
 **Study viewer gesture & rating fixes** — Swipe double-commit guard, self-labeled rating buttons, scrollable revealed answers, edge-aware review nav, narrower edge-tap zones.
