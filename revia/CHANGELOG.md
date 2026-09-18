@@ -8,6 +8,19 @@ Release notes are **drafted** on each `main` merge; **published** only when expl
 
 ---
 
+## [v1.8.0] — 2026-09-18 (Published)
+
+**Unified swipe UI for practice & review** — Signed-in practice and Daily Review use the same swipe cards as guests; ratings footer appears after reveal. Scheduling unchanged.
+
+→ [Full release notes](docs/releases/v1.8.0.md)
+
+### Changed
+- Signed-in practice renders the full swipe deck (drag, peek, edge-tap identical to guest mode)
+- Daily Review uses swipe cards clamped to the due queue (no endless loop)
+- Ratings footer renders in swipe mode; per-mode footer hints; `noLoop`/`hideSwipeHint` viewer props
+
+---
+
 ## [v1.7.4] — 2026-09-17 (Published)
 
 **Labeled nav & guest escape hatch** — Bottom nav shows icon + label; every auth wall links back to Explore for guests.

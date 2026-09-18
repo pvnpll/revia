@@ -36,6 +36,14 @@ interface StudyCardViewerProps {
   allowFreeNavigation?: boolean;
   fullscreen?: boolean;
   readOnly?: boolean;
+  /**
+   * When true, cards never loop: swiping past either end snaps back and the
+   * boundary peek is hidden. Used by review (finite due queue) and read-only
+   * browsing. Practice loops endlessly and leaves this false.
+   */
+  noLoop?: boolean;
+  /** When true, hide the footer hint (review has no swipe hint). */
+  hideSwipeHint?: boolean;
 }
 
 export function StudyCardViewer({
@@ -53,6 +61,8 @@ export function StudyCardViewer({
   allowFreeNavigation = false,
   fullscreen = true,
   readOnly = false,
+  noLoop = false,
+  hideSwipeHint = false,
 }: StudyCardViewerProps) {
   const touchStart = useRef<{ x: number; y: number } | null>(null);
   const mainRef = useRef<HTMLElement | null>(null);
@@ -70,12 +80,24 @@ export function StudyCardViewer({
   const current = cards[currentIndex];
   const isRevealed = current ? revealedIds.has(current.id) : false;
   const isSwipeNavigation = navigationMode === "swipe";
+  const showRatings = !isSwipeNavigation && !readOnly;
+  // Practice loops endlessly in swipe mode; review/read-only clamp instead.
+  const canGoNext = noLoop ? currentIndex + 1 < cards.length : cards.length > 1;
+  const canGoPrevious = noLoop ? currentIndex > 0 : cards.length > 1;
   const progress = `${currentIndex + 1} / ${cards.length}`;
 
   const nextIndex =
-    cards.length > 0 ? (currentIndex + 1) % cards.length : 0;
+    cards.length > 0
+      ? noLoop
+        ? Math.min(currentIndex + 1, cards.length - 1)
+        : (currentIndex + 1) % cards.length
+      : 0;
   const previousIndex =
-    cards.length > 0 ? (currentIndex - 1 + cards.length) % cards.length : 0;
+    cards.length > 0
+      ? noLoop
+        ? Math.max(currentIndex - 1, 0)
+        : (currentIndex - 1 + cards.length) % cards.length
+      : 0;
   const nextCard = cards[nextIndex];
   const previousCard = cards[previousIndex];
 
@@ -121,8 +143,12 @@ export function StudyCardViewer({
   function goToIndex(index: number) {
     if (cards.length === 0) return;
 
+    // Swipe navigation loops endlessly in practice, but review and read-only
+    // sessions clamp to the queue bounds instead of wrapping around.
     const target = isSwipeNavigation
-      ? ((index % cards.length) + cards.length) % cards.length
+      ? noLoop
+        ? Math.max(0, Math.min(index, cards.length - 1))
+        : ((index % cards.length) + cards.length) % cards.length
       : Math.max(0, Math.min(index, cards.length - 1));
 
     if (target !== currentIndex) {
@@ -464,7 +490,7 @@ export function StudyCardViewer({
           <div className="relative flex flex-1 items-stretch py-2">
             {cards.length > 1 && (
               <>
-                {dragX > 12 && previousCard && previousIndex !== currentIndex && (
+                {canGoPrevious && dragX > 12 && previousCard && previousIndex !== currentIndex && (
                   <div
                     aria-hidden
                     className="pointer-events-none absolute inset-x-6 top-4 bottom-4 rounded-3xl border bg-card/90 shadow-md"
@@ -478,7 +504,7 @@ export function StudyCardViewer({
                     </div>
                   </div>
                 )}
-                {dragX < -12 && nextCard && nextIndex !== currentIndex && (
+                {canGoNext && dragX < -12 && nextCard && nextIndex !== currentIndex && (
                   <div
                     aria-hidden
                     className="pointer-events-none absolute inset-x-6 top-4 bottom-4 rounded-3xl border bg-card/90 shadow-md"
@@ -565,19 +591,35 @@ export function StudyCardViewer({
         )}
       </main>
 
-      {isSwipeNavigation ? (
+      {isSwipeNavigation && !hideSwipeHint ? (
         <footer className="shrink-0 border-t bg-background px-4 pb-10 pt-3 text-center">
           <p className="text-xs font-medium text-muted-foreground">
-            Drag <span className="text-foreground">←</span> next · <span className="text-foreground">→</span> previous · tap card to reveal
+            {readOnly ? (
+              <>
+                Drag <span className="text-foreground">←</span> next ·{" "}
+                <span className="text-foreground">→</span> previous · tap card to reveal
+              </>
+            ) : noLoop ? (
+              <>
+                Tap card to reveal, then rate it <span className="text-foreground">1–5</span>
+              </>
+            ) : (
+              <>
+                Drag <span className="text-foreground">←</span> next ·{" "}
+                <span className="text-foreground">→</span> previous · tap card to reveal
+              </>
+            )}
           </p>
-          <p className="mt-1 text-[11px] text-muted-foreground/70">
-            Tip: edge taps also turn pages
-          </p>
+          {!readOnly && !noLoop && (
+            <p className="mt-1 text-[11px] text-muted-foreground/70">
+              Tip: edge taps also turn pages
+            </p>
+          )}
         </footer>
       ) : null}
 
-      {!isSwipeNavigation && isRevealed && (
-        <footer className="shrink-0 border-t bg-background px-4 pb-8 pt-4">
+      {(isSwipeNavigation || showRatings) && isRevealed && (
+        <footer className="shrink-0 border-t bg-background px-4 pb-10 pt-4">
           {readOnly ? (
             <Button
               type="button"

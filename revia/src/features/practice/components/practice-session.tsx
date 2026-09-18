@@ -107,19 +107,13 @@ export function PracticeSession({
   }, [cardIdsKey, canFetch, isFetched, isGuestBrowse]);
 
   const studyCards = useMemo(() => {
-    if (isGuestBrowse || readOnly) {
-      return buildStudyCards(queue, cardMap, reverseMode);
-    }
+    // Every mode renders the full swipe deck so drag/peek/edge-tap behave
+    // identically for guests and signed-in users. Ratings advance the
+    // scheduler queue via onRate; swiping only moves within it.
+    return buildStudyCards(queue, cardMap, reverseMode);
+  }, [queue, cardMap, reverseMode]);
 
-    const cardId = queue[currentIndex];
-    if (!cardId) {
-      return [];
-    }
-    const card = cardMap.get(cardId);
-    return card ? [toPracticeStudyCard(card, reverseMode)] : [];
-  }, [isGuestBrowse, readOnly, queue, currentIndex, cardMap, reverseMode]);
-
-  const viewerIndex = isGuestBrowse || readOnly ? currentIndex : 0;
+  const viewerIndex = currentIndex;
 
   function handleRating(rating: RatingValue) {
     if (readOnly || isGuestBrowse || queue.length === 0) {
@@ -135,6 +129,12 @@ export function PracticeSession({
     setQueue(nextQueue);
     setCurrentIndex(nextIndex);
   }
+
+  /**
+   * Swiping moves within the current deck without rating: the queue order is
+   * unchanged, so an unrated card simply comes back around (practice loops
+   * endlessly). Ratings still drive the scheduler via handleRating.
+   */
 
   const practiceSubtitle = isGuestBrowse || readOnly
     ? undefined
@@ -216,7 +216,7 @@ export function PracticeSession({
         title={title}
         subtitle={practiceSubtitle}
         mode="practice"
-        navigationMode={isGuestBrowse ? "swipe" : "ratings"}
+        navigationMode="swipe"
         onIndexChange={setCurrentIndex}
         onRate={handleRating}
         onClose={onClose}
