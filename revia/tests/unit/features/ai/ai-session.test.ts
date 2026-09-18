@@ -79,3 +79,4 @@ describe("AI Session Context State Management", () => {
     expect(context.recentlySeen).toContain("How are you?");
   });
 });
+

@@ -7,3 +7,4 @@ export function useAIGenerate() {
     mutationFn: (params) => aiApi.generateCards(params),
   });
 }
+
