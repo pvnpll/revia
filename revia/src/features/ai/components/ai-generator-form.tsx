@@ -62,6 +62,7 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
   const [topic, setTopic] = useState("Greetings & Introductions");
   const [level, setLevel] = useState<GenerationLevel>("beginner");
   const [batchSize, setBatchSize] = useState<number>(10);
+  const [provider, setProvider] = useState<"gemini" | "openrouter">("openrouter");
   const [preferences, setPreferences] = useState<LearnerPreferences>({
     romanization: true,
     examples: true,
@@ -92,6 +93,7 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
       topic: topic.trim(),
       level,
       batchSize,
+      provider,
       context: {
         known: [],
         struggled: [],
@@ -162,6 +164,36 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
                 placeholder="e.g. Greetings, Ordering Food, Numbers"
                 disabled={isLoading}
               />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label>AI Provider</Label>
+              <div className="flex rounded-md border p-1 bg-muted/30">
+                <button
+                  type="button"
+                  onClick={() => setProvider("openrouter")}
+                  disabled={isLoading}
+                  className={`flex-1 rounded-sm py-1.5 text-xs font-medium transition ${
+                    provider === "openrouter"
+                      ? "bg-background text-foreground shadow-xs font-semibold"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  ⚡ OpenRouter (Free Models)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setProvider("gemini")}
+                  disabled={isLoading}
+                  className={`flex-1 rounded-sm py-1.5 text-xs font-medium transition ${
+                    provider === "gemini"
+                      ? "bg-background text-foreground shadow-xs font-semibold"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  ✨ Google Gemini
+                </button>
+              </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">

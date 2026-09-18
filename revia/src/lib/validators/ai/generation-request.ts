@@ -22,6 +22,7 @@ export const generationRequestSchema = z.object({
     .max(25, "Batch size must be at most 25")
     .optional()
     .default(10),
+  provider: z.enum(["gemini", "openrouter"]).optional(),
   context: learnerContextSchema.optional().default({}),
 });
 

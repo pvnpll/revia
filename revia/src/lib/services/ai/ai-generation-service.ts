@@ -44,7 +44,25 @@ export class AIGenerationService {
 
   async generate(rawInput: unknown): Promise<GenerationServiceResult> {
     const input: GenerationRequestInput = generationRequestSchema.parse(rawInput);
-    const provider = this.provider ?? createAIProvider();
+    let provider = this.provider ?? createAIProvider({ providerName: input.provider });
+
+    // Prepare fallback provider if available and not explicitly locked
+    let fallbackProvider: AIProvider | null = null;
+    if (!this.provider && !input.provider) {
+      if (provider.name === "gemini" && process.env.OPENROUTER_API_KEY) {
+        try {
+          fallbackProvider = createAIProvider({ providerName: "openrouter" });
+        } catch {
+          // ignore
+        }
+      } else if (provider.name === "openrouter" && process.env.GEMINI_API_KEY) {
+        try {
+          fallbackProvider = createAIProvider({ providerName: "gemini" });
+        } catch {
+          // ignore
+        }
+      }
+    }
 
     const prompts = buildGenerationPrompts(input);
     let userPrompt = prompts.userPrompt;
@@ -90,6 +108,21 @@ export class AIGenerationService {
           // Do not retry on auth failures
           throw err;
         }
+
+        // If primary provider is unavailable (503 / high demand) and fallback exists, switch!
+        if (
+          fallbackProvider &&
+          err instanceof AIProviderError &&
+          (err.status === 503 || err.code === "PROVIDER_UNAVAILABLE")
+        ) {
+          console.warn(
+            `Primary provider (${provider.name}) returned 503, switching to fallback provider (${fallbackProvider.name})`,
+          );
+          provider = fallbackProvider;
+          fallbackProvider = null;
+          continue;
+        }
+
         lastError = err instanceof Error ? err : new Error(String(err));
       }
     }
@@ -120,7 +153,11 @@ export class AIGenerationService {
       );
     }
 
-    const modelName = lastResult?.usage?.model || "gemini-3.6-flash";
+    const modelName =
+      lastResult?.usage?.model ||
+      (provider.name === "openrouter"
+        ? "meta-llama/llama-3.3-70b-instruct:free"
+        : "gemini-3.6-flash");
 
     return {
       cards: dedupResult.cards,

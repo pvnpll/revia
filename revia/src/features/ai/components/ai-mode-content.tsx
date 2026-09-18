@@ -19,6 +19,7 @@ export function AIModeContent() {
           topic: params.topic,
           level: params.level,
           batchSize: params.batchSize || 10,
+          provider: params.provider,
           cards: data.cards,
           context: params.context || {
             known: [],
@@ -44,6 +45,7 @@ export function AIModeContent() {
         topic: session.topic,
         level: session.level,
         batchSize: session.batchSize,
+        provider: session.provider,
         context: session.context,
       },
       {
