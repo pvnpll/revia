@@ -37,14 +37,19 @@ export function PracticePageContent() {
               Open a public deck from Explore to start practicing — no account needed.
             </p>
           </div>
-          <Button asChild size="lg" className="w-full">
-            <Link href="/explore">
-              <Compass className="h-4 w-4" />
-              Browse public decks
-            </Link>
-          </Button>
+          <div className="space-y-3">
+            <Button asChild size="lg" className="w-full">
+              <Link href="/explore">
+                <Compass className="h-4 w-4" />
+                Browse public decks
+              </Link>
+            </Button>
+            <p className="text-center text-xs text-muted-foreground">
+              or unlock your own library below
+            </p>
+          </div>
           <LoginRequired
-            title="Or sign in for your library"
+            title="Sign in for your library"
             description="Your own decks, imports, and Daily Review progress require an account."
             redirectPath="/practice"
           />

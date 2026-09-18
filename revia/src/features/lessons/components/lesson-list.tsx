@@ -129,7 +129,7 @@ export function LessonsSection({
         <CardDescription>
           {canEdit
             ? "Tap a lesson to start an endless practice session."
-            : "Tap a lesson to browse cards. Session progress is not saved — sign in and add to your library for Daily Review."}
+            : "Tap a lesson to practice its cards. Session progress is not saved — sign in and add to your library for Daily Review."}
         </CardDescription>
       </CardHeader>
       <CardContent>
