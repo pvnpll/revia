@@ -39,7 +39,7 @@ export class AIGenerationService {
 
   constructor(options: AIGenerationServiceOptions = {}) {
     this.provider = options.provider;
-    this.maxRetries = options.maxRetries ?? 2;
+    this.maxRetries = options.maxRetries ?? 1; // 1 retry (2 attempts max) to fit within Vercel's 60s maxDuration
   }
 
   async generate(rawInput: unknown): Promise<GenerationServiceResult> {

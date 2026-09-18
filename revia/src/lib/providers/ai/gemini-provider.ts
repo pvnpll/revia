@@ -28,7 +28,7 @@ export class GeminiProvider implements AIProvider {
     }
     this.apiKey = apiKey;
     this.model = options.model || process.env.GEMINI_MODEL || "gemini-3.6-flash";
-    this.timeoutMs = options.timeoutMs || 30000;
+    this.timeoutMs = options.timeoutMs || 25000;
   }
 
   async generateCards(
