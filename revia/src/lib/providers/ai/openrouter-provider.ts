@@ -12,10 +12,12 @@ export interface OpenRouterProviderOptions {
 }
 
 const DEFAULT_FREE_MODELS = [
-  "qwen/qwen3.8-27b:free",
-  "deepseek/deepseek-v4-flash-0731:free",
-  "google/gemma-4-31b-it:free",
+  "openrouter/free",
   "google/gemma-4-26b-a4b-it:free",
+  "google/gemma-4-31b-it:free",
+  "deepseek/deepseek-v4-flash-0731:free",
+  "qwen/qwen3.8-27b:free",
+  "liquid/lfm-2.5-2.6b:free",
   "nvidia/nemotron-3.5-lightning:free",
 ];
 
@@ -54,7 +56,7 @@ export class OpenRouterProvider implements AIProvider {
       options.model ||
       process.env.OPENROUTER_MODEL ||
       DEFAULT_FREE_MODELS[0];
-    this.timeoutMs = options.timeoutMs || 30000;
+    this.timeoutMs = options.timeoutMs || 25000;
   }
 
   async generateCards(
@@ -72,28 +74,30 @@ export class OpenRouterProvider implements AIProvider {
         return await this.generateWithModel(model, request);
       } catch (err) {
         if (err instanceof AIProviderError) {
-          // If model is not found (404), unavailable (503), or upstream rate-limited (429), try next model candidate!
-          if (err.status === 404 || err.status === 503 || err.status === 429) {
-            console.warn(
-              `OpenRouter model ${model} failed (${err.status}), trying next free model candidate...`,
-            );
-            lastError = err;
-            continue;
-          }
-          // Do not retry on auth errors (401/403)
-          if (err.status === 401 || err.status === 403) {
+          // Fatal auth errors (401/403) cannot be solved by trying another model
+          if (
+            err.status === 401 ||
+            err.status === 403 ||
+            err.code === "PROVIDER_AUTH_FAILED"
+          ) {
             throw err;
           }
+          console.warn(
+            `OpenRouter model ${model} failed (${err.code}: ${err.message}), trying next candidate...`,
+          );
+          lastError = err;
+          continue;
         }
-        lastError =
-          err instanceof AIProviderError
-            ? err
-            : new AIProviderError(
-                `OpenRouter error with ${model}: ${err instanceof Error ? err.message : String(err)}`,
-                "GENERATION_FAILED",
-                502,
-                err,
-              );
+
+        console.warn(
+          `OpenRouter unexpected error with ${model} (${err instanceof Error ? err.message : String(err)}), trying next candidate...`,
+        );
+        lastError = new AIProviderError(
+          `OpenRouter error with ${model}: ${err instanceof Error ? err.message : String(err)}`,
+          "GENERATION_FAILED",
+          502,
+          err,
+        );
       }
     }
 
@@ -139,12 +143,12 @@ Do not include markdown code block formatting (e.g. \`\`\`json). Return raw JSON
           content: request.userPrompt,
         },
       ],
-      response_format: { type: "json_object" },
       temperature: 0.3,
       stream: false,
     };
 
     let response: Response;
+    let rawResponseBody = "";
     try {
       response = await fetch(url, {
         method: "POST",
@@ -157,75 +161,81 @@ Do not include markdown code block formatting (e.g. \`\`\`json). Return raw JSON
         body: JSON.stringify(payload),
         signal: AbortSignal.timeout(this.timeoutMs),
       });
-    } catch (err: unknown) {
-      if (err instanceof DOMException && err.name === "TimeoutError") {
-        throw new AIProviderError("OpenRouter API request timed out", "TIMEOUT", 504, err);
-      }
-      throw new AIProviderError(
-        `Failed to reach OpenRouter API: ${err instanceof Error ? err.message : String(err)}`,
-        "PROVIDER_UNAVAILABLE",
-        503,
-        err,
-      );
-    }
 
-    if (!response.ok) {
-      let errorBody = "";
-      try {
-        errorBody = await response.text();
-      } catch {
-        // ignore
-      }
+      if (!response.ok) {
+        let errorBody = "";
+        try {
+          errorBody = await response.text();
+        } catch {
+          // ignore
+        }
 
-      if (response.status === 429) {
+        if (response.status === 429) {
+          throw new AIProviderError(
+            `OpenRouter rate limit exceeded (429): ${errorBody}`,
+            "RATE_LIMITED",
+            429,
+            errorBody,
+          );
+        }
+        if (response.status === 401 || response.status === 403) {
+          throw new AIProviderError(
+            `OpenRouter API key is invalid or unauthorized (${response.status}): ${errorBody}`,
+            "PROVIDER_AUTH_FAILED",
+            502,
+            errorBody,
+          );
+        }
+        if (response.status === 404) {
+          throw new AIProviderError(
+            `OpenRouter model unavailable (404): ${errorBody}`,
+            "PROVIDER_UNAVAILABLE",
+            404,
+            errorBody,
+          );
+        }
+        if (response.status >= 500) {
+          throw new AIProviderError(
+            `OpenRouter service error (${response.status}): ${errorBody || "Service unavailable"}`,
+            "PROVIDER_UNAVAILABLE",
+            503,
+            errorBody,
+          );
+        }
+
         throw new AIProviderError(
-          `OpenRouter rate limit exceeded (429): ${errorBody}`,
-          "RATE_LIMITED",
-          429,
-          errorBody,
-        );
-      }
-      if (response.status === 401 || response.status === 403) {
-        throw new AIProviderError(
-          `OpenRouter API key is invalid or unauthorized (${response.status}): ${errorBody}`,
-          "PROVIDER_AUTH_FAILED",
+          `OpenRouter API error (${response.status}): ${errorBody}`,
+          "GENERATION_FAILED",
           502,
           errorBody,
         );
       }
-      if (response.status === 404) {
-        throw new AIProviderError(
-          `OpenRouter model unavailable (404): ${errorBody}`,
-          "PROVIDER_UNAVAILABLE",
-          404,
-          errorBody,
-        );
-      }
-      if (response.status >= 500) {
-        throw new AIProviderError(
-          `OpenRouter service error (${response.status}): ${errorBody || "Service unavailable"}`,
-          "PROVIDER_UNAVAILABLE",
-          503,
-          errorBody,
-        );
-      }
 
-      throw new AIProviderError(
-        `OpenRouter API error (${response.status}): ${errorBody}`,
-        "GENERATION_FAILED",
-        502,
-        errorBody,
-      );
-    }
-
-    let rawResponseBody = "";
-    try {
       rawResponseBody = await response.text();
-    } catch (err) {
+    } catch (err: unknown) {
+      if (err instanceof AIProviderError) {
+        throw err;
+      }
+      const isTimeout =
+        (err instanceof DOMException && err.name === "TimeoutError") ||
+        (err instanceof Error &&
+          (err.name === "TimeoutError" ||
+            err.name === "AbortError" ||
+            err.message.toLowerCase().includes("timeout") ||
+            err.message.toLowerCase().includes("aborted")));
+
+      if (isTimeout) {
+        throw new AIProviderError(
+          `OpenRouter request timed out for model ${model}`,
+          "TIMEOUT",
+          504,
+          err,
+        );
+      }
       throw new AIProviderError(
-        "Failed to read OpenRouter response body",
-        "GENERATION_FAILED",
-        502,
+        `Failed to reach OpenRouter API or read response for ${model}: ${err instanceof Error ? err.message : String(err)}`,
+        "PROVIDER_UNAVAILABLE",
+        503,
         err,
       );
     }
@@ -275,7 +285,7 @@ Do not include markdown code block formatting (e.g. \`\`\`json). Return raw JSON
 
     if (!json) {
       throw new AIProviderError(
-        `Failed to parse OpenRouter response as JSON: ${rawResponseBody.slice(0, 300)}`,
+        `Failed to parse OpenRouter response as JSON for ${model}: ${rawResponseBody.slice(0, 300)}`,
         "GENERATION_FAILED",
         502,
         rawResponseBody,
@@ -285,7 +295,7 @@ Do not include markdown code block formatting (e.g. \`\`\`json). Return raw JSON
     const rawText = json.choices?.[0]?.message?.content?.trim() || "";
     if (!rawText) {
       throw new AIProviderError(
-        "OpenRouter returned an empty generation response",
+        `OpenRouter returned an empty generation response for ${model}`,
         "EMPTY_GENERATION",
         502,
         json,
@@ -299,41 +309,45 @@ Do not include markdown code block formatting (e.g. \`\`\`json). Return raw JSON
       parsed = JSON.parse(jsonText);
     } catch (err) {
       throw new AIProviderError(
-        `Failed to parse generated JSON from OpenRouter: ${err instanceof Error ? err.message : String(err)}`,
+        `Failed to parse generated JSON from OpenRouter for ${model}: ${err instanceof Error ? err.message : String(err)}`,
         "GENERATION_FAILED",
         502,
         rawText,
       );
     }
 
-    const cards = Array.isArray(parsed)
-      ? parsed
-      : typeof parsed === "object" &&
-          parsed !== null &&
-          "cards" in parsed &&
-          Array.isArray((parsed as { cards: unknown }).cards)
-        ? (parsed as { cards: unknown[] }).cards
-        : null;
-
-    if (!cards) {
+    if (
+      !parsed ||
+      typeof parsed !== "object" ||
+      !("cards" in parsed) ||
+      !Array.isArray((parsed as { cards: unknown[] }).cards)
+    ) {
       throw new AIProviderError(
-        "OpenRouter response did not contain a valid cards array",
+        `OpenRouter output did not match expected { cards: [...] } structure for ${model}`,
         "GENERATION_FAILED",
         502,
         parsed,
       );
     }
 
-    const usage = json.usage;
+    const cards = (parsed as { cards: unknown[] }).cards.map((card) => {
+      const c = card as Record<string, unknown>;
+      return {
+        front: String(c.front || "").trim(),
+        back: String(c.back || "").trim(),
+        pronunciation: c.pronunciation ? String(c.pronunciation).trim() : undefined,
+        example: c.example ? String(c.example).trim() : undefined,
+        notes: c.notes ? String(c.notes).trim() : undefined,
+      };
+    });
 
     return {
       cards,
-      rawText,
-      usage: usage
+      usage: json.usage
         ? {
-            promptTokens: usage.prompt_tokens,
-            completionTokens: usage.completion_tokens,
-            totalTokens: usage.total_tokens,
+            promptTokens: json.usage.prompt_tokens,
+            completionTokens: json.usage.completion_tokens,
+            totalTokens: json.usage.total_tokens,
             model,
           }
         : undefined,

@@ -5,6 +5,8 @@ import { jsonResponse } from "@/lib/api/response";
 import { AIProviderError } from "@/lib/providers/ai";
 import { aiGenerationService } from "@/lib/services/ai";
 
+export const maxDuration = 60;
+
 // In-memory sliding window rate limiter: 10 requests per minute per user/IP
 const rateLimitMap = new Map<string, number[]>();
 const RATE_LIMIT_MAX = 10;

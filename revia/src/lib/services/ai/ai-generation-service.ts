@@ -48,7 +48,7 @@ export class AIGenerationService {
 
     // Prepare fallback provider if available and not explicitly locked
     let fallbackProvider: AIProvider | null = null;
-    if (!this.provider && !input.provider) {
+    if (!this.provider) {
       if (provider.name === "gemini" && process.env.OPENROUTER_API_KEY) {
         try {
           fallbackProvider = createAIProvider({ providerName: "openrouter" });
