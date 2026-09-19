@@ -50,42 +50,38 @@ export function AISessionViewer({
     const currentCard = session.cards[session.currentIndex];
     if (!currentCard) return;
 
-    // 1. Dispatch asynchronous DB update
-    const updates: Partial<LearnerContext> = { recentlySeen: [currentCard.front] };
+    // 1. Calculate the new full context state locally
+    const known = new Set(session.context.known || []);
+    const struggled = new Set(session.context.struggled || []);
+    const recentlySeen = new Set(session.context.recentlySeen || []);
+
+    recentlySeen.add(currentCard.front);
+
     if (rating <= 2) {
-      updates.struggled = [currentCard.front];
+      struggled.add(currentCard.front);
+      known.delete(currentCard.front);
     } else if (rating >= 4) {
-      updates.known = [currentCard.front];
+      known.add(currentCard.front);
+      struggled.delete(currentCard.front);
     }
-    updateContextMutation.mutate({ topic: session.topic, updates });
 
-    // 2. Update local state
+    const fullUpdatedContext = {
+      ...session.context,
+      known: Array.from(known),
+      struggled: Array.from(struggled),
+      recentlySeen: Array.from(recentlySeen),
+    };
+
+    // 2. Dispatch asynchronous DB update with the full state
+    updateContextMutation.mutate({ topic: session.topic, updates: fullUpdatedContext });
+
+    // 3. Update local state
     onUpdateSession((prev) => {
-      const known = new Set(prev.context.known || []);
-      const struggled = new Set(prev.context.struggled || []);
-      const recentlySeen = new Set(prev.context.recentlySeen || []);
-
-      recentlySeen.add(currentCard.front);
-
-      if (rating <= 2) {
-        struggled.add(currentCard.front);
-        known.delete(currentCard.front);
-      } else if (rating >= 4) {
-        known.add(currentCard.front);
-        struggled.delete(currentCard.front);
-      }
-
       const nextIndex = (prev.currentIndex + 1) % prev.cards.length;
-
       return {
         ...prev,
         currentIndex: nextIndex,
-        context: {
-          ...prev.context,
-          known: Array.from(known),
-          struggled: Array.from(struggled),
-          recentlySeen: Array.from(recentlySeen),
-        },
+        context: fullUpdatedContext,
       };
     });
   }

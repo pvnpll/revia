@@ -33,18 +33,19 @@ export class AiContextService {
   ): Promise<LearnerContext> {
     const existing = await this.getContext(userId, topic);
     
-    // Merge arrays and maintain limits
-    let newRecentlySeen = Array.from(new Set([...existing.recentlySeen, ...(updates.recentlySeen || [])]));
+    // We assume the caller provides the full array if they want to update it.
+    // If an array is provided, we use it (maintaining limits). If not, we keep the existing.
+    let newRecentlySeen = updates.recentlySeen ?? existing.recentlySeen;
     if (newRecentlySeen.length > 50) {
       newRecentlySeen = newRecentlySeen.slice(newRecentlySeen.length - 50);
     }
     
-    let newKnown = Array.from(new Set([...existing.known, ...(updates.known || [])]));
+    let newKnown = updates.known ?? existing.known;
     if (newKnown.length > 100) {
       newKnown = newKnown.slice(newKnown.length - 100);
     }
     
-    let newStruggled = Array.from(new Set([...existing.struggled, ...(updates.struggled || [])]));
+    let newStruggled = updates.struggled ?? existing.struggled;
     if (newStruggled.length > 50) {
       newStruggled = newStruggled.slice(newStruggled.length - 50);
     }
