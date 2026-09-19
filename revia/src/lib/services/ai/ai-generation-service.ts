@@ -229,6 +229,157 @@ export class AIGenerationService {
       context: input.context as LearnerContext,
     };
   }
+
+  async generateStream(
+    rawInput: unknown,
+    userId: string | undefined,
+    onCard: (card: GeneratedCard) => void,
+  ): Promise<GenerationServiceResult> {
+    const input: GenerationRequestInput = generationRequestSchema.parse(rawInput);
+    const provider = this.provider ?? createAIProvider({ providerName: input.provider });
+
+    // If userId is provided, merge server-side context with client context
+    if (userId) {
+      const serverContext = await aiContextService.getContext(userId, input.topic);
+      input.context = {
+        known: Array.from(new Set([...serverContext.known, ...(input.context?.known || [])])),
+        struggled: Array.from(new Set([...serverContext.struggled, ...(input.context?.struggled || [])])),
+        recentlySeen: Array.from(new Set([...serverContext.recentlySeen, ...(input.context?.recentlySeen || [])])),
+        preferences: { ...serverContext.preferences, ...input.context?.preferences },
+      };
+    }
+
+    // Prepare fallback provider
+    let fallbackProvider: AIProvider | null = null;
+    if (!this.provider) {
+      if (provider.name === "gemini" && process.env.OPENROUTER_API_KEY) {
+        try {
+          fallbackProvider = createAIProvider({ providerName: "openrouter" });
+        } catch { /* ignore */ }
+      } else if (provider.name === "openrouter" && process.env.GEMINI_API_KEY) {
+        try {
+          fallbackProvider = createAIProvider({ providerName: "gemini" });
+        } catch { /* ignore */ }
+      }
+    }
+
+    const prompts = buildGenerationPrompts(input);
+    const cumulativeCards: GeneratedCard[] = [];
+    let totalDuplicatesFiltered = 0;
+    let lastResult: ProviderGenerateCardsResult | null = null;
+    let currentUsage: ProviderTokenUsage = { model: "", promptTokens: 0, completionTokens: 0, totalTokens: 0 };
+
+    const attemptGeneration = async (currentProvider: AIProvider) => {
+      lastResult = await currentProvider.generateCards({
+        goal: input.goal,
+        topic: input.topic,
+        level: input.level,
+        batchSize: input.batchSize,
+        context: input.context,
+        systemPrompt: prompts.systemPrompt,
+        userPrompt: prompts.userPrompt,
+      });
+
+      if (lastResult.usage) {
+        currentUsage = {
+          model: lastResult.usage.model,
+          promptTokens: (currentUsage.promptTokens || 0) + (lastResult.usage.promptTokens || 0),
+          completionTokens: (currentUsage.completionTokens || 0) + (lastResult.usage.completionTokens || 0),
+          totalTokens: (currentUsage.totalTokens || 0) + (lastResult.usage.totalTokens || 0),
+        };
+      }
+
+      const parseResult = generatedCardsResultSchema.safeParse({ cards: lastResult.cards });
+      if (parseResult.success) {
+        const dedupResult = filterDuplicateCards(parseResult.data.cards, {
+          known: input.context.known,
+          recentlySeen: input.context.recentlySeen,
+        });
+
+        totalDuplicatesFiltered += dedupResult.duplicatesRemoved;
+
+        // Emit cards one-by-one
+        for (const card of dedupResult.cards) {
+          cumulativeCards.push(card);
+          onCard(card);
+        }
+      }
+    };
+
+    try {
+      await attemptGeneration(provider);
+    } catch (err) {
+      if (err instanceof AIProviderError && (err.code === "RATE_LIMITED" || err.code === "PROVIDER_AUTH_FAILED")) {
+        throw err;
+      }
+
+      // Try fallback provider
+      if (fallbackProvider) {
+        console.warn(
+          `Primary provider (${provider.name}) failed: ${err instanceof Error ? err.message : String(err)}, trying fallback (${fallbackProvider.name})`,
+        );
+        try {
+          await attemptGeneration(fallbackProvider);
+        } catch (fallbackErr) {
+          // Both providers failed
+          if (cumulativeCards.length === 0) {
+            throw fallbackErr instanceof AIProviderError ? fallbackErr : new AIProviderError(
+              `Both providers failed. Last error: ${fallbackErr instanceof Error ? fallbackErr.message : String(fallbackErr)}`,
+              "GENERATION_FAILED",
+              502,
+              fallbackErr,
+            );
+          }
+        }
+      } else if (cumulativeCards.length === 0) {
+        throw err;
+      }
+    }
+
+    if (cumulativeCards.length === 0) {
+      if (totalDuplicatesFiltered > 0) {
+        throw new AIProviderError(
+          "All generated cards were duplicates of existing known or recently seen content",
+          "EMPTY_GENERATION",
+          502,
+        );
+      }
+      throw new AIProviderError(
+        "AI card generation failed: no cards were produced",
+        "GENERATION_FAILED",
+        502,
+      );
+    }
+
+    const finalCards = cumulativeCards.slice(0, input.batchSize);
+
+    // Asynchronously update DB context if userId is present
+    if (userId) {
+      aiContextService.updateContext(userId, input.topic, {
+        recentlySeen: finalCards.map(c => c.front)
+      }).catch(err => console.error("Failed to update context recentlySeen", err));
+    }
+
+    const modelName =
+      (currentUsage.model ? currentUsage.model : undefined) ||
+      (lastResult as ProviderGenerateCardsResult | null)?.usage?.model ||
+      (provider.name === "openrouter"
+        ? "meta-llama/llama-3.3-70b-instruct:free"
+        : "gemini-3.6-flash");
+
+    return {
+      cards: finalCards,
+      meta: {
+        provider: provider.name,
+        model: modelName,
+        batchSize: finalCards.length,
+        generatedAt: new Date().toISOString(),
+        duplicatesFiltered: totalDuplicatesFiltered,
+        usage: currentUsage.model ? currentUsage : (lastResult as ProviderGenerateCardsResult | null)?.usage,
+      },
+      context: input.context as LearnerContext,
+    };
+  }
 }
 
 export const aiGenerationService = new AIGenerationService();

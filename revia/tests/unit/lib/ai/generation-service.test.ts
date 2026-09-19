@@ -161,6 +161,7 @@ describe("AIGenerationService", () => {
           { front: "Food", back: "Oota" },
           { front: "Come", back: "Banni" },
           { front: "Go", back: "Hogi" },
+          { front: "Yes", back: "Howdu" },
         ],
       } satisfies ProviderGenerateCardsResult),
     };
@@ -179,7 +180,7 @@ describe("AIGenerationService", () => {
       },
     });
 
-    expect(result.cards).toHaveLength(4);
+    expect(result.cards).toHaveLength(5);
     expect(result.meta.duplicatesFiltered).toBe(1);
   });
 

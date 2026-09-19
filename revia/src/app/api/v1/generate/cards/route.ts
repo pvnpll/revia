@@ -1,7 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { ZodError } from "zod";
 import { getOptionalUserId } from "@/lib/api/auth";
-import { jsonResponse } from "@/lib/api/response";
 import { AIProviderError } from "@/lib/providers/ai";
 import { aiGenerationService } from "@/lib/services/ai";
 
@@ -27,85 +26,109 @@ function checkRateLimit(key: string): boolean {
   return true;
 }
 
-export async function POST(request: NextRequest) {
-  try {
-    const userId = await getOptionalUserId();
-    const clientIp =
-      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "anonymous";
-    const rateLimitKey = userId || clientIp;
-
-    if (!checkRateLimit(rateLimitKey)) {
-      return NextResponse.json(
-        {
-          error: {
-            code: "RATE_LIMITED",
-            message: "Rate limit exceeded. Please wait a minute before generating more cards.",
-          },
-        },
-        {
-          status: 429,
-          headers: {
-            "Retry-After": "60",
-          },
-        },
-      );
-    }
-
-    let body: unknown;
-    try {
-      body = await request.json();
-    } catch {
-      return NextResponse.json(
-        {
-          error: {
-            code: "VALIDATION",
-            message: "Malformed JSON in request body",
-          },
-        },
-        { status: 400 },
-      );
-    }
-
-    const result = await aiGenerationService.generate(body, userId || undefined);
-
-    return jsonResponse(result);
-  } catch (error: unknown) {
-    if (error instanceof ZodError) {
-      const first = error.errors[0];
-      return NextResponse.json(
-        {
-          error: {
-            code: "VALIDATION",
-            message: first?.message ?? "Invalid generation request",
-            field: first?.path.join("."),
-          },
-        },
-        { status: 400 },
-      );
-    }
-
-    if (error instanceof AIProviderError) {
-      return NextResponse.json(
-        {
-          error: {
-            code: error.code,
-            message: error.message,
-          },
-        },
-        { status: error.status },
-      );
-    }
-
-    console.error("Unexpected error in /api/v1/generate/cards:", error);
-    return NextResponse.json(
-      {
-        error: {
-          code: "INTERNAL",
-          message: "An unexpected error occurred during card generation",
-        },
-      },
-      { status: 500 },
-    );
-  }
+function sseMessage(event: string, data: unknown): string {
+  return `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`;
 }
 
+export async function POST(request: NextRequest) {
+  const userId = await getOptionalUserId();
+  const clientIp =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "anonymous";
+  const rateLimitKey = userId || clientIp;
+
+  if (!checkRateLimit(rateLimitKey)) {
+    return new Response(
+      JSON.stringify({
+        error: {
+          code: "RATE_LIMITED",
+          message: "Rate limit exceeded. Please wait a minute before generating more cards.",
+        },
+      }),
+      {
+        status: 429,
+        headers: {
+          "Content-Type": "application/json",
+          "Retry-After": "60",
+        },
+      },
+    );
+  }
+
+  let body: unknown;
+  try {
+    body = await request.json();
+  } catch {
+    return new Response(
+      JSON.stringify({
+        error: {
+          code: "VALIDATION",
+          message: "Malformed JSON in request body",
+        },
+      }),
+      {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
+  }
+
+  const stream = new ReadableStream({
+    async start(controller) {
+      const encoder = new TextEncoder();
+
+      try {
+        const result = await aiGenerationService.generateStream(
+          body,
+          userId || undefined,
+          (card) => {
+            controller.enqueue(encoder.encode(sseMessage("card", card)));
+          },
+        );
+
+        // Send final done event with metadata and context
+        controller.enqueue(
+          encoder.encode(
+            sseMessage("done", {
+              meta: result.meta,
+              context: result.context,
+            }),
+          ),
+        );
+      } catch (error: unknown) {
+        let errorPayload: { code: string; message: string };
+
+        if (error instanceof ZodError) {
+          const first = error.errors[0];
+          errorPayload = {
+            code: "VALIDATION",
+            message: first?.message ?? "Invalid generation request",
+          };
+        } else if (error instanceof AIProviderError) {
+          errorPayload = {
+            code: error.code,
+            message: error.message,
+          };
+        } else {
+          console.error("Unexpected error in /api/v1/generate/cards:", error);
+          errorPayload = {
+            code: "INTERNAL",
+            message: "An unexpected error occurred during card generation",
+          };
+        }
+
+        controller.enqueue(encoder.encode(sseMessage("error", errorPayload)));
+      } finally {
+        controller.close();
+      }
+    },
+  });
+
+  return new Response(stream, {
+    headers: {
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache, no-transform",
+      Connection: "keep-alive",
+      "X-Accel-Buffering": "no",
+    },
+  });
+}

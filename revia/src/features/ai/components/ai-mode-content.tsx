@@ -9,29 +9,44 @@ import { AISessionViewer } from "./ai-session-viewer";
 
 export function AIModeContent() {
   const [session, setSession] = useState<AISessionState | null>(null);
-  const generateMutation = useAIGenerate();
+  const ai = useAIGenerate();
+
+  const hasSession = Boolean(session);
+
+  // Sync streamed cards into session state
+  useEffect(() => {
+    if (!hasSession) return;
+    if (ai.cards.length === 0) return;
+
+    setSession((prev) => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        cards: ai.cards,
+        context: ai.context ?? prev.context,
+      };
+    });
+  }, [ai.cards, ai.context, hasSession]);
 
   function handleInitialGenerate(params: GenerateCardsApiParams) {
-    generateMutation.mutate(params, {
-      onSuccess: (data) => {
-        setSession({
-          goal: params.goal,
-          topic: params.topic,
-          level: params.level,
-          batchSize: params.batchSize || 10,
-          provider: params.provider,
-          cards: data.cards,
-          context: data.context, // Use DB-merged context from response
-          currentIndex: 0,
-        });
-      },
-    });
+    const newSession: AISessionState = {
+      goal: params.goal,
+      topic: params.topic,
+      level: params.level,
+      batchSize: params.batchSize || 10,
+      provider: params.provider,
+      cards: [],
+      context: params.context || { known: [], struggled: [], recentlySeen: [], preferences: { romanization: false, examples: false } },
+      currentIndex: 0,
+    };
+    setSession(newSession);
+    ai.generate(params);
   }
 
   const handleNextBatch = useCallback(() => {
-    if (!session || generateMutation.isPending) return;
+    if (!session || ai.isStreaming) return;
 
-    generateMutation.mutate(
+    ai.generate(
       {
         goal: session.goal,
         topic: session.topic,
@@ -40,31 +55,19 @@ export function AIModeContent() {
         provider: session.provider,
         context: session.context,
       },
-      {
-        onSuccess: (data) => {
-          setSession((prev) => {
-            if (!prev) return null;
-            return {
-              ...prev,
-              cards: [...prev.cards, ...data.cards], // Append cards instead of replacing
-              context: data.context, // Sync context with DB response
-              // Do NOT reset currentIndex; let the user continue seamlessly
-            };
-          });
-        },
-      },
+      true, // appendMode — accumulate on top of existing cards
     );
-  }, [session, generateMutation]);
+  }, [session, ai]);
 
   // Background prefetch when getting close to the end of the current queue
   useEffect(() => {
-    if (!session || generateMutation.isPending) return;
-    
+    if (!session || ai.isStreaming) return;
+
     const cardsRemaining = session.cards.length - 1 - session.currentIndex;
     if (cardsRemaining <= 4 && cardsRemaining >= 0) {
       handleNextBatch();
     }
-  }, [session, generateMutation.isPending, handleNextBatch]);
+  }, [session, ai.isStreaming, handleNextBatch]);
 
   if (session && session.cards.length > 0) {
     return (
@@ -72,9 +75,12 @@ export function AIModeContent() {
         session={session}
         onUpdateSession={(updater) => setSession((prev) => (prev ? updater(prev) : null))}
         onRequestNextBatch={handleNextBatch}
-        onReset={() => setSession(null)}
-        isGeneratingNextBatch={generateMutation.isPending}
-        nextBatchError={generateMutation.error}
+        onReset={() => {
+          setSession(null);
+          ai.reset();
+        }}
+        isGeneratingNextBatch={ai.isStreaming}
+        nextBatchError={ai.error}
       />
     );
   }
@@ -83,8 +89,8 @@ export function AIModeContent() {
     <div className="container max-w-lg py-6 px-4 pb-24">
       <AIGeneratorForm
         onGenerate={handleInitialGenerate}
-        isLoading={generateMutation.isPending}
-        error={generateMutation.error}
+        isLoading={ai.isStreaming}
+        error={ai.error}
       />
     </div>
   );
