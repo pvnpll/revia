@@ -121,7 +121,7 @@ describe("AIGenerationService", () => {
     expect(mockGenerate).toHaveBeenCalledTimes(2);
   });
 
-  it("propagates RATE_LIMITED immediately without retrying", async () => {
+  it("retries on RATE_LIMITED and eventually throws after exhausting retries", async () => {
     const mockGenerate = vi.fn().mockRejectedValue(
       new AIProviderError("Rate limit exceeded", "RATE_LIMITED", 429),
     );
@@ -148,7 +148,8 @@ describe("AIGenerationService", () => {
       status: 429,
     });
 
-    expect(mockGenerate).toHaveBeenCalledTimes(1);
+    // With maxRetries=2, it attempts 3 times (initial + 2 retries) before exhausting and throwing the last error
+    expect(mockGenerate).toHaveBeenCalledTimes(3);
   });
 
   it("filters duplicates and reports duplicate count", async () => {

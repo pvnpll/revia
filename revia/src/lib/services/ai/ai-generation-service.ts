@@ -156,9 +156,6 @@ export class AIGenerationService {
           userPrompt += `\n\nNOTE: The previous generation failed schema validation (${parseResult.error.errors[0]?.message}). Please strictly return valid JSON according to the schema.`;
         }
       } catch (err) {
-        if (err instanceof AIProviderError && err.code === "RATE_LIMITED") {
-          throw err;
-        }
         if (err instanceof AIProviderError && err.code === "PROVIDER_AUTH_FAILED") {
           throw err;
         }
@@ -166,10 +163,10 @@ export class AIGenerationService {
         if (
           fallbackProvider &&
           err instanceof AIProviderError &&
-          (err.status === 503 || err.code === "PROVIDER_UNAVAILABLE")
+          (err.status === 503 || err.code === "PROVIDER_UNAVAILABLE" || err.code === "RATE_LIMITED" || err.code === "TIMEOUT")
         ) {
           console.warn(
-            `Primary provider (${provider.name}) returned 503, switching to fallback provider (${fallbackProvider.name})`,
+            `Primary provider (${provider.name}) failed (${err.code}), switching to fallback provider (${fallbackProvider.name})`,
           );
           provider = fallbackProvider;
           fallbackProvider = null;
@@ -309,7 +306,7 @@ export class AIGenerationService {
     try {
       await attemptGeneration(provider);
     } catch (err) {
-      if (err instanceof AIProviderError && (err.code === "RATE_LIMITED" || err.code === "PROVIDER_AUTH_FAILED")) {
+      if (err instanceof AIProviderError && err.code === "PROVIDER_AUTH_FAILED") {
         throw err;
       }
 
