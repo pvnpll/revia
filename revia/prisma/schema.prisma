@@ -18,11 +18,12 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  decks          Deck[]
-  tags           Tag[]
-  reviewSessions ReviewSession[]
-  reviewLogs     ReviewLog[]
-  feedback       Feedback[]
+  decks             Deck[]
+  tags              Tag[]
+  reviewSessions    ReviewSession[]
+  reviewLogs        ReviewLog[]
+  feedback          Feedback[]
+  aiLearnerContexts AiLearnerContext[]
 
   @@map("users")
 }
@@ -30,18 +31,18 @@ model User {
 // ─── Content ──────────────────────────────────────────────────
 
 model Deck {
-  id          String   @id @default(uuid())
-  userId      String   @map("user_id")
-  title       String
-  description String?
-  subject     String?
-  color       String?  @default("#6366f1")
-  isArchived  Boolean  @default(false) @map("is_archived")
-  isPublic    Boolean  @default(false) @map("is_public")
-  sourceDeckId        String?  @map("source_deck_id")
-  sourceAuthorUsername String? @map("source_author_username")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  id                   String   @id @default(uuid())
+  userId               String   @map("user_id")
+  title                String
+  description          String?
+  subject              String?
+  color                String?  @default("#6366f1")
+  isArchived           Boolean  @default(false) @map("is_archived")
+  isPublic             Boolean  @default(false) @map("is_public")
+  sourceDeckId         String?  @map("source_deck_id")
+  sourceAuthorUsername String?  @map("source_author_username")
+  createdAt            DateTime @default(now()) @map("created_at")
+  updatedAt            DateTime @updatedAt @map("updated_at")
 
   user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   lessons        Lesson[]
@@ -213,4 +214,24 @@ model ReviewSession {
 
   @@index([userId, startedAt])
   @@map("review_sessions")
+}
+
+// ─── AI Context ───────────────────────────────────────────────
+
+model AiLearnerContext {
+  id           String   @id @default(uuid())
+  userId       String   @map("user_id")
+  topic        String
+  known        String[] @default([])
+  struggled    String[] @default([])
+  recentlySeen String[] @default([]) @map("recently_seen")
+  preferences  Json?
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, topic])
+  @@index([userId])
+  @@map("ai_learner_contexts")
 }

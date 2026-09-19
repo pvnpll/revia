@@ -10,9 +10,11 @@ import {
   generatedCardsResultSchema,
   GenerationRequestInput,
   generationRequestSchema,
+  LearnerContext,
 } from "@/lib/validators/ai";
 import { filterDuplicateCards } from "./dedup-filter";
 import { buildGenerationPrompts } from "./prompt-builder";
+import { aiContextService } from "./ai-context-service";
 
 export interface AIGenerationServiceOptions {
   provider?: AIProvider;
@@ -31,6 +33,7 @@ export interface GenerationServiceMeta {
 export interface GenerationServiceResult {
   cards: GeneratedCard[];
   meta: GenerationServiceMeta;
+  context: LearnerContext; // Added to return the merged context
 }
 
 export class AIGenerationService {
@@ -42,9 +45,20 @@ export class AIGenerationService {
     this.maxRetries = options.maxRetries ?? 1; // 1 retry (2 attempts max) to fit within Vercel's 60s maxDuration
   }
 
-  async generate(rawInput: unknown): Promise<GenerationServiceResult> {
+  async generate(rawInput: unknown, userId?: string): Promise<GenerationServiceResult> {
     const input: GenerationRequestInput = generationRequestSchema.parse(rawInput);
     let provider = this.provider ?? createAIProvider({ providerName: input.provider });
+
+    // If userId is provided, merge server-side context with client context
+    if (userId) {
+      const serverContext = await aiContextService.getContext(userId, input.topic);
+      input.context = {
+        known: Array.from(new Set([...serverContext.known, ...(input.context?.known || [])])),
+        struggled: Array.from(new Set([...serverContext.struggled, ...(input.context?.struggled || [])])),
+        recentlySeen: Array.from(new Set([...serverContext.recentlySeen, ...(input.context?.recentlySeen || [])])),
+        preferences: { ...serverContext.preferences, ...input.context?.preferences },
+      };
+    }
 
     // Prepare fallback provider if available and not explicitly locked
     let fallbackProvider: AIProvider | null = null;
@@ -193,8 +207,14 @@ export class AIGenerationService {
         ? "meta-llama/llama-3.3-70b-instruct:free"
         : "gemini-3.6-flash");
 
-    // Enforce exactly batchSize if somehow we exceeded it
     const finalCards = cumulativeCards.slice(0, input.batchSize);
+
+    // Asynchronously update DB context if userId is present
+    if (userId) {
+      aiContextService.updateContext(userId, input.topic, {
+        recentlySeen: finalCards.map(c => c.front)
+      }).catch(err => console.error("Failed to update context recentlySeen", err));
+    }
 
     return {
       cards: finalCards,
@@ -206,6 +226,7 @@ export class AIGenerationService {
         duplicatesFiltered: totalDuplicatesFiltered,
         usage: currentUsage.model ? currentUsage : lastResult?.usage,
       },
+      context: input.context as LearnerContext,
     };
   }
 }

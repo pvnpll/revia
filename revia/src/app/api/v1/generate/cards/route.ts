@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const result = await aiGenerationService.generate(body);
+    const result = await aiGenerationService.generate(body, userId || undefined);
 
     return jsonResponse(result);
   } catch (error: unknown) {

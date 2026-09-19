@@ -29,5 +29,6 @@ export interface GenerateCardsApiResponse {
     generatedAt: string;
     duplicatesFiltered?: number;
   };
+  context: LearnerContext;
 }
 

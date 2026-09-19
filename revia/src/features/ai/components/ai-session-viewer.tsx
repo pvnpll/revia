@@ -4,9 +4,11 @@ import { useMemo, useState } from "react";
 import { ArrowLeft, BookPlus, Loader2, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { LearnerContext } from "@/lib/validators/ai";
 import { StudyCardViewer } from "@/features/study/components/study-card-viewer";
 import { StudyCardItem } from "@/features/study/types";
 import { RatingValue } from "@/lib/scheduler";
+import { useUpdateAIContext } from "../hooks/use-ai-context";
 import { AISessionState } from "../types/ai-session";
 import { SaveDeckModal } from "./save-deck-modal";
 
@@ -42,24 +44,33 @@ export function AISessionViewer({
     }));
   }, [session.cards, session.topic]);
 
+  const updateContextMutation = useUpdateAIContext();
+
   function handleRate(rating: RatingValue) {
     const currentCard = session.cards[session.currentIndex];
     if (!currentCard) return;
 
+    // 1. Dispatch asynchronous DB update
+    const updates: Partial<LearnerContext> = { recentlySeen: [currentCard.front] };
+    if (rating <= 2) {
+      updates.struggled = [currentCard.front];
+    } else if (rating >= 4) {
+      updates.known = [currentCard.front];
+    }
+    updateContextMutation.mutate({ topic: session.topic, updates });
+
+    // 2. Update local state
     onUpdateSession((prev) => {
       const known = new Set(prev.context.known || []);
       const struggled = new Set(prev.context.struggled || []);
       const recentlySeen = new Set(prev.context.recentlySeen || []);
 
-      // Track recently seen
       recentlySeen.add(currentCard.front);
 
-      // Rating 1 (Forgot) or 2 (Hard) -> struggled
       if (rating <= 2) {
         struggled.add(currentCard.front);
         known.delete(currentCard.front);
       } else if (rating >= 4) {
-        // Rating 4 (Good) or 5 (Perfect) -> known
         known.add(currentCard.front);
         struggled.delete(currentCard.front);
       }

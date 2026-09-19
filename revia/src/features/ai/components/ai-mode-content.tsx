@@ -21,15 +21,7 @@ export function AIModeContent() {
           batchSize: params.batchSize || 10,
           provider: params.provider,
           cards: data.cards,
-          context: params.context || {
-            known: [],
-            struggled: [],
-            recentlySeen: [],
-            preferences: {
-              romanization: true,
-              examples: true,
-            },
-          },
+          context: data.context, // Use DB-merged context from response
           currentIndex: 0,
         });
       },
@@ -55,6 +47,7 @@ export function AIModeContent() {
             return {
               ...prev,
               cards: [...prev.cards, ...data.cards], // Append cards instead of replacing
+              context: data.context, // Sync context with DB response
               // Do NOT reset currentIndex; let the user continue seamlessly
             };
           });
