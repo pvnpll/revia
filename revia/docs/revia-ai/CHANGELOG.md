@@ -23,3 +23,4 @@ Every release maintains detailed logs and versioning to prevent regressions.
 ## [v1.8.1] — 2026-09-18 (Published)
 
 **Learner Context & Context API** — Implemented server-side learner context storage, context API route, and adaptive prompt integration.
+

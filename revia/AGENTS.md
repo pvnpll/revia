@@ -60,3 +60,4 @@ Never restart versions from the beginning; continue the release version sequence
   `OPENROUTER failed: <primaryError>. (Fallback gemini also failed: <fallbackError>)`
 - **SSE Streaming**: AI card generation route (`/api/v1/generate/cards`) must stream cards via Server-Sent Events (SSE) so cards render progressively in UI and avoid serverless execution timeouts (`FUNCTION_INVOCATION_TIMEOUT`).
 - **Avoid Repetitive Analysis**: Do what is asked directly. Do not repeatedly re-analyze or churn working files like `gemini-provider.ts` when addressing orthogonal issues.
+
