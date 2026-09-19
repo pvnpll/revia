@@ -303,9 +303,11 @@ export class AIGenerationService {
       }
     };
 
+    let primaryError: Error | null = null;
     try {
       await attemptGeneration(provider);
     } catch (err) {
+      primaryError = err instanceof Error ? err : new Error(String(err));
       if (err instanceof AIProviderError && err.code === "PROVIDER_AUTH_FAILED") {
         throw err;
       }
@@ -313,15 +315,17 @@ export class AIGenerationService {
       // Try fallback provider
       if (fallbackProvider) {
         console.warn(
-          `Primary provider (${provider.name}) failed: ${err instanceof Error ? err.message : String(err)}, trying fallback (${fallbackProvider.name})`,
+          `Primary provider (${provider.name}) failed: ${primaryError.message}, trying fallback (${fallbackProvider.name})`,
         );
         try {
           await attemptGeneration(fallbackProvider);
         } catch (fallbackErr) {
           // Both providers failed
           if (cumulativeCards.length === 0) {
-            throw fallbackErr instanceof AIProviderError ? fallbackErr : new AIProviderError(
-              `Both providers failed. Last error: ${fallbackErr instanceof Error ? fallbackErr.message : String(fallbackErr)}`,
+            const fallbackMsg =
+              fallbackErr instanceof Error ? fallbackErr.message : String(fallbackErr);
+            throw new AIProviderError(
+              `${provider.name.toUpperCase()} failed: ${primaryError.message}. (Fallback ${fallbackProvider.name} also failed: ${fallbackMsg})`,
               "GENERATION_FAILED",
               502,
               fallbackErr,

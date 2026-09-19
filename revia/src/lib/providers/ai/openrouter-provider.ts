@@ -12,10 +12,12 @@ export interface OpenRouterProviderOptions {
 }
 
 const DEFAULT_FREE_MODELS = [
+  "openrouter/free",
   "google/gemma-4-31b-it:free",
+  "google/gemma-4-26b-a4b-it:free",
   "deepseek/deepseek-v4-flash-0731:free",
   "qwen/qwen3.8-27b:free",
-  "google/gemma-4-26b-a4b-it:free",
+  "liquid/lfm-2.5-2.6b:free",
   "nvidia/nemotron-3.5-lightning:free",
 ];
 
@@ -54,7 +56,7 @@ export class OpenRouterProvider implements AIProvider {
       options.model ||
       process.env.OPENROUTER_MODEL ||
       DEFAULT_FREE_MODELS[0];
-    this.timeoutMs = options.timeoutMs || 15000;
+    this.timeoutMs = options.timeoutMs || 25000;
   }
 
   async generateCards(
