@@ -5,6 +5,19 @@ Every release maintains detailed logs and versioning to prevent regressions.
 
 ---
 
+## [v1.8.5] — 2026-09-20 (Published)
+
+**Card Scroll & Footer Overlap Fix** — Revealed cards scroll natively again (swipe gestures no longer hijack vertical scrolls) and only one footer shows at a time, so the rating section never overlaps the card; long text wraps and scrolls inside the card.
+
+→ [Full release notes](releases/v1.8.5.md)
+
+### Fixed
+- `handleSwipePointerDown` skips pointer capture when the touch starts inside a scrollable answer pane; `handleSwipePointerMove` releases the drag once a revealed card's gesture turns vertical
+- Wired `answerScrollRef` to the swipe revealed pane (was only attached in ratings mode) and added `touch-pan-y overscroll-contain` so vertical scroll stays native
+- Hint footer renders only when not revealed; card bodies use `min-h-0 flex-1 overflow-y-auto` with responsive text and `break-words + overflow-wrap:anywhere`
+
+---
+
 ## [v1.8.4] — 2026-09-20 (Published)
 
 **AI Session Uses Shared Fullscreen Swipe UI** — The AI card session now renders in the exact same fullscreen swipe viewer as Practice/Review (portal overlay, shared `h-14` header, drag deck, hint + rating footers) instead of an embedded ratings-mode panel.

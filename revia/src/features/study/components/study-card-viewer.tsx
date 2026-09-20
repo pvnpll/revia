@@ -251,6 +251,17 @@ export function StudyCardViewer({
   function handleSwipePointerDown(event: React.PointerEvent<HTMLDivElement>) {
     if (isExiting) return;
 
+    // If the revealed answer pane can still scroll in the gesture direction,
+    // let it scroll natively instead of capturing the pointer for a swipe.
+    const target = event.target instanceof Node ? event.target : null;
+    const scroller = answerScrollRef.current;
+    if (isRevealed && scroller && target && scroller.contains(target)) {
+      const canScroll = scroller.scrollHeight > scroller.clientHeight + 1;
+      if (canScroll) {
+        return;
+      }
+    }
+
     pointerStart.current = { x: event.clientX, y: event.clientY };
     gestureLocked.current = null;
     isPointerDragging.current = true;
@@ -263,6 +274,12 @@ export function StudyCardViewer({
 
     const deltaX = event.clientX - pointerStart.current.x;
     const deltaY = event.clientY - pointerStart.current.y;
+
+    // Revealed cards scroll vertically — never hijack a vertical gesture.
+    if (isRevealed && Math.abs(deltaY) > Math.abs(deltaX)) {
+      resetDrag();
+      return;
+    }
 
     if (gestureLocked.current === null) {
       if (
@@ -394,25 +411,32 @@ export function StudyCardViewer({
   function renderCardBody(card: StudyCardItem, revealed: boolean) {
     if (!revealed) {
       return (
-        <div className="flex h-full flex-1 flex-col items-center justify-center px-6 text-center">
-          <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+        <div
+          className="flex min-h-0 flex-1 cursor-pointer flex-col items-center justify-center gap-6 overflow-y-auto px-6 py-4 text-center"
+          onClick={revealCurrent}
+        >
+          <p className="shrink-0 text-xs font-medium uppercase tracking-widest text-muted-foreground">
             {mode === "practice" ? "Question" : "Front"}
           </p>
-          <p className="mt-8 max-w-md whitespace-pre-wrap text-4xl font-semibold leading-tight">
+          <p className="max-w-md break-words text-2xl font-semibold leading-snug sm:text-4xl sm:leading-tight [overflow-wrap:anywhere]">
             {card.front}
           </p>
-          <p className="mt-12 text-sm text-muted-foreground">Tap to reveal</p>
+          <p className="shrink-0 text-sm text-muted-foreground">Tap to reveal</p>
         </div>
       );
     }
 
     return (
-      <div className="flex h-full flex-1 flex-col gap-4 overflow-auto px-5 py-4">
+      <div
+        ref={answerScrollRef}
+        data-study-answer-pane
+        className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto overscroll-contain px-5 py-4"
+      >
         <div className="shrink-0 rounded-2xl border bg-muted/50 p-4 text-left">
           <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
             {mode === "practice" ? "Question" : "Front"}
           </p>
-          <p className="mt-2 whitespace-pre-wrap text-lg font-semibold leading-snug">
+          <p className="mt-2 break-words text-lg font-semibold leading-snug [overflow-wrap:anywhere]">
             {card.front}
           </p>
         </div>
@@ -421,14 +445,14 @@ export function StudyCardViewer({
           <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
             Answer
           </p>
-          <p className="study-reveal-back mt-4 whitespace-pre-wrap text-3xl font-semibold leading-tight">
+          <p className="study-reveal-back mt-4 break-words text-2xl font-semibold leading-snug sm:text-3xl sm:leading-tight [overflow-wrap:anywhere]">
             {card.back}
           </p>
           {(card.pronunciation || card.exampleSentence || card.notes) && (
             <div className="mt-6 space-y-1 border-t pt-4 text-sm text-muted-foreground">
-              {card.pronunciation && <p>{card.pronunciation}</p>}
-              {card.exampleSentence && <p>{card.exampleSentence}</p>}
-              {card.notes && <p>{card.notes}</p>}
+              {card.pronunciation && <p className="break-words">{card.pronunciation}</p>}
+              {card.exampleSentence && <p className="break-words">{card.exampleSentence}</p>}
+              {card.notes && <p className="break-words">{card.notes}</p>}
             </div>
           )}
         </div>
@@ -530,7 +554,7 @@ export function StudyCardViewer({
               key={current.id}
               className={cn(
                 "relative z-10 flex min-h-0 flex-1 select-none flex-col overflow-hidden rounded-3xl border bg-card shadow-xl",
-                isRevealed ? "touch-pan-y" : "touch-none",
+                isRevealed ? "touch-pan-y overscroll-contain" : "touch-none",
                 !isDragging && !isExiting && "study-card-enter",
               )}
               style={{
@@ -552,27 +576,27 @@ export function StudyCardViewer({
           <button
             type="button"
             onClick={revealCurrent}
-            className="study-card-enter flex flex-1 flex-col items-center justify-center px-6 text-center"
+            className="study-card-enter flex min-h-0 flex-1 flex-col items-center justify-center gap-6 overflow-y-auto overscroll-contain px-6 py-4 text-center"
           >
-            <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+            <p className="shrink-0 text-xs font-medium uppercase tracking-widest text-muted-foreground">
               {mode === "practice" ? "Question" : "Front"}
             </p>
-            <p className="mt-8 max-w-md whitespace-pre-wrap text-4xl font-semibold leading-tight">
+            <p className="max-w-md break-words text-2xl font-semibold leading-snug sm:text-4xl sm:leading-tight [overflow-wrap:anywhere]">
               {current.front}
             </p>
-            <p className="mt-12 text-sm text-muted-foreground">Tap to reveal</p>
+            <p className="shrink-0 text-sm text-muted-foreground">Tap to reveal</p>
           </button>
         ) : (
           <div
             ref={answerScrollRef}
             data-study-answer-pane
-            className="study-card-enter flex flex-1 flex-col gap-4 overflow-auto px-2 py-4"
+            className="study-card-enter flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto overscroll-contain px-2 py-4"
           >
             <div className="shrink-0 rounded-2xl border bg-muted/50 p-4 text-left">
               <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
                 {mode === "practice" ? "Question" : "Front"}
               </p>
-              <p className="mt-2 whitespace-pre-wrap text-lg font-semibold leading-snug">
+              <p className="mt-2 break-words text-lg font-semibold leading-snug [overflow-wrap:anywhere]">
                 {current.front}
               </p>
             </div>
@@ -581,14 +605,14 @@ export function StudyCardViewer({
               <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
                 Answer
               </p>
-              <p className="study-reveal-back mt-4 whitespace-pre-wrap text-3xl font-semibold leading-tight">
+              <p className="study-reveal-back mt-4 break-words text-2xl font-semibold leading-snug sm:text-3xl sm:leading-tight [overflow-wrap:anywhere]">
                 {current.back}
               </p>
               {(current.pronunciation || current.exampleSentence || current.notes) && (
                 <div className="mt-6 space-y-1 border-t pt-4 text-sm text-muted-foreground">
-                  {current.pronunciation && <p>{current.pronunciation}</p>}
-                  {current.exampleSentence && <p>{current.exampleSentence}</p>}
-                  {current.notes && <p>{current.notes}</p>}
+                  {current.pronunciation && <p className="break-words">{current.pronunciation}</p>}
+                  {current.exampleSentence && <p className="break-words">{current.exampleSentence}</p>}
+                  {current.notes && <p className="break-words">{current.notes}</p>}
                 </div>
               )}
             </div>
@@ -596,7 +620,7 @@ export function StudyCardViewer({
         )}
       </main>
 
-      {isSwipeNavigation && !hideSwipeHint ? (
+      {isSwipeNavigation && !hideSwipeHint && !isRevealed ? (
         <footer className="shrink-0 border-t bg-background px-4 pb-10 pt-3 text-center">
           <p className="text-xs font-medium text-muted-foreground">
             {readOnly ? (
