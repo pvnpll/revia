@@ -44,6 +44,8 @@ interface StudyCardViewerProps {
   noLoop?: boolean;
   /** When true, hide the footer hint (review has no swipe hint). */
   hideSwipeHint?: boolean;
+  /** Optional banner rendered below the header (e.g. action bar, errors). */
+  banner?: React.ReactNode;
 }
 
 export function StudyCardViewer({
@@ -63,6 +65,7 @@ export function StudyCardViewer({
   readOnly = false,
   noLoop = false,
   hideSwipeHint = false,
+  banner,
 }: StudyCardViewerProps) {
   const touchStart = useRef<{ x: number; y: number } | null>(null);
   const mainRef = useRef<HTMLElement | null>(null);
@@ -472,13 +475,14 @@ export function StudyCardViewer({
           {title && (
             <p className="truncate text-sm font-medium text-muted-foreground">{title}</p>
           )}
-          <p className="text-xs text-muted-foreground">{headerSubtitle}</p>
+          <p className="truncate text-xs text-muted-foreground">{headerSubtitle}</p>
         </div>
         <span className="w-10 shrink-0 text-right text-sm font-medium tabular-nums text-muted-foreground">
           {isSwipeNavigation ? null : progress}
         </span>
         <ThemeToggle className="shrink-0" />
       </header>
+      {banner}
 
       <main
         ref={mainRef}

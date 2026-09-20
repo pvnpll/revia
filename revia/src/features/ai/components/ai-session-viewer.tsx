@@ -1,17 +1,30 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { ArrowLeft, BookPlus, Loader2, Sparkles } from "lucide-react";
+import { useLayoutEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
+import { BookPlus, Loader2, Sparkles } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { StudyCardViewer } from "@/features/study/components/study-card-viewer";
 import { StudyCardItem } from "@/features/study/types";
 import { RatingValue } from "@/lib/scheduler";
 import { useUpdateAIContext } from "../hooks/use-ai-context";
 import { AISessionState } from "../types/ai-session";
 import { SaveDeckModal } from "./save-deck-modal";
+
+function AISessionOverlay({ children }: { children: React.ReactNode }) {
+  const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
+
+  useLayoutEffect(() => {
+    setPortalTarget(document.body);
+  }, []);
+
+  if (portalTarget) {
+    return createPortal(children, portalTarget);
+  }
+
+  return <>{children}</>;
+}
 
 interface AISessionViewerProps {
   session: AISessionState;
@@ -46,6 +59,12 @@ export function AISessionViewer({
   }, [session.cards, session.topic, session.level]);
 
   const updateContextMutation = useUpdateAIContext();
+
+  function handleSwipeMove(index: number) {
+    // Swipe navigation moves within the batch without rating — the viewer
+    // clamps to the batch bounds (noLoop), so nothing extra is needed here.
+    onUpdateSession((prev) => ({ ...prev, currentIndex: index }));
+  }
 
   function handleRate(rating: RatingValue) {
     const currentCard = session.cards[session.currentIndex];
@@ -89,92 +108,65 @@ export function AISessionViewer({
   }
 
   const progress = `${Math.min(session.currentIndex + 1, session.cards.length)} / ${session.cards.length}`;
+  const providerLabel = session.provider === "gemini" ? "Gemini" : "OpenRouter";
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-2">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onReset}
-          className="gap-1.5 text-muted-foreground hover:text-foreground"
-        >
-          <ArrowLeft className="h-4 w-4" aria-hidden />
-          New goal
-        </Button>
-        <div className="min-w-0 flex-1">
-          <h1 className="truncate text-2xl font-bold tracking-tight">{session.topic}</h1>
-          <p className="mt-0.5 truncate text-sm text-muted-foreground">{session.goal}</p>
-        </div>
-      </div>
-
-      <Card className="flex flex-wrap items-center gap-2 px-3 py-2.5">
-        <Badge variant="secondary" className="capitalize">
-          {session.level}
-        </Badge>
-        <Badge variant="outline" className="tabular-nums">
-          {progress}
-        </Badge>
-        <span className="text-xs text-muted-foreground">
-          {session.cards.length} cards
-          {session.provider ? ` · ${session.provider === "gemini" ? "Gemini" : "OpenRouter"}` : ""}
-        </span>
-        <span className="ms-auto flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setShowSaveModal(true)}
-            className="gap-1.5"
-            disabled={deckSaved}
-          >
-            <BookPlus className="h-4 w-4" aria-hidden />
-            {deckSaved ? "Saved" : "Save deck"}
-          </Button>
-
-          <Button
-            size="sm"
-            onClick={onRequestNextBatch}
-            disabled={isGeneratingNextBatch}
-            className="gap-1.5 font-semibold"
-          >
-            {isGeneratingNextBatch ? (
-              <>
-                <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
-                Generating...
-              </>
-            ) : (
-              <>
-                <Sparkles className="h-3.5 w-3.5" aria-hidden />
-                Next batch
-              </>
-            )}
-          </Button>
-        </span>
-      </Card>
-
-      {nextBatchError && (
-        <div
-          role="alert"
-          className="rounded-xl border border-destructive/20 bg-destructive/10 px-3 py-2 text-sm text-destructive"
-        >
-          Failed to load next batch: {nextBatchError.message}
-        </div>
-      )}
-
+    <AISessionOverlay>
       <StudyCardViewer
         cards={studyCards}
         currentIndex={session.currentIndex}
         title={session.topic}
-        subtitle={`${progress} · AI batch`}
+        subtitle={`${progress} · ${session.level} · ${providerLabel}`}
         mode="practice"
-        navigationMode="ratings"
-        fullscreen={false}
+        navigationMode="swipe"
+        fullscreen
         noLoop
-        onIndexChange={(index) =>
-          onUpdateSession((prev) => ({ ...prev, currentIndex: index }))
-        }
+        allowFreeNavigation
+        onIndexChange={handleSwipeMove}
         onRate={handleRate}
         onClose={onReset}
+        banner={
+          <>
+            <div className="flex shrink-0 items-center gap-2 border-b bg-card/50 px-4 py-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowSaveModal(true)}
+                className="h-8 flex-1 gap-1.5 text-xs"
+                disabled={deckSaved}
+              >
+                <BookPlus className="h-3.5 w-3.5" aria-hidden />
+                {deckSaved ? "Saved" : "Save deck"}
+              </Button>
+              <Button
+                size="sm"
+                onClick={onRequestNextBatch}
+                disabled={isGeneratingNextBatch}
+                className="h-8 flex-1 gap-1.5 text-xs font-semibold"
+              >
+                {isGeneratingNextBatch ? (
+                  <>
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="h-3.5 w-3.5" aria-hidden />
+                    Next batch
+                  </>
+                )}
+              </Button>
+            </div>
+            {nextBatchError ? (
+              <div
+                role="alert"
+                className="shrink-0 border-b border-destructive/20 bg-destructive/10 px-4 py-2 text-center text-xs text-destructive"
+              >
+                Failed to load next batch: {nextBatchError.message}
+              </div>
+            ) : null}
+          </>
+        }
       />
 
       {showSaveModal && (
@@ -185,6 +177,6 @@ export function AISessionViewer({
           onSaved={() => setDeckSaved(true)}
         />
       )}
-    </div>
+    </AISessionOverlay>
   );
 }

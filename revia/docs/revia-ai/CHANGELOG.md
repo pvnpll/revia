@@ -5,6 +5,20 @@ Every release maintains detailed logs and versioning to prevent regressions.
 
 ---
 
+## [v1.8.4] — 2026-09-20 (Published)
+
+**AI Session Uses Shared Fullscreen Swipe UI** — The AI card session now renders in the exact same fullscreen swipe viewer as Practice/Review (portal overlay, shared `h-14` header, drag deck, hint + rating footers) instead of an embedded ratings-mode panel.
+
+→ [Full release notes](releases/v1.8.4.md)
+
+### Fixed
+- Switched `AISessionViewer` from embedded `navigationMode="ratings" fullscreen={false}` to `navigationMode="swipe" fullscreen noLoop allowFreeNavigation` in a `document.body` portal, matching Practice/Review DOM and gestures
+- Removed the duplicate page-level `New goal` title and `Card` toolbar; Save deck / Next batch now live in a slim banner row under the shared viewer header with the next-batch error as a second banner row
+- Added optional `banner` slot to `StudyCardViewer` (rendered below the header, header itself unchanged); Practice/Review output is byte-identical
+- Subtitle now carries live progress (`progress · level · provider`); swiping moves index-only while 1–5 ratings update learner context and clamp advance
+
+---
+
 ## [v1.8.3] — 2026-09-20 (Published)
 
 **Revia AI UI Consistency & Session UX Fixes** — Aligned the Revia AI section with the regular app UI (page headers, cards, segmented controls, dialogs, overlays) and fixed session-viewer issues (double scroll, infinite wrap, unstable card ids, missing first-batch loading state, save-modal layering).
