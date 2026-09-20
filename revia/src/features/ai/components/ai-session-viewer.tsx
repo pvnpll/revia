@@ -3,8 +3,9 @@
 import { useMemo, useState } from "react";
 import { ArrowLeft, BookPlus, Loader2, Sparkles } from "lucide-react";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { LearnerContext } from "@/lib/validators/ai";
+import { Card } from "@/components/ui/card";
 import { StudyCardViewer } from "@/features/study/components/study-card-viewer";
 import { StudyCardItem } from "@/features/study/types";
 import { RatingValue } from "@/lib/scheduler";
@@ -34,7 +35,7 @@ export function AISessionViewer({
 
   const studyCards: StudyCardItem[] = useMemo(() => {
     return session.cards.map((card, idx) => ({
-      id: `ai-card-${idx}-${card.front}`,
+      id: `ai-card-${session.topic}-${session.level}-${idx}`,
       front: card.front,
       back: card.back,
       pronunciation: card.pronunciation,
@@ -42,7 +43,7 @@ export function AISessionViewer({
       notes: card.notes,
       lessonTitle: session.topic,
     }));
-  }, [session.cards, session.topic]);
+  }, [session.cards, session.topic, session.level]);
 
   const updateContextMutation = useUpdateAIContext();
 
@@ -75,9 +76,10 @@ export function AISessionViewer({
     // 2. Dispatch asynchronous DB update with the full state
     updateContextMutation.mutate({ topic: session.topic, updates: fullUpdatedContext });
 
-    // 3. Update local state
+    // 3. Advance without wrapping: last card stays put until the next
+    // batch arrives (matches review clamping instead of looping forever).
     onUpdateSession((prev) => {
-      const nextIndex = (prev.currentIndex + 1) % prev.cards.length;
+      const nextIndex = Math.min(prev.currentIndex + 1, Math.max(prev.cards.length - 1, 0));
       return {
         ...prev,
         currentIndex: nextIndex,
@@ -86,81 +88,94 @@ export function AISessionViewer({
     });
   }
 
-  return (
-    <div className="flex flex-col min-h-screen">
-      {/* Action Header Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b bg-card/50 px-4 py-2.5 backdrop-blur">
-        <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onReset}
-            className="gap-1.5 text-xs text-muted-foreground hover:text-foreground"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            New Goal
-          </Button>
-          <span className="text-xs font-semibold text-primary">
-            Level: {session.level}
-          </span>
-        </div>
+  const progress = `${Math.min(session.currentIndex + 1, session.cards.length)} / ${session.cards.length}`;
 
-        <div className="flex items-center gap-2">
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center gap-2">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={onReset}
+          className="gap-1.5 text-muted-foreground hover:text-foreground"
+        >
+          <ArrowLeft className="h-4 w-4" aria-hidden />
+          New goal
+        </Button>
+        <div className="min-w-0 flex-1">
+          <h1 className="truncate text-2xl font-bold tracking-tight">{session.topic}</h1>
+          <p className="mt-0.5 truncate text-sm text-muted-foreground">{session.goal}</p>
+        </div>
+      </div>
+
+      <Card className="flex flex-wrap items-center gap-2 px-3 py-2.5">
+        <Badge variant="secondary" className="capitalize">
+          {session.level}
+        </Badge>
+        <Badge variant="outline" className="tabular-nums">
+          {progress}
+        </Badge>
+        <span className="text-xs text-muted-foreground">
+          {session.cards.length} cards
+          {session.provider ? ` · ${session.provider === "gemini" ? "Gemini" : "OpenRouter"}` : ""}
+        </span>
+        <span className="ms-auto flex items-center gap-2">
           <Button
             variant="outline"
             size="sm"
             onClick={() => setShowSaveModal(true)}
-            className="gap-1.5 text-xs"
+            className="gap-1.5"
             disabled={deckSaved}
           >
-            <BookPlus className="h-4 w-4" />
-            {deckSaved ? "Saved to Library" : "Save Deck"}
+            <BookPlus className="h-4 w-4" aria-hidden />
+            {deckSaved ? "Saved" : "Save deck"}
           </Button>
 
           <Button
             size="sm"
             onClick={onRequestNextBatch}
             disabled={isGeneratingNextBatch}
-            className="gap-1.5 text-xs font-semibold"
+            className="gap-1.5 font-semibold"
           >
             {isGeneratingNextBatch ? (
               <>
-                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
                 Generating...
               </>
             ) : (
               <>
-                <Sparkles className="h-3.5 w-3.5" />
-                Next Batch
+                <Sparkles className="h-3.5 w-3.5" aria-hidden />
+                Next batch
               </>
             )}
           </Button>
-        </div>
-      </div>
+        </span>
+      </Card>
 
       {nextBatchError && (
-        <div className="bg-destructive/10 px-4 py-2 text-center text-xs text-destructive border-b border-destructive/20">
+        <div
+          role="alert"
+          className="rounded-xl border border-destructive/20 bg-destructive/10 px-3 py-2 text-sm text-destructive"
+        >
           Failed to load next batch: {nextBatchError.message}
         </div>
       )}
 
-      {/* Main Interactive Card Viewer */}
-      <div className="flex-1">
-        <StudyCardViewer
-          cards={studyCards}
-          currentIndex={session.currentIndex}
-          title={session.topic}
-          subtitle={`AI Batch • ${session.cards.length} cards`}
-          mode="practice"
-          navigationMode="ratings"
-          fullscreen={false}
-          onIndexChange={(index) =>
-            onUpdateSession((prev) => ({ ...prev, currentIndex: index }))
-          }
-          onRate={handleRate}
-          onClose={onReset}
-        />
-      </div>
+      <StudyCardViewer
+        cards={studyCards}
+        currentIndex={session.currentIndex}
+        title={session.topic}
+        subtitle={`${progress} · AI batch`}
+        mode="practice"
+        navigationMode="ratings"
+        fullscreen={false}
+        noLoop
+        onIndexChange={(index) =>
+          onUpdateSession((prev) => ({ ...prev, currentIndex: index }))
+        }
+        onRate={handleRate}
+        onClose={onReset}
+      />
 
       {showSaveModal && (
         <SaveDeckModal

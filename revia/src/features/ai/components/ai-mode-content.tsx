@@ -1,7 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { Loader2 } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { useAIGenerate } from "../hooks/use-ai-generate";
 import { AISessionState, GenerateCardsApiParams } from "../types/ai-session";
 import { AIGeneratorForm } from "./ai-generator-form";
@@ -57,7 +60,8 @@ export function AIModeContent() {
       },
       true, // appendMode — accumulate on top of existing cards
     );
-  }, [session, ai]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session?.goal, session?.topic, session?.level, session?.batchSize, session?.provider, session?.context, ai.isStreaming, ai.generate]);
 
   // Background prefetch when getting close to the end of the current queue
   useEffect(() => {
@@ -69,7 +73,45 @@ export function AIModeContent() {
     }
   }, [session, ai.isStreaming, handleNextBatch]);
 
-  if (session && session.cards.length > 0) {
+  if (session && (session.cards.length > 0 || ai.isStreaming)) {
+    // While the first batch is still streaming, show progress instead of
+    // dropping back to the form (which looks like a stuck submit).
+    if (session.cards.length === 0) {
+      return (
+        <div className="space-y-8">
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight">{session.topic}</h1>
+            <p className="mt-1 text-sm text-muted-foreground" aria-live="polite">
+              Generating cards for &ldquo;{session.goal}&rdquo;...
+            </p>
+          </div>
+          <Card aria-busy="true">
+            <CardContent className="flex flex-col items-center gap-3 py-10 text-center">
+              <Loader2 className="h-6 w-6 animate-spin text-primary" aria-hidden />
+              <p className="text-sm text-muted-foreground">
+                Revia AI is drafting your first batch. This can take a few seconds.
+              </p>
+              <Button variant="ghost" size="sm" onClick={() => {
+                setSession(null);
+                ai.reset();
+              }}>
+                Cancel
+              </Button>
+            </CardContent>
+          </Card>
+          {ai.error && (
+            <div
+              role="alert"
+              className="rounded-xl border border-destructive/20 bg-destructive/10 p-3 text-sm text-destructive"
+            >
+              <p className="font-semibold">Generation failed</p>
+              <p className="mt-1 text-xs">{ai.error.message}</p>
+            </div>
+          )}
+        </div>
+      );
+    }
+
     return (
       <AISessionViewer
         session={session}
@@ -86,12 +128,10 @@ export function AIModeContent() {
   }
 
   return (
-    <div className="container max-w-lg py-6 px-4 pb-24">
-      <AIGeneratorForm
-        onGenerate={handleInitialGenerate}
-        isLoading={ai.isStreaming}
-        error={ai.error}
-      />
-    </div>
+    <AIGeneratorForm
+      onGenerate={handleInitialGenerate}
+      isLoading={ai.isStreaming}
+      error={ai.error}
+    />
   );
 }

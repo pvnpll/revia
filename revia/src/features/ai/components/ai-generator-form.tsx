@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Bot, Sparkles, Wand2 } from "lucide-react";
+import { Bot, Sparkles, Wand2, Zap } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -15,6 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GenerationLevel, LearnerPreferences } from "@/lib/validators/ai";
+import { cn } from "@/lib/utils/cn";
 import { GenerateCardsApiParams } from "../types/ai-session";
 
 interface SuggestionPreset {
@@ -51,6 +52,19 @@ const PRESET_SUGGESTIONS: SuggestionPreset[] = [
   },
 ];
 
+const PROVIDERS = [
+  { value: "openrouter", label: "OpenRouter", icon: Zap },
+  { value: "gemini", label: "Google Gemini", icon: Sparkles },
+] as const;
+
+type ProviderValue = (typeof PROVIDERS)[number]["value"];
+
+const LEVELS: GenerationLevel[] = ["beginner", "intermediate", "advanced"];
+const BATCH_SIZES = [5, 10, 15];
+
+const segmentedButtonBase =
+  "inline-flex min-h-9 flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-1.5 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50";
+
 interface AIGeneratorFormProps {
   onGenerate: (params: GenerateCardsApiParams) => void;
   isLoading: boolean;
@@ -62,7 +76,7 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
   const [topic, setTopic] = useState("Greetings & Introductions");
   const [level, setLevel] = useState<GenerationLevel>("beginner");
   const [batchSize, setBatchSize] = useState<number>(10);
-  const [provider, setProvider] = useState<"gemini" | "openrouter">("openrouter");
+  const [provider, setProvider] = useState<ProviderValue>("openrouter");
   const [preferences, setPreferences] = useState<LearnerPreferences>({
     romanization: true,
     examples: true,
@@ -104,17 +118,15 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-3">
-        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-          <Bot className="h-6 w-6" />
-        </div>
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Revia AI</h1>
-          <p className="text-sm text-muted-foreground">
-            Generate adaptive, progressive flashcards with AI
-          </p>
-        </div>
+    <div className="space-y-8">
+      <div>
+        <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
+          <Bot className="h-6 w-6 text-primary" aria-hidden />
+          Revia AI
+        </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Generate adaptive, progressive flashcards with AI
+        </p>
       </div>
 
       <div className="space-y-2">
@@ -127,17 +139,19 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
               key={preset.title}
               type="button"
               onClick={() => applyPreset(preset)}
-              className="rounded-full border bg-card px-3 py-1.5 text-xs font-medium text-card-foreground shadow-xs transition hover:bg-accent active:scale-95"
+              disabled={isLoading}
+              className="inline-flex items-center gap-1.5 rounded-full border bg-card px-3 py-1.5 text-xs font-medium shadow-sm transition hover:bg-accent active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
             >
-              ✨ {preset.title}
+              <Sparkles className="h-3.5 w-3.5 text-primary" aria-hidden />
+              {preset.title}
             </button>
           ))}
         </div>
       </div>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} aria-busy={isLoading}>
         <Card>
-          <CardHeader className="pb-4">
+          <CardHeader>
             <CardTitle className="text-lg">Generation Settings</CardTitle>
             <CardDescription>
               Tailor the AI cards to your target language or subject
@@ -167,71 +181,81 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
             </div>
 
             <div className="space-y-1.5">
-              <Label>AI Provider</Label>
-              <div className="flex rounded-md border p-1 bg-muted/30">
-                <button
-                  type="button"
-                  onClick={() => setProvider("openrouter")}
-                  disabled={isLoading}
-                  className={`flex-1 rounded-sm py-1.5 text-xs font-medium transition ${
-                    provider === "openrouter"
-                      ? "bg-background text-foreground shadow-xs font-semibold"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  ⚡ OpenRouter (Free Models)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setProvider("gemini")}
-                  disabled={isLoading}
-                  className={`flex-1 rounded-sm py-1.5 text-xs font-medium transition ${
-                    provider === "gemini"
-                      ? "bg-background text-foreground shadow-xs font-semibold"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  ✨ Google Gemini
-                </button>
+              <Label id="ai-provider-label">AI Provider</Label>
+              <div
+                role="group"
+                aria-labelledby="ai-provider-label"
+                className="flex rounded-lg border bg-muted p-1"
+              >
+                {PROVIDERS.map(({ value, label, icon: Icon }) => (
+                  <button
+                    key={value}
+                    type="button"
+                    onClick={() => setProvider(value)}
+                    disabled={isLoading}
+                    aria-pressed={provider === value}
+                    className={cn(
+                      segmentedButtonBase,
+                      provider === value
+                        ? "bg-background text-foreground shadow-sm"
+                        : "text-muted-foreground hover:text-foreground",
+                    )}
+                  >
+                    <Icon className="h-3.5 w-3.5" aria-hidden />
+                    {label}
+                  </button>
+                ))}
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid gap-3 sm:grid-cols-2">
               <div className="space-y-1.5">
-                <Label>Difficulty Level</Label>
-                <div className="flex rounded-md border p-1 bg-muted/30">
-                  {(["beginner", "intermediate", "advanced"] as const).map((l) => (
+                <Label id="ai-level-label">Difficulty Level</Label>
+                <div
+                  role="group"
+                  aria-labelledby="ai-level-label"
+                  className="flex rounded-lg border bg-muted p-1"
+                >
+                  {LEVELS.map((l) => (
                     <button
                       key={l}
                       type="button"
                       onClick={() => setLevel(l)}
                       disabled={isLoading}
-                      className={`flex-1 rounded-sm py-1.5 text-xs font-medium capitalize transition ${
+                      aria-pressed={level === l}
+                      className={cn(
+                        segmentedButtonBase,
                         level === l
-                          ? "bg-background text-foreground shadow-xs"
-                          : "text-muted-foreground hover:text-foreground"
-                      }`}
+                          ? "bg-background text-foreground shadow-sm"
+                          : "text-muted-foreground hover:text-foreground",
+                      )}
                     >
-                      {l}
+                      <span className="capitalize">{l}</span>
                     </button>
                   ))}
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <Label>Batch Size</Label>
-                <div className="flex rounded-md border p-1 bg-muted/30">
-                  {[5, 10, 15].map((count) => (
+                <Label id="ai-batch-label">Batch Size</Label>
+                <div
+                  role="group"
+                  aria-labelledby="ai-batch-label"
+                  className="flex rounded-lg border bg-muted p-1"
+                >
+                  {BATCH_SIZES.map((count) => (
                     <button
                       key={count}
                       type="button"
                       onClick={() => setBatchSize(count)}
                       disabled={isLoading}
-                      className={`flex-1 rounded-sm py-1.5 text-xs font-medium transition ${
+                      aria-pressed={batchSize === count}
+                      className={cn(
+                        segmentedButtonBase,
                         batchSize === count
-                          ? "bg-background text-foreground shadow-xs"
-                          : "text-muted-foreground hover:text-foreground"
-                      }`}
+                          ? "bg-background text-foreground shadow-sm"
+                          : "text-muted-foreground hover:text-foreground",
+                      )}
                     >
                       {count}
                     </button>
@@ -240,50 +264,49 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
               </div>
             </div>
 
-            <div className="space-y-2 rounded-lg border bg-muted/20 p-3">
+            <div className="space-y-2 rounded-xl border bg-muted/40 p-3">
               <p className="text-xs font-semibold text-muted-foreground">Options</p>
-              <div className="flex flex-wrap gap-4 text-xs">
-                <label className="flex items-center gap-2 cursor-pointer">
+              <div className="flex flex-col gap-2 text-sm sm:flex-row sm:flex-wrap sm:gap-x-4 sm:text-xs">
+                <label className="flex min-h-9 cursor-pointer items-center gap-2">
                   <input
                     type="checkbox"
                     checked={preferences.romanization}
                     onChange={(e) =>
                       setPreferences((p) => ({ ...p, romanization: e.target.checked }))
                     }
-                    className="rounded border-input text-primary"
+                    className="h-4 w-4 shrink-0 accent-primary"
                     disabled={isLoading}
                   />
-                  <span>Include Pronunciation / Romanization</span>
+                  <span>Include pronunciation / romanization</span>
                 </label>
-                <label className="flex items-center gap-2 cursor-pointer">
+                <label className="flex min-h-9 cursor-pointer items-center gap-2">
                   <input
                     type="checkbox"
                     checked={preferences.examples}
                     onChange={(e) =>
                       setPreferences((p) => ({ ...p, examples: e.target.checked }))
                     }
-                    className="rounded border-input text-primary"
+                    className="h-4 w-4 shrink-0 accent-primary"
                     disabled={isLoading}
                   />
-                  <span>Include Example Sentences</span>
+                  <span>Include example sentences</span>
                 </label>
               </div>
             </div>
 
             {validationError && (
-              <p className="text-sm font-medium text-destructive">{validationError}</p>
+              <p role="alert" className="text-sm font-medium text-destructive">
+                {validationError}
+              </p>
             )}
 
             {error && (
-              <div className="rounded-lg border border-destructive/20 bg-destructive/10 p-3 text-xs text-destructive">
-                <p className="font-semibold">Generation Failed</p>
-                <p className="mt-1">{error.message}</p>
-                {error.message.includes("GEMINI_API_KEY") && (
-                  <p className="mt-2 text-muted-foreground">
-                    Tip: Make sure <code>GEMINI_API_KEY</code> is configured in your
-                    environment variables.
-                  </p>
-                )}
+              <div
+                role="alert"
+                className="rounded-xl border border-destructive/20 bg-destructive/10 p-3 text-sm text-destructive"
+              >
+                <p className="font-semibold">Generation failed</p>
+                <p className="mt-1 text-xs">{error.message}</p>
               </div>
             )}
           </CardContent>
@@ -291,17 +314,17 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
             <Button
               type="submit"
               size="lg"
-              className="w-full gap-2 font-semibold"
+              className="w-full font-semibold"
               disabled={isLoading}
             >
               {isLoading ? (
                 <>
-                  <Wand2 className="h-4 w-4 animate-spin" />
-                  Generating Cards with Revia AI...
+                  <Wand2 className="h-4 w-4 animate-spin" aria-hidden />
+                  <span aria-live="polite">Generating cards...</span>
                 </>
               ) : (
                 <>
-                  <Sparkles className="h-4 w-4" />
+                  <Sparkles className="h-4 w-4" aria-hidden />
                   Generate Cards
                 </>
               )}
