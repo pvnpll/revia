@@ -46,9 +46,15 @@ export interface AIProvider {
 
 ### OpenRouterProvider
 - Uses OpenRouter HTTP API (REST, no SDK needed)
-- Free models: `google/gemma-2-9b-it:free`, `mistralai/mistral-7b-instruct:free`
-- Requires explicit JSON parsing (no native structured output)
+- Free models: `openrouter/free`, `google/gemma-4-31b-it:free`, etc.
+- Requires explicit JSON parsing
 - Environment: `OPENROUTER_API_KEY`
+
+### OllamaCloudProvider
+- Uses official Ollama Cloud API (`https://ollama.com/api/chat`)
+- Native structured outputs via `"format": "json"`
+- Free candidate models: `gemma4:31b` (default), `gpt-oss:120b`, `gpt-oss:20b`, `nemotron-3-nano:30b`, `nemotron-3-super`, `nemotron-3-ultra`
+- Environment: `OLLAMA_API_KEY`, `OLLAMA_MODEL` (optional), `OLLAMA_BASE_URL` (optional)
 
 ---
 
@@ -62,9 +68,11 @@ export function createAIProvider(): AIProvider {
   
   switch (provider) {
     case 'gemini':
-      return new GeminiProvider(process.env.GEMINI_API_KEY!);
+      return new GeminiProvider(options.geminiOptions);
     case 'openrouter':
-      return new OpenRouterProvider(process.env.OPENROUTER_API_KEY!);
+      return new OpenRouterProvider(options.openrouterOptions);
+    case 'ollama':
+      return new OllamaCloudProvider(options.ollamaOptions);
     default:
       throw new Error(`Unknown AI provider: ${provider}`);
   }
@@ -77,9 +85,12 @@ export function createAIProvider(): AIProvider {
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `AI_PROVIDER` | No (default: `gemini`) | Active provider: `gemini` or `openrouter` |
+| `AI_PROVIDER` | No (default: `gemini`) | Active provider: `gemini`, `openrouter`, or `ollama` |
 | `GEMINI_API_KEY` | When AI_PROVIDER=gemini | Google AI API key |
 | `OPENROUTER_API_KEY` | When AI_PROVIDER=openrouter | OpenRouter API key |
+| `OLLAMA_API_KEY` | When AI_PROVIDER=ollama | Ollama Cloud API key |
+| `OLLAMA_BASE_URL` | No (default: `https://ollama.com`) | Ollama server URL |
+| `OLLAMA_MODEL` | No (default: `gemma4:31b`) | Ollama Cloud model |
 
 ---
 

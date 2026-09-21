@@ -251,14 +251,26 @@ export function StudyCardViewer({
   function handleSwipePointerDown(event: React.PointerEvent<HTMLDivElement>) {
     if (isExiting) return;
 
-    // If the revealed answer pane can still scroll in the gesture direction,
-    // let it scroll natively instead of capturing the pointer for a swipe.
-    const target = event.target instanceof Node ? event.target : null;
-    const scroller = answerScrollRef.current;
-    if (isRevealed && scroller && target && scroller.contains(target)) {
-      const canScroll = scroller.scrollHeight > scroller.clientHeight + 1;
-      if (canScroll) {
-        return;
+    // Never steal a vertical scroll: if the gesture starts inside a
+    // scrollable ancestor of the target, let the browser own the pointer.
+    // Pointer capture is deferred until the gesture locks horizontal.
+    const target = event.target instanceof Element ? event.target : null;
+    if (target) {
+      let node: Element | null = target;
+      while (node && node !== event.currentTarget) {
+        if (node instanceof HTMLElement) {
+          const style = window.getComputedStyle(node);
+          const scrollableY =
+            (style.overflowY === "auto" || style.overflowY === "scroll") &&
+            node.scrollHeight > node.clientHeight + 1;
+          if (scrollableY) {
+            pointerStart.current = null;
+            gestureLocked.current = null;
+            isPointerDragging.current = false;
+            return;
+          }
+        }
+        node = node.parentElement;
       }
     }
 
@@ -266,7 +278,6 @@ export function StudyCardViewer({
     gestureLocked.current = null;
     isPointerDragging.current = true;
     setIsDragging(false);
-    event.currentTarget.setPointerCapture(event.pointerId);
   }
 
   function handleSwipePointerMove(event: React.PointerEvent<HTMLDivElement>) {
@@ -293,6 +304,16 @@ export function StudyCardViewer({
     }
 
     if (gestureLocked.current === "vertical") return;
+
+    // Lock horizontal before capturing: once we own the pointer the browser
+    // can no longer scroll, so only capture for true horizontal swipes.
+    if (gestureLocked.current === "horizontal") {
+      try {
+        event.currentTarget.setPointerCapture(event.pointerId);
+      } catch {
+        // Pointer already released — continue without capture.
+      }
+    }
 
     event.preventDefault();
     setIsDragging(true);
@@ -510,13 +531,13 @@ export function StudyCardViewer({
 
       <main
         ref={mainRef}
-        className="relative flex flex-1 flex-col overflow-hidden px-4 pb-4"
+        className="relative flex min-h-0 flex-1 flex-col overflow-hidden px-4 pb-4"
         style={!isSwipeNavigation && mode === "practice" ? { touchAction: "pan-y" } : undefined}
         onTouchStart={isSwipeNavigation ? undefined : handleTouchStart}
         onTouchEnd={isSwipeNavigation ? undefined : handleTouchEnd}
       >
         {isSwipeNavigation ? (
-          <div className="relative flex flex-1 items-stretch py-2">
+          <div className="relative flex min-h-0 flex-1 items-stretch py-2">
             {cards.length > 1 && (
               <>
                 {canGoPrevious && dragX > 12 && previousCard && previousIndex !== currentIndex && (
@@ -554,7 +575,7 @@ export function StudyCardViewer({
               key={current.id}
               className={cn(
                 "relative z-10 flex min-h-0 flex-1 select-none flex-col overflow-hidden rounded-3xl border bg-card shadow-xl",
-                isRevealed ? "touch-pan-y overscroll-contain" : "touch-none",
+                isRevealed ? "touch-pan-y overscroll-contain" : "touch-pan-y",
                 !isDragging && !isExiting && "study-card-enter",
               )}
               style={{

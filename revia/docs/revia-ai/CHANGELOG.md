@@ -5,6 +5,20 @@ Every release maintains detailed logs and versioning to prevent regressions.
 
 ---
 
+## [v1.9.0] — 2026-09-21 (Published)
+
+**Ollama Cloud Provider Integration** — Added `OllamaCloudProvider` connecting to the official Ollama Cloud API (`https://ollama.com/api/chat`) with Bearer token authentication, native structured output (`format: "json"`), verified free cloud model cascade led by `gemma4:31b`, and full integration into the provider factory and UI via `AI_PROVIDER=ollama`.
+
+→ [Full release notes](releases/v1.9.0.md)
+
+### Added
+- `OllamaCloudProvider` implementing `AIProvider` for hosted Ollama Cloud models
+- Factory support for `AI_PROVIDER=ollama` in `createAIProvider()`
+- Environment variables `OLLAMA_API_KEY`, `OLLAMA_BASE_URL`, and `OLLAMA_MODEL` in `.env.example`
+- Unit test suites in `tests/unit/lib/ai/ollama-cloud-provider.test.ts` and `tests/unit/lib/ai/provider-factory.test.ts`
+
+---
+
 ## [v1.8.5] — 2026-09-20 (Published)
 
 **Card Scroll & Footer Overlap Fix** — Revealed cards scroll natively again (swipe gestures no longer hijack vertical scrolls) and only one footer shows at a time, so the rating section never overlaps the card; long text wraps and scrolls inside the card.

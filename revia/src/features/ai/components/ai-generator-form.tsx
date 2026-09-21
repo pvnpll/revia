@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Bot, Sparkles, Wand2, Zap } from "lucide-react";
+import { Bot, Cloud, Sparkles, Wand2, Zap } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -55,6 +55,7 @@ const PRESET_SUGGESTIONS: SuggestionPreset[] = [
 const PROVIDERS = [
   { value: "openrouter", label: "OpenRouter", icon: Zap },
   { value: "gemini", label: "Google Gemini", icon: Sparkles },
+  { value: "ollama", label: "Ollama Cloud", icon: Cloud },
 ] as const;
 
 type ProviderValue = (typeof PROVIDERS)[number]["value"];

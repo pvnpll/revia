@@ -5,7 +5,7 @@ export interface AISessionState {
   topic: string;
   level: GenerationLevel;
   batchSize: number;
-  provider?: "gemini" | "openrouter";
+  provider?: "gemini" | "openrouter" | "ollama";
   cards: GeneratedCard[];
   context: LearnerContext;
   currentIndex: number;
@@ -16,7 +16,7 @@ export interface GenerateCardsApiParams {
   topic: string;
   level: GenerationLevel;
   batchSize?: number;
-  provider?: "gemini" | "openrouter";
+  provider?: "gemini" | "openrouter" | "ollama";
   context?: LearnerContext;
 }
 
