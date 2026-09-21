@@ -308,39 +308,66 @@ export class AIGenerationService {
     let lastResult: ProviderGenerateCardsResult | null = null;
     let currentUsage: ProviderTokenUsage = { model: "", promptTokens: 0, completionTokens: 0, totalTokens: 0 };
 
+    let userPrompt = prompts.userPrompt;
+    const systemPrompt = prompts.systemPrompt;
+
     const attemptGeneration = async (currentProvider: AIProvider) => {
-      lastResult = await currentProvider.generateCards({
-        goal: input.goal,
-        topic: input.topic,
-        level: input.level,
-        batchSize: input.batchSize,
-        context: input.context,
-        systemPrompt: prompts.systemPrompt,
-        userPrompt: prompts.userPrompt,
-      });
+      for (let attempt = 0; attempt <= this.maxRetries; attempt++) {
+        if (cumulativeCards.length >= input.batchSize) break;
+        
+        const cardsNeeded = input.batchSize - cumulativeCards.length;
 
-      if (lastResult.usage) {
-        currentUsage = {
-          model: lastResult.usage.model,
-          promptTokens: (currentUsage.promptTokens || 0) + (lastResult.usage.promptTokens || 0),
-          completionTokens: (currentUsage.completionTokens || 0) + (lastResult.usage.completionTokens || 0),
-          totalTokens: (currentUsage.totalTokens || 0) + (lastResult.usage.totalTokens || 0),
-        };
-      }
-
-      const parseResult = generatedCardsResultSchema.safeParse({ cards: lastResult.cards });
-      if (parseResult.success) {
-        const dedupResult = filterDuplicateCards(parseResult.data.cards, {
-          known: input.context.known,
-          recentlySeen: input.context.recentlySeen,
+        lastResult = await currentProvider.generateCards({
+          goal: input.goal,
+          topic: input.topic,
+          level: input.level,
+          batchSize: cardsNeeded,
+          context: {
+            ...input.context,
+            recentlySeen: [
+              ...input.context.recentlySeen,
+              ...cumulativeCards.map((c) => c.front),
+            ],
+          },
+          systemPrompt,
+          userPrompt,
         });
 
-        totalDuplicatesFiltered += dedupResult.duplicatesRemoved;
+        if (lastResult.usage) {
+          currentUsage = {
+            model: lastResult.usage.model,
+            promptTokens: (currentUsage.promptTokens || 0) + (lastResult.usage.promptTokens || 0),
+            completionTokens: (currentUsage.completionTokens || 0) + (lastResult.usage.completionTokens || 0),
+            totalTokens: (currentUsage.totalTokens || 0) + (lastResult.usage.totalTokens || 0),
+          };
+        }
 
-        // Emit cards one-by-one
-        for (const card of dedupResult.cards) {
-          cumulativeCards.push(card);
-          onCard(card);
+        const parseResult = generatedCardsResultSchema.safeParse({ cards: lastResult.cards });
+        if (parseResult.success) {
+          const newlyGenerated = parseResult.data.cards;
+          
+          const dedupResult = filterDuplicateCards(newlyGenerated, {
+            known: input.context.known,
+            recentlySeen: [
+              ...input.context.recentlySeen,
+              ...cumulativeCards.map((c) => c.front),
+            ],
+          });
+
+          totalDuplicatesFiltered += dedupResult.duplicatesRemoved;
+
+          // Emit cards one-by-one
+          for (const card of dedupResult.cards) {
+            if (cumulativeCards.length >= input.batchSize) break;
+            cumulativeCards.push(card);
+            onCard(card);
+          }
+          
+          if (cumulativeCards.length < input.batchSize) {
+            userPrompt += `\n\nNOTE: You just generated ${dedupResult.duplicatesRemoved} duplicate concepts that we already know. PLEASE generate ${input.batchSize - cumulativeCards.length} COMPLETELY DIFFERENT and NOVEL concepts about ${input.topic} that are NOT in the recently seen or known lists!`;
+          }
+        } else {
+          userPrompt += `\n\nNOTE: The previous generation failed schema validation (${parseResult.error.errors[0]?.message}). Please strictly return valid JSON according to the schema.`;
         }
       }
     };

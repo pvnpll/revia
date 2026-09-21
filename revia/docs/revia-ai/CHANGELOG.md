@@ -5,6 +5,19 @@ Every release maintains detailed logs and versioning to prevent regressions.
 
 ---
 
+## [v1.9.1] — 2026-09-21 (Published)
+
+**Fix Double Batch Generation & Random Card Quantities** — Fixed a bug where automatic background prefetching (when reaching the end of a session) would make multiple rapid consecutive generation requests and yield a random number of cards.
+
+→ [Full release notes](releases/v1.9.1.md)
+
+### Fixed
+- `AIGenerationService.generateStream`: Added a retry loop (mirroring the old `generate` method) to iteratively request more cards if deduplication or LLM truncation yields fewer cards than requested for the batch size. This guarantees consistent batch sizes and prevents the UI from instantly re-requesting missing cards.
+- `useAIGenerate` Hook: Added a synchronous `useRef` flag to prevent rapid concurrent API calls caused by React 18 state batching delays, which were previously aborting in-flight requests and causing partial (random) JSON card sets.
+
+---
+
+
 ## [v1.9.0] — 2026-09-21 (Published)
 
 **Ollama Cloud Provider Integration** — Added `OllamaCloudProvider` connecting to the official Ollama Cloud API (`https://ollama.com/api/chat`) with Bearer token authentication, native structured output (`format: "json"`), verified free cloud model cascade led by `gemma4:31b`, and full integration into the provider factory and UI via `AI_PROVIDER=ollama`.

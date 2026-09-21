@@ -29,13 +29,20 @@ export function useAIGenerate(): AIGenerateStreamState {
   const [meta, setMeta] = useState<StreamGenerateResult["meta"] | null>(null);
   const [context, setContext] = useState<LearnerContext | null>(null);
   const abortRef = useRef<AbortController | null>(null);
+  const isStreamingRef = useRef(false);
 
   const generate = useCallback((params: GenerateCardsApiParams, appendMode = false) => {
+    if (isStreamingRef.current) {
+      console.warn("Generation already in progress, ignoring duplicate call.");
+      return;
+    }
+
     // Abort any in-flight stream
     abortRef.current?.abort();
     const controller = new AbortController();
     abortRef.current = controller;
 
+    isStreamingRef.current = true;
     setIsStreaming(true);
     setError(null);
     setMeta(null);
@@ -62,12 +69,14 @@ export function useAIGenerate(): AIGenerateStreamState {
         setError(err instanceof Error ? err : new Error(String(err)));
       })
       .finally(() => {
+        isStreamingRef.current = false;
         setIsStreaming(false);
       });
   }, []);
 
   const reset = useCallback(() => {
     abortRef.current?.abort();
+    isStreamingRef.current = false;
     setCards([]);
     setIsStreaming(false);
     setError(null);
