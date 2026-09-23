@@ -60,39 +60,13 @@ export class AIGenerationService {
       };
     }
 
-    // Prepare fallback provider if available and not explicitly locked
+    // Prepare fallback provider: Ollama → OpenRouter only. Gemini disabled.
     let fallbackProvider: AIProvider | null = null;
-    if (!this.provider) {
-      if (provider.name === "gemini") {
-        if (process.env.OPENROUTER_API_KEY) {
-          try {
-            fallbackProvider = createAIProvider({ providerName: "openrouter" });
-          } catch { /* ignore */ }
-        } else if (process.env.OLLAMA_API_KEY) {
-          try {
-            fallbackProvider = createAIProvider({ providerName: "ollama" });
-          } catch { /* ignore */ }
-        }
-      } else if (provider.name === "openrouter") {
-        if (process.env.GEMINI_API_KEY) {
-          try {
-            fallbackProvider = createAIProvider({ providerName: "gemini" });
-          } catch { /* ignore */ }
-        } else if (process.env.OLLAMA_API_KEY) {
-          try {
-            fallbackProvider = createAIProvider({ providerName: "ollama" });
-          } catch { /* ignore */ }
-        }
-      } else if (provider.name === "ollama") {
-        if (process.env.GEMINI_API_KEY) {
-          try {
-            fallbackProvider = createAIProvider({ providerName: "gemini" });
-          } catch { /* ignore */ }
-        } else if (process.env.OPENROUTER_API_KEY) {
-          try {
-            fallbackProvider = createAIProvider({ providerName: "openrouter" });
-          } catch { /* ignore */ }
-        }
+    if (!this.provider && provider.name === "ollama") {
+      if (process.env.OPENROUTER_API_KEY) {
+        try {
+          fallbackProvider = createAIProvider({ providerName: "openrouter" });
+        } catch { /* ignore */ }
       }
     }
 
@@ -266,39 +240,13 @@ export class AIGenerationService {
       };
     }
 
-    // Prepare fallback provider
+    // Prepare fallback provider: Ollama → OpenRouter only. Gemini disabled.
     let fallbackProvider: AIProvider | null = null;
-    if (!this.provider) {
-      if (provider.name === "gemini") {
-        if (process.env.OPENROUTER_API_KEY) {
-          try {
-            fallbackProvider = createAIProvider({ providerName: "openrouter" });
-          } catch { /* ignore */ }
-        } else if (process.env.OLLAMA_API_KEY) {
-          try {
-            fallbackProvider = createAIProvider({ providerName: "ollama" });
-          } catch { /* ignore */ }
-        }
-      } else if (provider.name === "openrouter") {
-        if (process.env.GEMINI_API_KEY) {
-          try {
-            fallbackProvider = createAIProvider({ providerName: "gemini" });
-          } catch { /* ignore */ }
-        } else if (process.env.OLLAMA_API_KEY) {
-          try {
-            fallbackProvider = createAIProvider({ providerName: "ollama" });
-          } catch { /* ignore */ }
-        }
-      } else if (provider.name === "ollama") {
-        if (process.env.GEMINI_API_KEY) {
-          try {
-            fallbackProvider = createAIProvider({ providerName: "gemini" });
-          } catch { /* ignore */ }
-        } else if (process.env.OPENROUTER_API_KEY) {
-          try {
-            fallbackProvider = createAIProvider({ providerName: "openrouter" });
-          } catch { /* ignore */ }
-        }
+    if (!this.provider && provider.name === "ollama") {
+      if (process.env.OPENROUTER_API_KEY) {
+        try {
+          fallbackProvider = createAIProvider({ providerName: "openrouter" });
+        } catch { /* ignore */ }
       }
     }
 

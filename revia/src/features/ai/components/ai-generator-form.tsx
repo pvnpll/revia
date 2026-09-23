@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Bot, Cloud, Sparkles, Wand2, Zap } from "lucide-react";
+import { Bot, Sparkles, Wand2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -52,13 +52,6 @@ const PRESET_SUGGESTIONS: SuggestionPreset[] = [
   },
 ];
 
-const PROVIDERS = [
-  { value: "openrouter", label: "OpenRouter", icon: Zap },
-  { value: "gemini", label: "Google Gemini", icon: Sparkles },
-  { value: "ollama", label: "Ollama Cloud", icon: Cloud },
-] as const;
-
-type ProviderValue = (typeof PROVIDERS)[number]["value"];
 
 const LEVELS: GenerationLevel[] = ["beginner", "intermediate", "advanced"];
 const BATCH_SIZES = [5, 10, 15];
@@ -77,12 +70,12 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
   const [topic, setTopic] = useState("Greetings & Introductions");
   const [level, setLevel] = useState<GenerationLevel>("beginner");
   const [batchSize, setBatchSize] = useState<number>(10);
-  const [provider, setProvider] = useState<ProviderValue>("openrouter");
   const [preferences, setPreferences] = useState<LearnerPreferences>({
     romanization: true,
     examples: true,
   });
   const [validationError, setValidationError] = useState<string | null>(null);
+
 
   function applyPreset(preset: SuggestionPreset) {
     setGoal(preset.goal);
@@ -108,7 +101,7 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
       topic: topic.trim(),
       level,
       batchSize,
-      provider,
+      provider: "ollama",
       context: {
         known: [],
         struggled: [],
@@ -181,33 +174,6 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
               />
             </div>
 
-            <div className="space-y-1.5">
-              <Label id="ai-provider-label">AI Provider</Label>
-              <div
-                role="group"
-                aria-labelledby="ai-provider-label"
-                className="flex rounded-lg border bg-muted p-1"
-              >
-                {PROVIDERS.map(({ value, label, icon: Icon }) => (
-                  <button
-                    key={value}
-                    type="button"
-                    onClick={() => setProvider(value)}
-                    disabled={isLoading}
-                    aria-pressed={provider === value}
-                    className={cn(
-                      segmentedButtonBase,
-                      provider === value
-                        ? "bg-background text-foreground shadow-sm"
-                        : "text-muted-foreground hover:text-foreground",
-                    )}
-                  >
-                    <Icon className="h-3.5 w-3.5" aria-hidden />
-                    {label}
-                  </button>
-                ))}
-              </div>
-            </div>
 
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="space-y-1.5">

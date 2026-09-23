@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,9 @@ import { AISessionViewer } from "./ai-session-viewer";
 export function AIModeContent() {
   const [session, setSession] = useState<AISessionState | null>(null);
   const ai = useAIGenerate();
+  // Guards the auto-prefetch so it only fires once per threshold crossing.
+  // Resets when streaming ends so the next crossing can trigger again.
+  const prefetchQueuedRef = useRef(false);
 
   const hasSession = Boolean(session);
 
@@ -30,6 +33,13 @@ export function AIModeContent() {
       };
     });
   }, [ai.cards, ai.context, hasSession]);
+
+  // Reset the prefetch guard once the stream finishes
+  useEffect(() => {
+    if (!ai.isStreaming) {
+      prefetchQueuedRef.current = false;
+    }
+  }, [ai.isStreaming]);
 
   function handleInitialGenerate(params: GenerateCardsApiParams) {
     const newSession: AISessionState = {
@@ -63,15 +73,19 @@ export function AIModeContent() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session?.goal, session?.topic, session?.level, session?.batchSize, session?.provider, session?.context, ai.isStreaming, ai.generate]);
 
-  // Background prefetch when getting close to the end of the current queue
+  // Background prefetch when getting close to the end of the current queue.
+  // prefetchQueuedRef prevents this from firing more than once per batch.
   useEffect(() => {
     if (!session || ai.isStreaming) return;
+    if (prefetchQueuedRef.current) return;
 
     const cardsRemaining = session.cards.length - 1 - session.currentIndex;
-    if (cardsRemaining <= 4 && cardsRemaining >= 0) {
+    if (cardsRemaining <= 3 && cardsRemaining >= 0) {
+      prefetchQueuedRef.current = true;
       handleNextBatch();
     }
   }, [session, ai.isStreaming, handleNextBatch]);
+
 
   if (session && (session.cards.length > 0 || ai.isStreaming)) {
     // While the first batch is still streaming, show progress instead of

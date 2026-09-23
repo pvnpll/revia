@@ -3,6 +3,20 @@
 All notable releases of the Revia AI Learning Engine follow [Semantic Versioning](https://semver.org/).
 Every release maintains detailed logs and versioning to prevent regressions.
 
+## [v1.9.2] — 2026-09-24 (Published)
+
+**Fix Double Prefetch & Remove Provider UI** — Fixed consecutive duplicate batch API calls caused by the prefetch effect re-firing on session object changes. Removed the AI provider selector from the UI; Ollama Cloud is now always the default with OpenRouter (Gemma 4) as the only silent fallback. Gemini disabled from all fallback paths.
+
+→ [Full release notes](releases/v1.9.2.md)
+
+### Fixed
+- Background prefetch effect now fires exactly once per batch threshold crossing via `prefetchQueuedRef` guard
+- Simplified server-side fallback cascade: Ollama → OpenRouter(Gemma) only; Gemini removed
+
+### Changed
+- Removed AI Provider segmented control from generation form — always uses Ollama
+- OpenRouter model cascade reordered to try `google/gemma-4-31b-it:free` first
+
 ---
 
 ## [v1.9.1] — 2026-09-21 (Published)
