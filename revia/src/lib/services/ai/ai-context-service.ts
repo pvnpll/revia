@@ -4,27 +4,33 @@ import { LearnerContext, learnerContextSchema } from "@/lib/validators/ai";
 
 export class AiContextService {
   async getContext(userId: string, topic: string): Promise<LearnerContext> {
-    const record = await prisma.aiLearnerContext.findUnique({
-      where: {
-        userId_topic: {
-          userId,
-          topic,
+    try {
+      const record = await prisma.aiLearnerContext.findUnique({
+        where: {
+          userId_topic: {
+            userId,
+            topic,
+          },
         },
-      },
-    });
+      });
 
-    if (!record) {
-      return learnerContextSchema.parse({}); // return defaults
+      if (!record) {
+        return learnerContextSchema.parse({}); // return defaults
+      }
+
+      // Safely parse the DB record into our validated schema type
+      return learnerContextSchema.parse({
+        known: record.known,
+        struggled: record.struggled,
+        recentlySeen: record.recentlySeen,
+        preferences: record.preferences || {},
+      });
+    } catch (err) {
+      console.warn("Failed to fetch learner context from database, using empty defaults:", err);
+      return learnerContextSchema.parse({});
     }
-
-    // Safely parse the DB record into our validated schema type
-    return learnerContextSchema.parse({
-      known: record.known,
-      struggled: record.struggled,
-      recentlySeen: record.recentlySeen,
-      preferences: record.preferences || {},
-    });
   }
+
 
   async updateContext(
     userId: string,

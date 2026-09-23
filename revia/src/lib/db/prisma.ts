@@ -5,15 +5,30 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 function getDatabaseUrl(): string | undefined {
-  const url = process.env.DATABASE_URL;
+  let url = process.env.DATABASE_URL;
   if (!url) return undefined;
-  // Prisma Dev / PgBouncer: disable prepared statements to avoid "already exists" errors
+
+  // On Supabase pooler, port 5432 is session mode (strictly limited to 15 clients).
+  // Port 6543 is transaction pooler (PgBouncer) which handles serverless concurrency without connection exhaustion.
+  if (url.includes("pooler.supabase.com:5432")) {
+    url = url.replace(":5432", ":6543");
+  }
+
+  // Prisma / PgBouncer: disable prepared statements to avoid "already exists" errors
   if (!url.includes("pgbouncer=true")) {
     const separator = url.includes("?") ? "&" : "?";
-    return `${url}${separator}pgbouncer=true`;
+    url = `${url}${separator}pgbouncer=true`;
   }
+
+  // In serverless environments (Vercel), each lambda only needs 1 connection from the pool
+  if (!url.includes("connection_limit=")) {
+    const separator = url.includes("?") ? "&" : "?";
+    url = `${url}${separator}connection_limit=1`;
+  }
+
   return url;
 }
+
 
 export const prisma =
   globalForPrisma.prisma ??
