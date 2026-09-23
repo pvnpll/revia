@@ -13,10 +13,9 @@ import { AISessionViewer } from "./ai-session-viewer";
 export function AIModeContent() {
   const [session, setSession] = useState<AISessionState | null>(null);
   const ai = useAIGenerate();
-  // Tracks how many total cards existed when we last triggered a prefetch.
-  // A new prefetch is only allowed when session.cards.length grows past this value
-  // (i.e. a new batch arrived), making this immune to session identity re-renders.
-  const prefetchedAtCardCountRef = useRef(0);
+  // Tracks the total card count for which a next-batch request has already been issued.
+  // Prevents consecutive duplicate calls: next request is only allowed once cards.length grows.
+  const lastRequestedCardCountRef = useRef(0);
 
   const hasSession = Boolean(session);
 
@@ -36,7 +35,7 @@ export function AIModeContent() {
   }, [ai.cards, ai.context, hasSession]);
 
   function handleInitialGenerate(params: GenerateCardsApiParams) {
-    prefetchedAtCardCountRef.current = 0;
+    lastRequestedCardCountRef.current = 0;
     const newSession: AISessionState = {
       goal: params.goal,
       topic: params.topic,
@@ -54,6 +53,9 @@ export function AIModeContent() {
   const handleNextBatch = useCallback(() => {
     if (!session || ai.isStreaming) return;
 
+    // Immediately record current card length so neither manual clicks nor auto-prefetch can double-fire
+    lastRequestedCardCountRef.current = session.cards.length;
+
     ai.generate(
       {
         goal: session.goal,
@@ -68,20 +70,21 @@ export function AIModeContent() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session?.goal, session?.topic, session?.level, session?.batchSize, session?.provider, session?.context, ai.isStreaming, ai.generate]);
 
-  // Background prefetch: triggers when ≤6 cards remain in the current queue.
-  // Only fires once per batch by recording the card count at trigger time —
-  // the next prefetch is only permitted after session.cards.length grows further.
+  // Background prefetch: triggers when user has started studying (currentIndex > 0)
+  // and reaches ≤6 remaining cards. Only fires once per batch expansion.
   useEffect(() => {
     if (!session || ai.isStreaming) return;
-    // Block if we already prefetched for this exact card count
-    if (session.cards.length <= prefetchedAtCardCountRef.current) return;
+    // Don't auto-prefetch on initial batch before user has even started reviewing
+    if (session.currentIndex === 0) return;
+    // Don't prefetch if we already issued a request for this batch
+    if (session.cards.length <= lastRequestedCardCountRef.current) return;
 
     const cardsRemaining = session.cards.length - 1 - session.currentIndex;
     if (cardsRemaining <= 6 && cardsRemaining >= 0) {
-      prefetchedAtCardCountRef.current = session.cards.length;
       handleNextBatch();
     }
   }, [session, ai.isStreaming, handleNextBatch]);
+
 
 
   if (session && (session.cards.length > 0 || ai.isStreaming)) {

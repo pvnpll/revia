@@ -15,18 +15,15 @@ export function createAIProvider(options: ProviderFactoryOptions = {}): AIProvid
     options.providerName || process.env.AI_PROVIDER?.toLowerCase();
 
   if (!providerName) {
-    if (
-      process.env.OLLAMA_API_KEY &&
-      !process.env.GEMINI_API_KEY &&
-      !process.env.OPENROUTER_API_KEY
-    ) {
+    if (process.env.OLLAMA_API_KEY) {
       providerName = "ollama";
-    } else if (process.env.OPENROUTER_API_KEY && !process.env.GEMINI_API_KEY) {
+    } else if (process.env.OPENROUTER_API_KEY) {
       providerName = "openrouter";
     } else {
-      providerName = "gemini";
+      providerName = "ollama";
     }
   }
+
 
   switch (providerName) {
     case "gemini":

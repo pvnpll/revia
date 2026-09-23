@@ -152,18 +152,15 @@ export class AIGenerationService {
           throw err;
         }
 
-        if (
-          fallbackProvider &&
-          err instanceof AIProviderError &&
-          (err.status === 503 || err.code === "PROVIDER_UNAVAILABLE" || err.code === "RATE_LIMITED" || err.code === "TIMEOUT")
-        ) {
+        if (fallbackProvider) {
           console.warn(
-            `Primary provider (${provider.name}) failed (${err.code}), switching to fallback provider (${fallbackProvider.name})`,
+            `Primary provider (${provider.name}) failed (${err instanceof Error ? err.message : String(err)}), switching to fallback provider (${fallbackProvider.name})`,
           );
           provider = fallbackProvider;
           fallbackProvider = null;
           continue;
         }
+
 
         lastError = err instanceof Error ? err : new Error(String(err));
       }

@@ -108,7 +108,12 @@ export function AISessionViewer({
   }
 
   const progress = `${Math.min(session.currentIndex + 1, session.cards.length)} / ${session.cards.length}`;
-  const providerLabel = session.provider === "gemini" ? "Gemini" : "OpenRouter";
+  const providerLabel =
+    session.provider === "ollama"
+      ? "Ollama Cloud"
+      : session.provider === "openrouter"
+      ? "OpenRouter"
+      : "Gemini";
 
   return (
     <AISessionOverlay>

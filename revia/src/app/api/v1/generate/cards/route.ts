@@ -112,9 +112,13 @@ export async function POST(request: NextRequest) {
           console.error("Unexpected error in /api/v1/generate/cards:", error);
           errorPayload = {
             code: "INTERNAL",
-            message: "An unexpected error occurred during card generation",
+            message:
+              error instanceof Error
+                ? error.message
+                : "An unexpected error occurred during card generation",
           };
         }
+
 
         controller.enqueue(encoder.encode(sseMessage("error", errorPayload)));
       } finally {
