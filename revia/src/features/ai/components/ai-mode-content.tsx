@@ -13,9 +13,10 @@ import { AISessionViewer } from "./ai-session-viewer";
 export function AIModeContent() {
   const [session, setSession] = useState<AISessionState | null>(null);
   const ai = useAIGenerate();
-  // Guards the auto-prefetch so it only fires once per threshold crossing.
-  // Resets when streaming ends so the next crossing can trigger again.
-  const prefetchQueuedRef = useRef(false);
+  // Tracks how many total cards existed when we last triggered a prefetch.
+  // A new prefetch is only allowed when session.cards.length grows past this value
+  // (i.e. a new batch arrived), making this immune to session identity re-renders.
+  const prefetchedAtCardCountRef = useRef(0);
 
   const hasSession = Boolean(session);
 
@@ -34,14 +35,8 @@ export function AIModeContent() {
     });
   }, [ai.cards, ai.context, hasSession]);
 
-  // Reset the prefetch guard once the stream finishes
-  useEffect(() => {
-    if (!ai.isStreaming) {
-      prefetchQueuedRef.current = false;
-    }
-  }, [ai.isStreaming]);
-
   function handleInitialGenerate(params: GenerateCardsApiParams) {
+    prefetchedAtCardCountRef.current = 0;
     const newSession: AISessionState = {
       goal: params.goal,
       topic: params.topic,
@@ -73,15 +68,17 @@ export function AIModeContent() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session?.goal, session?.topic, session?.level, session?.batchSize, session?.provider, session?.context, ai.isStreaming, ai.generate]);
 
-  // Background prefetch when getting close to the end of the current queue.
-  // prefetchQueuedRef prevents this from firing more than once per batch.
+  // Background prefetch: triggers when ≤6 cards remain in the current queue.
+  // Only fires once per batch by recording the card count at trigger time —
+  // the next prefetch is only permitted after session.cards.length grows further.
   useEffect(() => {
     if (!session || ai.isStreaming) return;
-    if (prefetchQueuedRef.current) return;
+    // Block if we already prefetched for this exact card count
+    if (session.cards.length <= prefetchedAtCardCountRef.current) return;
 
     const cardsRemaining = session.cards.length - 1 - session.currentIndex;
-    if (cardsRemaining <= 3 && cardsRemaining >= 0) {
-      prefetchQueuedRef.current = true;
+    if (cardsRemaining <= 6 && cardsRemaining >= 0) {
+      prefetchedAtCardCountRef.current = session.cards.length;
       handleNextBatch();
     }
   }, [session, ai.isStreaming, handleNextBatch]);
