@@ -10,11 +10,11 @@
 
 | Phase | Status | Scope |
 |-------|--------|-------|
-| Phase 1: Core Generation | Planned | Gemini provider, card generation API, Zod validation, learner context |
-| Phase 2: Second Provider | Planned | OpenRouter integration, provider fallback |
-| Phase 3: AI Mode UX | Planned | AI Mode UI in the app, session management, background prefetch |
-| Phase 4: Server-Side Context | Planned | Persist learner context, per-user per-topic storage |
-| Phase 5: Advanced Generation | Future | Quizzes, explanations, difficulty adjustment, curriculum |
+| Phase 1: Core Generation | Completed | Gemini provider, card generation API, Zod validation, learner context |
+| Phase 2: Second Provider | Completed | OpenRouter integration, provider fallback |
+| Phase 3: AI Mode UX | Completed | AI Mode UI in the app, session management, background prefetch |
+| Phase 4: Server-Side Context | Completed | Persist learner context, per-user per-topic storage |
+| Phase 5: Advanced Generation | Completed | Quizzes, explanations, difficulty adjustment, curriculum |
 | Phase 6: Learning Intelligence | Future | Spaced repetition integration, analytics, personalization |
 
 ---

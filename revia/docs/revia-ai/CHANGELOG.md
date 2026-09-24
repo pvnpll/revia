@@ -3,6 +3,19 @@
 All notable releases of the Revia AI Learning Engine follow [Semantic Versioning](https://semver.org/).
 Every release maintains detailed logs and versioning to prevent regressions.
 
+## [v1.9.12] — 2026-09-25 (Published)
+
+**Phase 5: Advanced Generation** — Introduced Expert Tutor Explanations, Dynamic Difficulty Scaling, and Curriculum Progression.
+
+→ [Full release notes](releases/v1.9.12.md)
+
+### Added
+- **Expert Tutor Explanations**: The AI now generates a `nuance` field containing grammar breakdowns or cultural context, rendered beautifully as a "Teacher's Note" in the UI and seamlessly preserved in your permanent deck notes.
+- **Dynamic Difficulty Scaling**: The AI now analyzes your backend `known` memory array and seamlessly transitions from basic vocabulary to complex conversational phrases as you master a topic.
+- **Curriculum Progression**: Added a new "Next Topic" magic wand button that invokes an ultra-fast Gemma 2 model to analyze your current topic and memory, and suggests the exact next logical step in your learning journey.
+
+---
+
 ## [v1.9.11] — 2026-09-25 (Published)
 
 **Normalization & DB Sync Fixes** — Fixed a bug where Zod validation stripped the `subjectKey` during generation, and fixed the topic normalizer fallback to use a regex heuristic instead of lumping data into a "general" bucket when the LLM is rate-limited.
