@@ -63,6 +63,31 @@ export function buildGenerationPrompts(input: GenerationRequestInput): Generatio
     );
   }
 
+  // --- DYNAMIC DIFFICULTY ADJUSTMENT ---
+  const knownCount = context.known?.length || 0;
+  if (knownCount > 0) {
+    let adjustment = "";
+    if (level === "beginner") {
+      if (knownCount >= 15) {
+        adjustment = "The user has mastered over 15 concepts at the beginner level. You MUST seamlessly upgrade the complexity to intermediate (e.g., short phrases, simple grammar) while staying on topic.";
+      } else if (knownCount >= 5) {
+        adjustment = "The user has a solid foundation. Begin transitioning from basic single-word vocabulary to simple conversational phrases.";
+      }
+    } else if (level === "intermediate") {
+      if (knownCount >= 15) {
+        adjustment = "The user has mastered over 15 concepts at the intermediate level. You MUST seamlessly upgrade the complexity to advanced (e.g., complex sentences, idioms, nuances) while staying on topic.";
+      }
+    }
+    
+    if (adjustment) {
+      userSections.push(
+        "",
+        "### Dynamic Difficulty Scaling:",
+        adjustment,
+      );
+    }
+  }
+
   userSections.push(
     "",
     `Generate exactly ${batchSize} new, high-quality cards that logically advance the learner's journey.`,

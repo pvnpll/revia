@@ -45,6 +45,53 @@ export class AIGenerationService {
     this.maxRetries = options.maxRetries ?? 1; // 1 retry (2 attempts max) to fit within Vercel's 60s maxDuration
   }
 
+  async generateCurriculum(rawInput: unknown): Promise<import("@/lib/validators/ai").CurriculumResponse> {
+    const { curriculumRequestSchema, curriculumResponseSchema } = await import("@/lib/validators/ai");
+    const input = curriculumRequestSchema.parse(rawInput);
+    
+    // We prefer a fast model like Gemini Flash or OpenRouter's Gemma for this reasoning task
+    const provider = this.provider ?? createAIProvider({ providerName: process.env.OPENROUTER_API_KEY ? "openrouter" : "gemini" });
+    
+    const systemPrompt = `You are a curriculum generation AI. The user is studying towards a specific goal.
+They have just finished studying the topic: "${input.currentTopic}".
+Their overarching goal is: "${input.goal}".
+They have already mastered the following concepts:
+${input.knownConcepts.slice(-30).map(c => `- ${c}`).join("\n")}
+
+Based on this, what is the single next most logical topic they should study?
+Respond strictly in JSON matching the schema, with 'nextTopic' and 'reasoning'.`;
+
+    // Temporary mock for provider interface (since providers are geared towards cards)
+    // Wait, providers generate cards. We need a raw generate json method. 
+    // Actually, we can just use the provider to generate a "card" but trick it.
+    // Let's just fetch from OpenRouter / Gemini directly here since it's a simple one-off task.
+    try {
+      if (process.env.OPENROUTER_API_KEY) {
+        const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          },
+          body: JSON.stringify({
+            model: "google/gemma-2-9b-it:free",
+            response_format: { type: "json_object" },
+            messages: [{ role: "system", content: systemPrompt }],
+          })
+        });
+        const data = await res.json();
+        const jsonStr = data.choices[0]?.message?.content || "{}";
+        const parsed = JSON.parse(jsonStr.replace(/```json/g, "").replace(/```/g, ""));
+        return curriculumResponseSchema.parse(parsed);
+      } else {
+        throw new Error("No API key available for curriculum generation");
+      }
+    } catch (err) {
+      console.warn("Curriculum generation failed", err);
+      return { nextTopic: "Continue Practice", reasoning: "Keep reinforcing your current knowledge." };
+    }
+  }
+
   async generate(rawInput: unknown, userId?: string): Promise<GenerationServiceResult> {
     const input: GenerationRequestInput = generationRequestSchema.parse(rawInput);
     let provider = this.provider ?? createAIProvider({ providerName: input.provider });

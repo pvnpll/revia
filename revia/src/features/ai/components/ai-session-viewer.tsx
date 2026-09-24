@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
-import { BookPlus, Loader2, Sparkles } from "lucide-react";
+import { BookPlus, Loader2, Sparkles, Wand2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { StudyCardViewer } from "@/features/study/components/study-card-viewer";
@@ -45,6 +45,31 @@ export function AISessionViewer({
 }: AISessionViewerProps) {
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [deckSaved, setDeckSaved] = useState(false);
+  const [isSuggesting, setIsSuggesting] = useState(false);
+  const [suggestedTopic, setSuggestedTopic] = useState<{ topic: string, reasoning: string } | null>(null);
+
+  async function handleSuggestTopic() {
+    setIsSuggesting(true);
+    try {
+      const res = await fetch("/api/v1/generate/curriculum", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          goal: session.goal,
+          currentTopic: session.topic,
+          knownConcepts: session.context?.known || [],
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setSuggestedTopic({ topic: data.nextTopic, reasoning: data.reasoning });
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsSuggesting(false);
+    }
+  }
 
   const studyCards: StudyCardItem[] = useMemo(() => {
     return session.cards.map((card, idx) => ({
@@ -177,18 +202,49 @@ export function AISessionViewer({
         onClose={onReset}
         banner={
           <>
-            <div className="flex shrink-0 items-center justify-center border-b border-border bg-card px-4 py-2">
+            <div className="flex shrink-0 items-center justify-center gap-2 border-b border-border bg-card px-4 py-2">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setShowSaveModal(true)}
-                className="h-8 max-w-[200px] flex-1 gap-1.5 text-xs"
+                className="h-8 flex-1 max-w-[140px] gap-1.5 text-xs"
                 disabled={deckSaved}
               >
                 <BookPlus className="h-3.5 w-3.5" aria-hidden />
                 {deckSaved ? "Saved" : "Save deck"}
               </Button>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={handleSuggestTopic}
+                className="h-8 flex-1 max-w-[140px] gap-1.5 text-xs bg-indigo-50 text-indigo-700 hover:bg-indigo-100 dark:bg-indigo-950 dark:text-indigo-300 dark:hover:bg-indigo-900 border-indigo-200 dark:border-indigo-800 border"
+                disabled={isSuggesting}
+              >
+                <Wand2 className="h-3.5 w-3.5" aria-hidden />
+                {isSuggesting ? "Thinking..." : "Next Topic"}
+              </Button>
             </div>
+            {suggestedTopic && (
+              <div className="shrink-0 border-b border-indigo-200 dark:border-indigo-800 bg-indigo-50/80 dark:bg-indigo-950/80 px-4 py-2.5 text-xs text-indigo-900 dark:text-indigo-200 flex justify-between items-center gap-4">
+                <div>
+                  <div className="font-semibold mb-0.5">Up Next: {suggestedTopic.topic}</div>
+                  <div className="opacity-80 leading-snug">{suggestedTopic.reasoning}</div>
+                </div>
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  className="shrink-0 h-7 text-[10px] px-2.5 bg-background" 
+                  onClick={() => {
+                     setSuggestedTopic(null);
+                     // Ideally we would trigger a full session restart with the new topic here
+                     // For now, we instruct the user
+                     alert(`To start this topic, end the session and enter "${suggestedTopic.topic}"!`);
+                  }}
+                >
+                  Got it
+                </Button>
+              </div>
+            )}
             {nextBatchError ? (
               <div
                 role="alert"
