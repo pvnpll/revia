@@ -93,7 +93,7 @@ export function AISessionViewer({
     };
 
     // 2. Dispatch asynchronous DB update with the full state
-    updateContextMutation.mutate({ topic: session.topic, updates: fullUpdatedContext });
+    updateContextMutation.mutate({ topic: session.subjectKey, updates: fullUpdatedContext });
 
     // 3. Advance without wrapping, and implement Hybrid Loop Mechanic
     onUpdateSession((prev) => {

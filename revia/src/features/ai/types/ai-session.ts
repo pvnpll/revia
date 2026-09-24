@@ -3,6 +3,7 @@ import { GeneratedCard, GenerationLevel, LearnerContext } from "@/lib/validators
 export interface AISessionState {
   goal: string;
   topic: string;
+  subjectKey: string;
   level: GenerationLevel;
   batchSize: number;
   provider?: "gemini" | "openrouter" | "ollama";
@@ -15,6 +16,7 @@ export interface AISessionState {
 export interface GenerateCardsApiParams {
   goal: string;
   topic: string;
+  subjectKey?: string;
   level: GenerationLevel;
   batchSize?: number;
   provider?: "gemini" | "openrouter" | "ollama";

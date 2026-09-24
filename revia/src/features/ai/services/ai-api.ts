@@ -124,6 +124,13 @@ export const aiApi = {
     return fetchJson<LearnerContext>(`/api/v1/generate/context?topic=${encodeURIComponent(topic)}`);
   },
 
+  initializeContext(goal: string, topic: string): Promise<{ subjectKey: string; context: LearnerContext }> {
+    return fetchJson<{ subjectKey: string; context: LearnerContext }>("/api/v1/generate/context", {
+      method: "POST",
+      body: JSON.stringify({ goal, topic }),
+    });
+  },
+
   updateContext(topic: string, updates: Partial<LearnerContext>): Promise<LearnerContext> {
     return fetchJson<LearnerContext>("/api/v1/generate/context", {
       method: "PUT",

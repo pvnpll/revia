@@ -362,7 +362,8 @@ The first version may accept learner context from the client.
 
 Later, the service can own persistent learner context. When this server-side persistence is implemented (Phase 4), it must handle **Topic Normalization**:
 * The system cannot rely on exact string-matching of user goals (e.g., "Kannada" vs "kannada beginner") to retrieve context.
-* A lightweight AI extraction step or a strict UI taxonomy (Subject Dropdowns) must be used to normalize user intents into core subject keys (e.g., `kannada_language`) before querying the database.
+* **Current Implementation (Option A: Hidden AI Normalizer)**: A lightweight AI extraction step runs invisibly when the user clicks generate, extracting the core subject key (e.g., `kannada`) before querying the database.
+* **Future Exploration (Option B: Subject Taxonomy Dropdown)**: If the AI normalizer introduces too much latency, we should explore adding a strict UI taxonomy (a "Subject" dropdown or autocomplete field in the Generator form) so the DB key is perfectly consistent without requiring an LLM call.
 * This ensures that progress is preserved regardless of how the user types their prompt in future sessions.
 
 The architecture should allow this transition without changing the public API significantly.

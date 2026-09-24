@@ -40,6 +40,7 @@ export function AIModeContent() {
     const newSession: AISessionState = {
       goal: params.goal,
       topic: params.topic,
+      subjectKey: params.subjectKey || params.topic,
       level: params.level,
       batchSize: params.batchSize || 5,
       provider: params.provider,
@@ -61,6 +62,7 @@ export function AIModeContent() {
       {
         goal: session.goal,
         topic: session.topic,
+        subjectKey: session.subjectKey,
         level: session.level,
         batchSize: session.batchSize,
         provider: session.provider,
@@ -69,7 +71,7 @@ export function AIModeContent() {
       true, // appendMode — accumulate on top of existing cards
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session?.goal, session?.topic, session?.level, session?.batchSize, session?.provider, session?.context, ai.isStreaming, ai.generate]);
+  }, [session?.goal, session?.topic, session?.subjectKey, session?.level, session?.batchSize, session?.provider, session?.context, ai.isStreaming, ai.generate]);
 
   // Background prefetch: triggers when user has started studying (currentIndex > 0)
   // and reaches ≤3 remaining cards. Only fires once per batch expansion.

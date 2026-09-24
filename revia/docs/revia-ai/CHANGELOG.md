@@ -3,6 +3,23 @@
 All notable releases of the Revia AI Learning Engine follow [Semantic Versioning](https://semver.org/).
 Every release maintains detailed logs and versioning to prevent regressions.
 
+## [v1.9.9] — 2026-09-25 (Published)
+
+**Phase 4: Persistent DB Context & Normalization** — Connected the AI Learner Context to the Prisma database so the AI remembers progress across sessions. Implemented a hidden AI topic normalizer to map varied user prompts (e.g. "Kannada" vs "kannada beginner") to a single persistent database key.
+
+→ [Full release notes](releases/v1.9.9.md)
+
+### Added
+- `topic-normalizer.ts`: Runs a fast `gemma-2-9b` API call to extract the universal `subjectKey` from raw user prompts.
+- `api/v1/generate/context`: Added `POST` route to initialize normalized context from the database before generating.
+
+### Changed
+- `ai-generator-form`: Awaits context initialization before triggering the generation stream.
+- `ai-session-viewer`: Syncs ratings back to the database using the persistent `subjectKey` instead of the raw topic string.
+- `prd.md`: Documented Option B (Subject Dropdowns) for future exploration.
+
+---
+
 ## [v1.9.8] — 2026-09-25 (Published)
 
 **Performance Optimization (TTFT)** — Reduced the default generation batch size to cut the AI wait time in half, adjusting the background prefetch threshold to maintain a seamless swipe experience without loading screens.

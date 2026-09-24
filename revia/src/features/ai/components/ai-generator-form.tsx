@@ -65,6 +65,8 @@ interface AIGeneratorFormProps {
   error?: Error | null;
 }
 
+import { aiApi } from "../services/ai-api";
+
 export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFormProps) {
   const [goal, setGoal] = useState("Speak basic everyday Kannada");
   const [topic, setTopic] = useState("Greetings & Introductions");
@@ -75,7 +77,7 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
     examples: true,
   });
   const [validationError, setValidationError] = useState<string | null>(null);
-
+  const [isNormalizing, setIsNormalizing] = useState(false);
 
   function applyPreset(preset: SuggestionPreset) {
     setGoal(preset.goal);
@@ -84,7 +86,7 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
     setValidationError(null);
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!goal.trim()) {
       setValidationError("Please enter your learning goal");
@@ -95,21 +97,34 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
       return;
     }
     setValidationError(null);
+    setIsNormalizing(true);
 
-    onGenerate({
-      goal: goal.trim(),
-      topic: topic.trim(),
-      level,
-      batchSize,
-      provider: "ollama",
-      context: {
-        known: [],
-        struggled: [],
-        recentlySeen: [],
+    try {
+      const { subjectKey, context } = await aiApi.initializeContext(goal.trim(), topic.trim());
+      
+      // Merge UI preferences into the DB context before sending to generator
+      const mergedContext = {
+        ...context,
         preferences,
-      },
-    });
+      };
+
+      onGenerate({
+        goal: goal.trim(),
+        topic: topic.trim(),
+        subjectKey,
+        level,
+        batchSize,
+        provider: "ollama",
+        context: mergedContext,
+      });
+    } catch (err) {
+      setValidationError(err instanceof Error ? err.message : "Failed to initialize context");
+    } finally {
+      setIsNormalizing(false);
+    }
   }
+
+  const isFormLoading = isLoading || isNormalizing;
 
   return (
     <div className="space-y-8">
@@ -282,12 +297,14 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
               type="submit"
               size="lg"
               className="w-full font-semibold"
-              disabled={isLoading}
+              disabled={isFormLoading}
             >
-              {isLoading ? (
+              {isFormLoading ? (
                 <>
                   <Wand2 className="h-4 w-4 animate-spin" aria-hidden />
-                  <span aria-live="polite">Generating cards...</span>
+                  <span aria-live="polite">
+                    {isNormalizing ? "Loading Context..." : "Generating cards..."}
+                  </span>
                 </>
               ) : (
                 <>
