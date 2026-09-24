@@ -480,7 +480,7 @@ export function StudyCardViewer({
                 <div className="mt-3 rounded-lg bg-indigo-50/50 p-3 text-indigo-900/90 dark:bg-indigo-950/20 dark:text-indigo-200/90 border border-indigo-100/50 dark:border-indigo-900/50 text-xs">
                   <div className="flex items-center gap-1.5 mb-1 text-indigo-700 dark:text-indigo-400 font-semibold uppercase tracking-wider text-[10px]">
                     <Sparkles className="h-3 w-3" />
-                    Teacher's Note
+                    Teacher&apos;s Note
                   </div>
                   <p className="break-words leading-relaxed">{card.nuance}</p>
                 </div>
@@ -651,7 +651,7 @@ export function StudyCardViewer({
                     <div className="mt-3 rounded-lg bg-indigo-50/50 p-3 text-indigo-900/90 dark:bg-indigo-950/20 dark:text-indigo-200/90 border border-indigo-100/50 dark:border-indigo-900/50 text-xs">
                       <div className="flex items-center gap-1.5 mb-1 text-indigo-700 dark:text-indigo-400 font-semibold uppercase tracking-wider text-[10px]">
                         <Sparkles className="h-3 w-3" />
-                        Teacher's Note
+                        Teacher&apos;s Note
                       </div>
                       <p className="break-words leading-relaxed">{current.nuance}</p>
                     </div>

@@ -31,7 +31,7 @@ export function ImportDeckForm() {
       });
       setFileName(null);
       setRawText("");
-      inputRef.current && (inputRef.current.value = "");
+      if (inputRef.current) inputRef.current.value = "";
       router.push(`/decks/${result.deckId}`);
       router.refresh();
     } catch (error) {

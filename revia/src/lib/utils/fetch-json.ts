@@ -13,7 +13,7 @@ export async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> 
   let body: ApiSuccess<T> | ApiErrorBody;
   try {
     body = (await res.json()) as ApiSuccess<T> | ApiErrorBody;
-  } catch (err) {
+  } catch {
     if (!res.ok) {
       throw new ApiError(res.status, "INTERNAL", `Server error: ${res.statusText}`);
     }

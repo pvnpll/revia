@@ -10,7 +10,8 @@ export async function POST(request: NextRequest) {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
-  } catch (error) {
+  } catch (error: unknown) {
+    console.error("Curriculum Generation API Error:", error);
     return new Response(JSON.stringify({ error: "Failed to generate curriculum" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },

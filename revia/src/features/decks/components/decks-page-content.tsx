@@ -1,6 +1,5 @@
 "use client";
 
-import { CreateDeckForm } from "@/features/decks/components/create-deck-form";
 import { DeckList } from "@/features/decks/components/deck-list";
 import { useDecks } from "@/features/decks/hooks/use-decks";
 

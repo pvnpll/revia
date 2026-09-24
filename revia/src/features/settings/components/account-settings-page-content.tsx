@@ -4,7 +4,6 @@ import { AccountSettings } from "@/features/auth/components/account-settings";
 import { UsernameSettings } from "@/features/auth/components/username-settings";
 import { SettingsSubpage } from "@/features/settings/components/settings-subpage";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 
 export function AccountSettingsPageContent() {
   return (

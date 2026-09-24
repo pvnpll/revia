@@ -1,5 +1,3 @@
-import { AIProviderError } from "@/lib/providers/ai/ai-provider";
-
 export async function normalizeTopic(goal: string, topic: string): Promise<string> {
   // We make a direct lightweight fetch to OpenRouter/Ollama to extract the subject.
   // Using the cheapest/fastest model available just for this task.

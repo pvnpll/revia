@@ -80,7 +80,7 @@ export function PracticeSession({
       return new Map<string, CardWithScheduling>();
     }
     return new Map(sourceCards.map((card) => [card.id, card]));
-  }, [cardIdsKey, sourceCards]);
+  }, [sourceCards]);
 
   const [queue, setQueue] = useState<string[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);

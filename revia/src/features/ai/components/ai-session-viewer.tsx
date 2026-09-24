@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
-import { BookPlus, Loader2, Sparkles, Wand2 } from "lucide-react";
+import { BookPlus, Loader2, Wand2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { StudyCardViewer } from "@/features/study/components/study-card-viewer";
@@ -172,7 +172,7 @@ export function AISessionViewer({
               <div className="space-y-2">
                 <h2 className="text-xl font-semibold tracking-tight">Generating next batch...</h2>
                 <p className="text-sm text-muted-foreground">
-                  You're swiping fast! The AI is drafting more cards for you.
+                  You&apos;re swiping fast! The AI is drafting more cards for you.
                 </p>
               </div>
               <Button variant="ghost" onClick={onReset} className="mt-4">

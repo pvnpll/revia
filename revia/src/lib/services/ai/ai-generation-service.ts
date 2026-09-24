@@ -50,7 +50,6 @@ export class AIGenerationService {
     const input = curriculumRequestSchema.parse(rawInput);
     
     // We prefer a fast model like Gemini Flash or OpenRouter's Gemma for this reasoning task
-    const provider = this.provider ?? createAIProvider({ providerName: process.env.OPENROUTER_API_KEY ? "openrouter" : "gemini" });
     
     const systemPrompt = `You are a curriculum generation AI. The user is studying towards a specific goal.
 They have just finished studying the topic: "${input.currentTopic}".
