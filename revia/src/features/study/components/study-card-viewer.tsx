@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Sparkles } from "lucide-react";
 
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { studySurface } from "@/lib/theme/app-theme";
@@ -471,11 +471,20 @@ export function StudyCardViewer({
           <p className="study-reveal-back mt-4 break-words text-2xl font-semibold leading-snug sm:text-3xl sm:leading-tight [overflow-wrap:anywhere]">
             {card.back}
           </p>
-          {(card.pronunciation || card.exampleSentence || card.notes) && (
-            <div className="mt-6 space-y-1 border-t pt-4 text-sm text-muted-foreground">
+          {(card.pronunciation || card.exampleSentence || card.notes || card.nuance) && (
+            <div className="mt-6 space-y-3 border-t pt-4 text-sm text-muted-foreground">
               {card.pronunciation && <p className="break-words">{card.pronunciation}</p>}
               {card.exampleSentence && <p className="break-words">{card.exampleSentence}</p>}
               {card.notes && <p className="break-words">{card.notes}</p>}
+              {card.nuance && (
+                <div className="mt-3 rounded-lg bg-indigo-50/50 p-3 text-indigo-900/90 dark:bg-indigo-950/20 dark:text-indigo-200/90 border border-indigo-100/50 dark:border-indigo-900/50 text-xs">
+                  <div className="flex items-center gap-1.5 mb-1 text-indigo-700 dark:text-indigo-400 font-semibold uppercase tracking-wider text-[10px]">
+                    <Sparkles className="h-3 w-3" />
+                    Teacher's Note
+                  </div>
+                  <p className="break-words leading-relaxed">{card.nuance}</p>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -633,11 +642,20 @@ export function StudyCardViewer({
               <p className="study-reveal-back mt-4 break-words text-2xl font-semibold leading-snug sm:text-3xl sm:leading-tight [overflow-wrap:anywhere]">
                 {current.back}
               </p>
-              {(current.pronunciation || current.exampleSentence || current.notes) && (
-                <div className="mt-6 space-y-1 border-t pt-4 text-sm text-muted-foreground">
+              {(current.pronunciation || current.exampleSentence || current.notes || current.nuance) && (
+                <div className="mt-6 space-y-3 border-t pt-4 text-sm text-muted-foreground">
                   {current.pronunciation && <p className="break-words">{current.pronunciation}</p>}
                   {current.exampleSentence && <p className="break-words">{current.exampleSentence}</p>}
                   {current.notes && <p className="break-words">{current.notes}</p>}
+                  {current.nuance && (
+                    <div className="mt-3 rounded-lg bg-indigo-50/50 p-3 text-indigo-900/90 dark:bg-indigo-950/20 dark:text-indigo-200/90 border border-indigo-100/50 dark:border-indigo-900/50 text-xs">
+                      <div className="flex items-center gap-1.5 mb-1 text-indigo-700 dark:text-indigo-400 font-semibold uppercase tracking-wider text-[10px]">
+                        <Sparkles className="h-3 w-3" />
+                        Teacher's Note
+                      </div>
+                      <p className="break-words leading-relaxed">{current.nuance}</p>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

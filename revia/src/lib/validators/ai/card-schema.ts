@@ -6,6 +6,7 @@ export const generatedCardSchema = z.object({
   pronunciation: z.string().trim().max(500).nullable().optional(),
   example: z.string().trim().max(2000).nullable().optional(),
   notes: z.string().trim().max(2000).nullable().optional(),
+  nuance: z.string().trim().max(2000).nullable().optional(),
 });
 
 export const generatedCardsResultSchema = z.object({

@@ -26,8 +26,9 @@ export function buildGenerationPrompts(input: GenerationRequestInput): Generatio
     includeExamples
       ? "6. EXAMPLES: Provide a brief, natural usage example in the 'example' field whenever appropriate."
       : "6. EXAMPLES: Omit usage examples.",
-    "7. NOTES: Include brief cultural, grammatical, or usage notes in 'notes' only when helpful; keep them concise.",
-    "8. STRICT STRUCTURE: You must return valid JSON with a 'cards' array of exactly the requested batch size.",
+    "7. EXPLANATIONS & NUANCE: Act as an expert tutor. You MUST include a 'nuance' field for every card containing a concise grammar breakdown, cultural context, or the 'Why' behind the concept.",
+    "8. NOTES: Include brief usage tips in 'notes' if needed.",
+    "9. STRICT STRUCTURE: You must return valid JSON with a 'cards' array of exactly the requested batch size.",
   ].join("\n");
 
   const userSections: string[] = [

@@ -54,6 +54,7 @@ export function AISessionViewer({
       pronunciation: card.pronunciation,
       exampleSentence: card.example,
       notes: card.notes,
+      nuance: card.nuance,
       lessonTitle: session.topic,
     }));
   }, [session.cards, session.topic, session.level]);

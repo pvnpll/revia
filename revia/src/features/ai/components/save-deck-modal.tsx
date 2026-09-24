@@ -66,13 +66,19 @@ export function SaveDeckModal({ topic, cards, onClose, onSaved }: SaveDeckModalP
           {
             title: topic,
             description: "AI generated cards",
-            cards: cards.map((c) => ({
-              front: c.front,
-              back: c.back,
-              pronunciation: c.pronunciation || null,
-              exampleSentence: c.example || null,
-              notes: c.notes || null,
-            })),
+            cards: cards.map((c) => {
+              let combinedNotes = c.notes || "";
+              if (c.nuance) {
+                combinedNotes = combinedNotes ? `${combinedNotes}\n\nTeacher's Note: ${c.nuance}` : `Teacher's Note: ${c.nuance}`;
+              }
+              return {
+                front: c.front,
+                back: c.back,
+                pronunciation: c.pronunciation || null,
+                exampleSentence: c.example || null,
+                notes: combinedNotes || null,
+              };
+            }),
           },
         ],
       };

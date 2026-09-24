@@ -137,7 +137,8 @@ export class OllamaCloudProvider implements AIProvider {
       "back": "string",
       "pronunciation": "string (optional)",
       "example": "string (optional)",
-      "notes": "string (optional)"
+      "notes": "string (optional)",
+      "nuance": "string (optional)"
     }
   ]
 }

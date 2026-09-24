@@ -5,6 +5,7 @@ export interface StudyCardItem {
   pronunciation?: string | null;
   exampleSentence?: string | null;
   notes?: string | null;
+  nuance?: string | null;
   lessonTitle?: string | null;
   reviewCount?: number;
 }

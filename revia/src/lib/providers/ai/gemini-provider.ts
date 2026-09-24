@@ -166,6 +166,7 @@ export class GeminiProvider implements AIProvider {
                   pronunciation: { type: "STRING" },
                   example: { type: "STRING" },
                   notes: { type: "STRING" },
+                  nuance: { type: "STRING" },
                 },
                 required: ["front", "back"],
               },
