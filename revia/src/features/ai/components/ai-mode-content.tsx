@@ -83,7 +83,7 @@ export function AIModeContent() {
     if (session.cards.length <= lastRequestedCardCountRef.current) return;
 
     const cardsRemaining = session.cards.length - 1 - session.currentIndex;
-    if (cardsRemaining <= 3 && cardsRemaining >= 0) {
+    if (cardsRemaining <= 6 && cardsRemaining >= 0) {
       handleNextBatch();
     }
   }, [session, ai.isStreaming, handleNextBatch]);
