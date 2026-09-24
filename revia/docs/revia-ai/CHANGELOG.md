@@ -3,6 +3,18 @@
 All notable releases of the Revia AI Learning Engine follow [Semantic Versioning](https://semver.org/).
 Every release maintains detailed logs and versioning to prevent regressions.
 
+## [v1.9.8] — 2026-09-25 (Published)
+
+**Performance Optimization (TTFT)** — Reduced the default generation batch size to cut the AI wait time in half, adjusting the background prefetch threshold to maintain a seamless swipe experience without loading screens.
+
+→ [Full release notes](releases/v1.9.8.md)
+
+### Changed
+- `ai-mode-content`: Reduced default `batchSize` from `10` to `5`.
+- `ai-mode-content`: Adjusted background prefetch threshold from `<= 6` remaining cards to `<= 3` remaining cards.
+
+---
+
 ## [v1.9.7] — 2026-09-24 (Published)
 
 **Hybrid Loop & Endless Session UI** — Implemented the Hybrid Loop mechanic to re-queue struggled cards to the back of the active session. Updated AI numbering to reflect an endless session (`N practiced`), dynamically displayed the generative model used, and cleaned up redundant UI buttons.

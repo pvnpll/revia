@@ -35,9 +35,11 @@ Never restart versions from the beginning; continue the release version sequence
 5. **Git Commit & Tag**:
    - Commit message: `release(ai): vX.Y.Z — <summary>` (or `fix(ai): ...`, `feat(ai): ...`).
    - Create git tag: `git tag ai-vX.Y.Z` (e.g. `git tag ai-v1.8.2`).
-6. **Push Branches & Tags**:
-   - Push to development branch: `git push origin developAI --tags`
-   - Fast-forward merge to production branch:
+6. **Strict Deployment Pipeline (NO DIRECT PUSHES TO PROD)**:
+   - **NEVER** push directly to `mainAI`. **NEVER** merge unversioned/undocumented features to `mainAI`. 
+   - Even small tweaks (like a batch size change) must get a patch version (e.g. `v1.9.8`), a `CHANGELOG.md` update, and a release `.md` file on `developAI` first.
+   - Once fully documented and committed on `developAI`, push to origin: `git push origin developAI --tags`
+   - Only then, fast-forward merge to production:
      `git checkout mainAI && git merge developAI --ff-only && git push origin mainAI --tags && git checkout developAI`
 
 *(Note: Root `package.json`, root `CHANGELOG.md`, and root `docs/releases/` are reserved strictly for Core Web App releases on `develop` → `main`.)*
