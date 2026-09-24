@@ -185,7 +185,7 @@ The system should not rely entirely on the model to detect duplicates.
 
 ---
 
-## 9. Learner Feedback
+## 9. Learner Feedback & The Hybrid Loop Mechanic
 
 The system should support feedback such as:
 
@@ -197,7 +197,9 @@ The system should support feedback such as:
 * Not useful
 * Already knew this
 
-This feedback should update learner context.
+This feedback triggers two parallel actions:
+1. **Context Update (AI Mechanic):** Feedback updates the learner context (e.g., adding to `struggled` or `known`), instructing the AI on how to adapt future generated batches (e.g., providing easier variations of a struggled concept).
+2. **Infinite Loop (Core App Mechanic):** If a user rates a card negatively (e.g., Forgot or Hard), that exact card is immediately pushed to the back of the current active session queue. The user must successfully review the exact card before completing the session, preserving the traditional practice loop.
 
 The AI should use this information when generating future batches.
 
@@ -350,7 +352,7 @@ Provider secrets and internal errors must not be exposed.
 
 ---
 
-## 16. Persistence
+## 16. Persistence & Topic Normalization
 
 The initial AI service should minimize persistent dependencies.
 
@@ -358,7 +360,10 @@ Do not create a large database architecture before it is necessary.
 
 The first version may accept learner context from the client.
 
-Later, the service can own persistent learner context.
+Later, the service can own persistent learner context. When this server-side persistence is implemented (Phase 4), it must handle **Topic Normalization**:
+* The system cannot rely on exact string-matching of user goals (e.g., "Kannada" vs "kannada beginner") to retrieve context.
+* A lightweight AI extraction step or a strict UI taxonomy (Subject Dropdowns) must be used to normalize user intents into core subject keys (e.g., `kannada_language`) before querying the database.
+* This ensures that progress is preserved regardless of how the user types their prompt in future sessions.
 
 The architecture should allow this transition without changing the public API significantly.
 

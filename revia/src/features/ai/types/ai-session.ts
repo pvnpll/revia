@@ -9,6 +9,7 @@ export interface AISessionState {
   cards: GeneratedCard[];
   context: LearnerContext;
   currentIndex: number;
+  lastModel?: string;
 }
 
 export interface GenerateCardsApiParams {

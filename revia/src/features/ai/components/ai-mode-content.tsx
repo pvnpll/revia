@@ -30,9 +30,10 @@ export function AIModeContent() {
         ...prev,
         cards: ai.cards,
         context: ai.context ?? prev.context,
+        lastModel: ai.meta?.model ?? prev.lastModel,
       };
     });
-  }, [ai.cards, ai.context, hasSession]);
+  }, [ai.cards, ai.context, ai.meta, hasSession]);
 
   function handleInitialGenerate(params: GenerateCardsApiParams) {
     lastRequestedCardCountRef.current = 0;

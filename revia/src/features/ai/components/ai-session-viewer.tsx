@@ -95,19 +95,28 @@ export function AISessionViewer({
     // 2. Dispatch asynchronous DB update with the full state
     updateContextMutation.mutate({ topic: session.topic, updates: fullUpdatedContext });
 
-    // 3. Advance without wrapping: last card stays put until the next
-    // batch arrives (matches review clamping instead of looping forever).
+    // 3. Advance without wrapping, and implement Hybrid Loop Mechanic
     onUpdateSession((prev) => {
-      const nextIndex = Math.min(prev.currentIndex + 1, Math.max(prev.cards.length - 1, 0));
+      let updatedCards = prev.cards;
+      
+      // Hybrid Loop Mechanic: If the user struggled (rating 1 or 2), 
+      // push the exact card to the end of the active queue for immediate review loop
+      if (rating <= 2) {
+        updatedCards = [...prev.cards, currentCard];
+      }
+
+      const nextIndex = Math.min(prev.currentIndex + 1, Math.max(updatedCards.length - 1, 0));
       return {
         ...prev,
+        cards: updatedCards,
         currentIndex: nextIndex,
         context: fullUpdatedContext,
       };
     });
   }
 
-  const progress = `${Math.min(session.currentIndex + 1, session.cards.length)} / ${session.cards.length}`;
+  const progress = `${session.currentIndex + 1} practiced`;
+  const displayModel = session.lastModel || "ai";
 
   return (
     <AISessionOverlay>
@@ -115,7 +124,7 @@ export function AISessionViewer({
         cards={studyCards}
         currentIndex={session.currentIndex}
         title={session.topic}
-        subtitle={`${progress} · ${session.level} · ai`}
+        subtitle={isGeneratingNextBatch ? `generating more... · ${displayModel}` : `${progress} · ${session.level} · ${displayModel}`}
         mode="practice"
         navigationMode="swipe"
         fullscreen
@@ -126,34 +135,16 @@ export function AISessionViewer({
         onClose={onReset}
         banner={
           <>
-            <div className="flex shrink-0 items-center gap-2 border-b border-border bg-card px-4 py-2">
+            <div className="flex shrink-0 items-center justify-center border-b border-border bg-card px-4 py-2">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => setShowSaveModal(true)}
-                className="h-8 flex-1 gap-1.5 text-xs"
+                className="h-8 max-w-[200px] flex-1 gap-1.5 text-xs"
                 disabled={deckSaved}
               >
                 <BookPlus className="h-3.5 w-3.5" aria-hidden />
                 {deckSaved ? "Saved" : "Save deck"}
-              </Button>
-              <Button
-                size="sm"
-                onClick={onRequestNextBatch}
-                disabled={isGeneratingNextBatch}
-                className="h-8 flex-1 gap-1.5 text-xs font-semibold"
-              >
-                {isGeneratingNextBatch ? (
-                  <>
-                    <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden />
-                    Generating...
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="h-3.5 w-3.5" aria-hidden />
-                    Next batch
-                  </>
-                )}
               </Button>
             </div>
             {nextBatchError ? (

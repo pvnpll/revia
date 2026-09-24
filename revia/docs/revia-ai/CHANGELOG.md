@@ -3,6 +3,23 @@
 All notable releases of the Revia AI Learning Engine follow [Semantic Versioning](https://semver.org/).
 Every release maintains detailed logs and versioning to prevent regressions.
 
+## [v1.9.7] — 2026-09-24 (Published)
+
+**Hybrid Loop & Endless Session UI** — Implemented the Hybrid Loop mechanic to re-queue struggled cards to the back of the active session. Updated AI numbering to reflect an endless session (`N practiced`), dynamically displayed the generative model used, and cleaned up redundant UI buttons.
+
+→ [Full release notes](releases/v1.9.7.md)
+
+### Added
+- `ai-session-viewer`: Hybrid Loop mechanic instantly re-queues failed cards (`rating <= 2`) to the end of the `session.cards` queue for immediate spaced-repetition loop practice.
+- `ai-mode-content`: Syncs `ai.meta.model` into `AISessionState` on batch completion to expose actual generation model used.
+
+### Changed
+- `ai-session-viewer`: Removed the "Next batch" button from the banner to favor background prefetching.
+- `ai-session-viewer`: Progress text changed from fractional (`4 / 10`) to endless (`4 practiced`), matching Core App Practice mode.
+- `ai-session-viewer`: Subtitle now dynamically displays the actual generation model (`google/gemma-4-31b-it:free`) instead of generic `ai`.
+
+---
+
 ## [v1.9.6] — 2026-09-24 (Published)
 
 **Revia AI UI Consistency Pass** — Aligned the whole `/ai` flow (page header, settings card, streaming state, session banner, save-deck modal) with regular app UI, and fixed the shared swipe-viewer overlap/scroll issues (slimmer safe-area footers, opacity-only card entry, scroll-safe `m-auto` centering for unrevealed fronts).
