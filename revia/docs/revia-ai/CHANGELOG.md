@@ -3,6 +3,17 @@
 All notable releases of the Revia AI Learning Engine follow [Semantic Versioning](https://semver.org/).
 Every release maintains detailed logs and versioning to prevent regressions.
 
+## [v1.9.10] — 2026-09-25 (Published)
+
+**Out-of-Bounds Swiping Fix** — Fixed a bug where fast swiping would outpace the background generator, causing `StudyCardViewer` to render a blank page. Added a graceful "Generating next batch" fallback screen and error recovery UI.
+
+→ [Full release notes](releases/v1.9.10.md)
+
+### Fixed
+- `ai-session-viewer`: Safely intercepts `currentIndex >= cards.length` to render a loading spinner or error UI instead of passing an out-of-bounds index to the swipe viewer.
+
+---
+
 ## [v1.9.9] — 2026-09-25 (Published)
 
 **Phase 4: Persistent DB Context & Normalization** — Connected the AI Learner Context to the Prisma database so the AI remembers progress across sessions. Implemented a hidden AI topic normalizer to map varied user prompts (e.g. "Kannada" vs "kannada beginner") to a single persistent database key.
