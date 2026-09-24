@@ -433,16 +433,18 @@ export function StudyCardViewer({
     if (!revealed) {
       return (
         <div
-          className="flex min-h-0 flex-1 cursor-pointer flex-col items-center justify-center gap-6 overflow-y-auto px-6 py-4 text-center"
+          className="flex min-h-0 flex-1 cursor-pointer flex-col overflow-y-auto px-6 py-4 text-center"
           onClick={revealCurrent}
         >
+          <div className="m-auto flex w-full max-w-md flex-col items-center gap-6">
           <p className="shrink-0 text-xs font-medium uppercase tracking-widest text-muted-foreground">
             {mode === "practice" ? "Question" : "Front"}
           </p>
-          <p className="max-w-md break-words text-2xl font-semibold leading-snug sm:text-4xl sm:leading-tight [overflow-wrap:anywhere]">
+          <p className="w-full break-words text-2xl font-semibold leading-snug [overflow-wrap:anywhere]">
             {card.front}
           </p>
           <p className="shrink-0 text-sm text-muted-foreground">Tap to reveal</p>
+          </div>
         </div>
       );
     }
@@ -597,15 +599,17 @@ export function StudyCardViewer({
           <button
             type="button"
             onClick={revealCurrent}
-            className="study-card-enter flex min-h-0 flex-1 flex-col items-center justify-center gap-6 overflow-y-auto overscroll-contain px-6 py-4 text-center"
+            className="study-card-enter flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain px-6 py-4 text-center"
           >
+            <span className="m-auto flex w-full max-w-md flex-col items-center gap-6">
             <p className="shrink-0 text-xs font-medium uppercase tracking-widest text-muted-foreground">
               {mode === "practice" ? "Question" : "Front"}
             </p>
-            <p className="max-w-md break-words text-2xl font-semibold leading-snug sm:text-4xl sm:leading-tight [overflow-wrap:anywhere]">
+            <p className="w-full break-words text-2xl font-semibold leading-snug [overflow-wrap:anywhere]">
               {current.front}
             </p>
             <p className="shrink-0 text-sm text-muted-foreground">Tap to reveal</p>
+            </span>
           </button>
         ) : (
           <div
@@ -642,7 +646,7 @@ export function StudyCardViewer({
       </main>
 
       {isSwipeNavigation && !hideSwipeHint && !isRevealed ? (
-        <footer className="shrink-0 border-t bg-background px-4 pb-10 pt-3 text-center">
+        <footer className="shrink-0 border-t bg-background px-4 pb-6 pt-3 text-center [padding-bottom:calc(1.5rem+env(safe-area-inset-bottom))]">
           <p className="text-xs font-medium text-muted-foreground">
             {readOnly ? (
               <>
@@ -669,7 +673,7 @@ export function StudyCardViewer({
       ) : null}
 
       {(isSwipeNavigation || showRatings) && isRevealed && (
-        <footer className="shrink-0 border-t bg-background px-4 pb-10 pt-4">
+        <footer className="shrink-0 border-t bg-background px-4 pb-6 pt-4 [padding-bottom:calc(1.5rem+env(safe-area-inset-bottom))]">
           {readOnly ? (
             <Button
               type="button"

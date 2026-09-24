@@ -3,6 +3,22 @@
 All notable releases of the Revia AI Learning Engine follow [Semantic Versioning](https://semver.org/).
 Every release maintains detailed logs and versioning to prevent regressions.
 
+## [v1.9.6] — 2026-09-24 (Published)
+
+**Revia AI UI Consistency Pass** — Aligned the whole `/ai` flow (page header, settings card, streaming state, session banner, save-deck modal) with regular app UI, and fixed the shared swipe-viewer overlap/scroll issues (slimmer safe-area footers, opacity-only card entry, scroll-safe `m-auto` centering for unrevealed fronts).
+
+→ [Full release notes](releases/v1.9.6.md)
+
+### Fixed
+- `StudyCardViewer`: footers use `pb-6 + env(safe-area-inset-bottom)` instead of fixed `pb-10`, freeing ~32px of card height on small phones
+- `StudyCardViewer`: `study-card-in` animation is opacity-only (no `translateY`), so revealed cards never slide under the rating footer on entry
+- `StudyCardViewer`: unrevealed fronts use `m-auto` inner wrapper instead of `justify-center + overflow`, so long text no longer clips at the top and scrolls correctly
+- `AISessionViewer`: subtitle providers collapsed to `ai` (no misleading model label); banner uses solid `bg-card border-border`
+- `AIGeneratorForm`: level/batch stack vertically (`grid gap-3`) so labels never crush inside the 428px app column
+- `ai-mode-content`: streaming state uses `space-y-6`, `text-3xl` title, and `PageSkeleton`-style skeleton rows — matches Decks/Settings/Explore page rhythm
+
+---
+
 ## [v1.9.2] — 2026-09-24 (Published)
 
 **Fix Double Prefetch & Remove Provider UI** — Fixed consecutive duplicate batch API calls caused by the prefetch effect re-firing on session object changes. Removed the AI provider selector from the UI; Ollama Cloud is now always the default with OpenRouter (Gemma 4) as the only silent fallback. Gemini disabled from all fallback paths.
