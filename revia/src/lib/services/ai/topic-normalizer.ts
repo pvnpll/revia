@@ -14,6 +14,8 @@ Rules:
 
 Subject:`;
 
+  const fallback = topic.toLowerCase().replace(/[^a-z0-9_]/g, "_").slice(0, 30) || "general";
+
   try {
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
@@ -38,9 +40,9 @@ Subject:`;
     
     // Clean up any weird characters
     const normalized = result.toLowerCase().replace(/[^a-z0-9_]/g, "");
-    return normalized || "general";
+    return normalized || fallback;
   } catch (err) {
-    console.warn("Topic normalization failed, falling back to general:", err);
-    return "general";
+    console.warn("Topic normalization failed, falling back to heuristic:", err);
+    return fallback;
   }
 }

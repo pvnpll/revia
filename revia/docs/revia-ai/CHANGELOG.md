@@ -3,6 +3,19 @@
 All notable releases of the Revia AI Learning Engine follow [Semantic Versioning](https://semver.org/).
 Every release maintains detailed logs and versioning to prevent regressions.
 
+## [v1.9.11] — 2026-09-25 (Published)
+
+**Normalization & DB Sync Fixes** — Fixed a bug where Zod validation stripped the `subjectKey` during generation, and fixed the topic normalizer fallback to use a regex heuristic instead of lumping data into a "general" bucket when the LLM is rate-limited.
+
+→ [Full release notes](releases/v1.9.11.md)
+
+### Fixed
+- `generation-request.ts`: Added `subjectKey` to the Zod schema to prevent the generation API from discarding it.
+- `ai-generation-service.ts`: Updated to read and write database context using `subjectKey` instead of the raw `topic` string.
+- `topic-normalizer.ts`: Replaced the `"general"` fallback with a dynamic regex heuristic.
+
+---
+
 ## [v1.9.10] — 2026-09-25 (Published)
 
 **Out-of-Bounds Swiping Fix** — Fixed a bug where fast swiping would outpace the background generator, causing `StudyCardViewer` to render a blank page. Added a graceful "Generating next batch" fallback screen and error recovery UI.

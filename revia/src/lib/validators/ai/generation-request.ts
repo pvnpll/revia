@@ -14,6 +14,7 @@ export const generationRequestSchema = z.object({
     .trim()
     .min(2, "Topic must be at least 2 characters")
     .max(100, "Topic must be at most 100 characters"),
+  subjectKey: z.string().optional(),
   level: generationLevelSchema,
   batchSize: z
     .number()

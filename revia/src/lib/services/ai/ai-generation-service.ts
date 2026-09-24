@@ -51,7 +51,8 @@ export class AIGenerationService {
 
     // If userId is provided, merge server-side context with client context
     if (userId) {
-      const serverContext = await aiContextService.getContext(userId, input.topic);
+      const dbKey = input.subjectKey || input.topic;
+      const serverContext = await aiContextService.getContext(userId, dbKey);
       input.context = {
         known: Array.from(new Set([...serverContext.known, ...(input.context?.known || [])])),
         struggled: Array.from(new Set([...serverContext.struggled, ...(input.context?.struggled || [])])),
@@ -199,7 +200,8 @@ export class AIGenerationService {
 
     // Asynchronously update DB context if userId is present
     if (userId) {
-      aiContextService.updateContext(userId, input.topic, {
+      const dbKey = input.subjectKey || input.topic;
+      aiContextService.updateContext(userId, dbKey, {
         recentlySeen: finalCards.map(c => c.front)
       }).catch(err => console.error("Failed to update context recentlySeen", err));
     }
@@ -228,7 +230,8 @@ export class AIGenerationService {
 
     // If userId is provided, merge server-side context with client context
     if (userId) {
-      const serverContext = await aiContextService.getContext(userId, input.topic);
+      const dbKey = input.subjectKey || input.topic;
+      const serverContext = await aiContextService.getContext(userId, dbKey);
       input.context = {
         known: Array.from(new Set([...serverContext.known, ...(input.context?.known || [])])),
         struggled: Array.from(new Set([...serverContext.struggled, ...(input.context?.struggled || [])])),
@@ -370,7 +373,8 @@ export class AIGenerationService {
 
     // Asynchronously update DB context if userId is present
     if (userId) {
-      aiContextService.updateContext(userId, input.topic, {
+      const dbKey = input.subjectKey || input.topic;
+      aiContextService.updateContext(userId, dbKey, {
         recentlySeen: finalCards.map(c => c.front)
       }).catch(err => console.error("Failed to update context recentlySeen", err));
     }
