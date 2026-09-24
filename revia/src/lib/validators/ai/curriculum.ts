@@ -13,3 +13,4 @@ export const curriculumResponseSchema = z.object({
 
 export type CurriculumRequestInput = z.infer<typeof curriculumRequestSchema>;
 export type CurriculumResponse = z.infer<typeof curriculumResponseSchema>;
+
