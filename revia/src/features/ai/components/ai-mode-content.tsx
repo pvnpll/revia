@@ -41,7 +41,7 @@ export function AIModeContent() {
       goal: params.goal,
       topic: params.topic,
       level: params.level,
-      batchSize: params.batchSize || 10,
+      batchSize: params.batchSize || 5,
       provider: params.provider,
       cards: [],
       context: params.context || { known: [], struggled: [], recentlySeen: [], preferences: { romanization: false, examples: false } },
@@ -72,7 +72,7 @@ export function AIModeContent() {
   }, [session?.goal, session?.topic, session?.level, session?.batchSize, session?.provider, session?.context, ai.isStreaming, ai.generate]);
 
   // Background prefetch: triggers when user has started studying (currentIndex > 0)
-  // and reaches ≤6 remaining cards. Only fires once per batch expansion.
+  // and reaches ≤3 remaining cards. Only fires once per batch expansion.
   useEffect(() => {
     if (!session || ai.isStreaming) return;
     // Don't auto-prefetch on initial batch before user has even started reviewing
@@ -81,7 +81,7 @@ export function AIModeContent() {
     if (session.cards.length <= lastRequestedCardCountRef.current) return;
 
     const cardsRemaining = session.cards.length - 1 - session.currentIndex;
-    if (cardsRemaining <= 6 && cardsRemaining >= 0) {
+    if (cardsRemaining <= 3 && cardsRemaining >= 0) {
       handleNextBatch();
     }
   }, [session, ai.isStreaming, handleNextBatch]);
