@@ -67,7 +67,7 @@ interface AIGeneratorFormProps {
 import { aiApi } from "../services/ai-api";
 
 export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFormProps) {
-  const [goal, setGoal] = useState("Speak basic everyday Kannada");
+  const [goal, setGoal] = useState("Kannada");
   const [topic, setTopic] = useState("Greetings & Introductions");
   const [level, setLevel] = useState<GenerationLevel>("beginner");
   const [preferences, setPreferences] = useState<LearnerPreferences>({
@@ -99,7 +99,7 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!goal.trim()) {
-      setValidationError("Please enter your learning goal");
+      setValidationError("Please enter a subject");
       return;
     }
     if (!topic.trim()) {
@@ -192,12 +192,12 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-1.5">
-              <Label htmlFor="ai-goal">Learning Goal</Label>
+              <Label htmlFor="ai-goal">Subject</Label>
               <Input
                 id="ai-goal"
                 value={goal}
                 onChange={(e) => setGoal(e.target.value)}
-                placeholder="e.g. Speak basic everyday Kannada"
+                placeholder="e.g. Spanish, Quantum Physics, US History"
                 disabled={isLoading}
               />
             </div>
