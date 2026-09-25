@@ -82,7 +82,7 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
     fetch('/api/v1/generate/context')
       .then(r => r.json())
       .then(data => {
-        if (Array.isArray(data)) setDbTopics(data);
+        if (data && Array.isArray(data.data)) setDbTopics(data.data);
       })
       .catch(err => console.error("Failed to load db topics", err));
   }, []);
