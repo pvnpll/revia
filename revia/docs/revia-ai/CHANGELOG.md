@@ -3,6 +3,12 @@
 All notable releases of the Revia AI Learning Engine follow [Semantic Versioning](https://semver.org/).
 Every release maintains detailed logs and versioning to prevent regressions.
 
+## [v1.9.14] — 2026-09-25 (Published)
+
+**Dynamic Recent Topics** — The AI generator form now remembers your past learning goals and displays them as "Recent Topics" instead of showing hardcoded suggestions. It uses localStorage to instantly surface your last 4 topics so you can pick up where you left off.
+
+---
+
 ## [v1.9.13] — 2026-09-25 (Published)
 
 **Continuous Streaming Pipeline** — Refactored the AI prefetch logic to generate exactly 1 card in the background every time you swipe (once the buffer reaches 6). Removed the batch size UI selector. This creates a completely seamless infinite-scroll experience and perfectly masks the generation latency.
