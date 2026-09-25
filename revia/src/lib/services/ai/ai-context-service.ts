@@ -3,6 +3,15 @@ import { Prisma } from "@prisma/client";
 import { LearnerContext, learnerContextSchema } from "@/lib/validators/ai";
 
 export class AiContextService {
+  async getUserTopics(userId: string): Promise<{ topic: string, updatedAt: Date }[]> {
+    return prisma.aiLearnerContext.findMany({
+      where: { userId },
+      select: { topic: true, updatedAt: true },
+      orderBy: { updatedAt: 'desc' },
+      take: 10,
+    });
+  }
+
   async getContext(userId: string, topic: string): Promise<LearnerContext> {
     try {
       const record = await prisma.aiLearnerContext.findUnique({

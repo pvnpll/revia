@@ -76,17 +76,15 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
   });
   const [validationError, setValidationError] = useState<string | null>(null);
   const [isNormalizing, setIsNormalizing] = useState(false);
-  const [recentSearches, setRecentSearches] = useState<SuggestionPreset[]>([]);
+  const [dbTopics, setDbTopics] = useState<{ topic: string, updatedAt: string }[]>([]);
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem("revia_ai_recent_searches");
-      if (stored) {
-        setRecentSearches(JSON.parse(stored));
-      }
-    } catch (err) {
-      console.error("Failed to load recent searches", err);
-    }
+    fetch('/api/v1/generate/context')
+      .then(r => r.json())
+      .then(data => {
+        if (Array.isArray(data)) setDbTopics(data);
+      })
+      .catch(err => console.error("Failed to load db topics", err));
   }, []);
 
   function applyPreset(preset: SuggestionPreset) {
@@ -118,19 +116,7 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
         preferences,
       };
 
-      const newSearch: SuggestionPreset = {
-        title: topic.trim(),
-        goal: goal.trim(),
-        topic: topic.trim(),
-        level,
-      };
 
-      setRecentSearches((prev) => {
-        const filtered = prev.filter(p => p.topic.toLowerCase() !== topic.trim().toLowerCase());
-        const next = [newSearch, ...filtered].slice(0, 4);
-        localStorage.setItem("revia_ai_recent_searches", JSON.stringify(next));
-        return next;
-      });
 
       onGenerate({
         goal: goal.trim(),
@@ -164,21 +150,38 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
 
       <div className="space-y-2">
         <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          {recentSearches.length > 0 ? "Recent Topics" : "Quick Suggestions"}
+          {dbTopics.length > 0 ? "Your Subjects" : "Quick Suggestions"}
         </p>
         <div className="flex flex-wrap gap-2">
-          {(recentSearches.length > 0 ? recentSearches : PRESET_SUGGESTIONS).map((preset) => (
-            <button
-              key={preset.title}
-              type="button"
-              onClick={() => applyPreset(preset)}
-              disabled={isLoading}
-              className="inline-flex items-center gap-1.5 rounded-full border bg-card px-3 py-1.5 text-xs font-medium shadow-sm transition hover:bg-accent active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              <Sparkles className="h-3.5 w-3.5 text-primary" aria-hidden />
-              {preset.title}
-            </button>
-          ))}
+          {dbTopics.length > 0 
+            ? dbTopics.slice(0, 5).map((t) => (
+                <button
+                  key={t.topic}
+                  type="button"
+                  onClick={() => {
+                    setGoal(t.topic.charAt(0).toUpperCase() + t.topic.slice(1));
+                    setTopic("");
+                    document.getElementById("ai-topic")?.focus();
+                  }}
+                  disabled={isLoading}
+                  className="inline-flex items-center gap-1.5 rounded-full border bg-card px-3 py-1.5 text-xs font-medium shadow-sm transition hover:bg-accent active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <Sparkles className="h-3.5 w-3.5 text-primary" aria-hidden />
+                  {t.topic.charAt(0).toUpperCase() + t.topic.slice(1)}
+                </button>
+              ))
+            : PRESET_SUGGESTIONS.map((preset) => (
+                <button
+                  key={preset.title}
+                  type="button"
+                  onClick={() => applyPreset(preset)}
+                  disabled={isLoading}
+                  className="inline-flex items-center gap-1.5 rounded-full border bg-card px-3 py-1.5 text-xs font-medium shadow-sm transition hover:bg-accent active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <Sparkles className="h-3.5 w-3.5 text-primary" aria-hidden />
+                  {preset.title}
+                </button>
+              ))}
         </div>
       </div>
 

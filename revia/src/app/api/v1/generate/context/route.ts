@@ -8,7 +8,7 @@ import { learnerContextSchema } from "@/lib/validators/ai";
 import { normalizeTopic } from "@/lib/services/ai/topic-normalizer";
 
 const getQuerySchema = z.object({
-  topic: z.string().min(1, "Topic is required"),
+  topic: z.string().optional(),
 });
 
 export async function GET(request: NextRequest) {
@@ -17,8 +17,13 @@ export async function GET(request: NextRequest) {
     const searchParams = Object.fromEntries(request.nextUrl.searchParams);
     const { topic } = getQuerySchema.parse(searchParams);
 
-    const context = await aiContextService.getContext(userId, topic);
-    return jsonResponse(context);
+    if (topic) {
+      const context = await aiContextService.getContext(userId, topic);
+      return jsonResponse(context);
+    } else {
+      const topics = await aiContextService.getUserTopics(userId);
+      return jsonResponse(topics);
+    }
   } catch (error: unknown) {
     if (error instanceof ZodError) {
       return NextResponse.json({ error: { code: "VALIDATION", message: error.errors[0]?.message } }, { status: 400 });
