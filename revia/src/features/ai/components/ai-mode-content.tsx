@@ -63,7 +63,7 @@ export function AIModeContent() {
         topic: session.topic,
         subjectKey: session.subjectKey,
         level: session.level,
-        batchSize: 1, // Generate 1 card at a time in the background
+        batchSize: 3, // Generate 3 cards at a time to optimize TTFT latency vs throughput
         provider: session.provider,
         context: session.context,
       },
