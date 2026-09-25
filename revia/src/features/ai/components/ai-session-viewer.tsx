@@ -34,6 +34,7 @@ interface AISessionViewerProps {
   isGeneratingNextBatch: boolean;
   nextBatchError?: Error | null;
   onStartNewTopic?: (topic: string) => void;
+  isGuest?: boolean;
 }
 
 export function AISessionViewer({
@@ -44,6 +45,7 @@ export function AISessionViewer({
   isGeneratingNextBatch,
   nextBatchError,
   onStartNewTopic,
+  isGuest = false,
 }: AISessionViewerProps) {
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [deckSaved, setDeckSaved] = useState(false);
@@ -121,7 +123,9 @@ export function AISessionViewer({
     };
 
     // 2. Dispatch asynchronous DB update with the full state
-    updateContextMutation.mutate({ topic: session.subjectKey, updates: fullUpdatedContext });
+    if (!isGuest) {
+      updateContextMutation.mutate({ topic: session.subjectKey, updates: fullUpdatedContext });
+    }
 
     // 3. Advance without wrapping, and implement Hybrid Loop Mechanic
     onUpdateSession((prev) => {
@@ -205,6 +209,7 @@ export function AISessionViewer({
         banner={
           <>
             <div className="flex shrink-0 items-center justify-center gap-2 border-b border-border bg-card px-4 py-2">
+              {!isGuest && (
               <Button
                 variant="outline"
                 size="sm"
@@ -215,6 +220,7 @@ export function AISessionViewer({
                 <BookPlus className="h-3.5 w-3.5" aria-hidden />
                 {deckSaved ? "Saved" : "Save deck"}
               </Button>
+            )}
               <Button
                 variant="secondary"
                 size="sm"

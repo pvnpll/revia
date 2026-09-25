@@ -10,7 +10,7 @@ import { AISessionState, GenerateCardsApiParams } from "../types/ai-session";
 import { AIGeneratorForm } from "./ai-generator-form";
 import { AISessionViewer } from "./ai-session-viewer";
 
-export function AIModeContent() {
+export function AIModeContent({ isGuest = false }: { isGuest?: boolean }) {
   const [session, setSession] = useState<AISessionState | null>(null);
   const ai = useAIGenerate();
   // Tracks the total card count for which a next-batch request has already been issued.
@@ -145,7 +145,7 @@ export function AIModeContent() {
     }
 
     return (
-      <AISessionViewer
+      <AISessionViewer isGuest={isGuest}
         session={session}
         onUpdateSession={(updater) => setSession((prev) => (prev ? updater(prev) : null))}
         onRequestNextBatch={handleNextBatch}
