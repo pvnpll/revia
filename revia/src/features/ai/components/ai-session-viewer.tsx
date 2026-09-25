@@ -221,6 +221,7 @@ export function AISessionViewer({
                 {deckSaved ? "Saved" : "Save deck"}
               </Button>
             )}
+              {!isGuest && (
               <Button
                 variant="secondary"
                 size="sm"
@@ -231,6 +232,7 @@ export function AISessionViewer({
                 <Wand2 className="h-3.5 w-3.5" aria-hidden />
                 {isSuggesting ? "Thinking..." : "Next Topic"}
               </Button>
+            )}
             </div>
             {suggestedTopic && (
               <div className="shrink-0 border-b border-indigo-200 dark:border-indigo-800 bg-indigo-50/80 dark:bg-indigo-950/80 px-4 py-2.5 text-xs text-indigo-900 dark:text-indigo-200 flex justify-between items-center gap-4">

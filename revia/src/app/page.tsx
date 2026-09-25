@@ -21,7 +21,7 @@ export default async function LandingPage() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-14 items-center justify-between">
+        <div className="container mx-auto px-4 md:px-6 flex h-14 items-center justify-between">
           <div className="flex items-center gap-2 font-bold">
             <Bot className="h-5 w-5 text-primary" />
             <span>Revia</span>
@@ -40,7 +40,7 @@ export default async function LandingPage() {
       <main className="flex-1">
         {/* Hero Section */}
         <section className="relative overflow-hidden py-24 md:py-32 lg:py-40">
-          <div className="container relative z-10 flex flex-col items-center text-center">
+          <div className="container mx-auto px-4 md:px-6 relative z-10 flex flex-col items-center text-center">
             <div className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-sm font-medium text-primary mb-8">
               <Sparkles className="mr-2 h-4 w-4" />
               The AI Spaced Repetition Engine
@@ -76,7 +76,7 @@ export default async function LandingPage() {
         </section>
 
         {/* Features Section */}
-        <section className="container py-24 md:py-32 border-t">
+        <section className="container mx-auto px-4 md:px-6 py-24 md:py-32 border-t">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">
               A curriculum built just for you
@@ -121,7 +121,7 @@ export default async function LandingPage() {
       </main>
 
       <footer className="border-t py-10">
-        <div className="container flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+        <div className="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
           <div className="flex items-center gap-2 font-semibold">
             <Bot className="h-4 w-4 text-muted-foreground" />
             <span className="text-sm text-muted-foreground">Revia AI</span>
