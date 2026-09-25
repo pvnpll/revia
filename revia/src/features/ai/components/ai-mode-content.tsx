@@ -42,7 +42,7 @@ export function AIModeContent() {
       topic: params.topic,
       subjectKey: params.subjectKey || params.topic,
       level: params.level,
-      batchSize: params.batchSize || 5,
+      batchSize: params.batchSize || 10,
       provider: params.provider,
       cards: [],
       context: params.context || { known: [], struggled: [], recentlySeen: [], preferences: { romanization: false, examples: false } },
@@ -64,7 +64,7 @@ export function AIModeContent() {
         topic: session.topic,
         subjectKey: session.subjectKey,
         level: session.level,
-        batchSize: session.batchSize,
+        batchSize: 1, // Generate 1 card at a time in the background
         provider: session.provider,
         context: session.context,
       },

@@ -54,7 +54,6 @@ const PRESET_SUGGESTIONS: SuggestionPreset[] = [
 
 
 const LEVELS: GenerationLevel[] = ["beginner", "intermediate", "advanced"];
-const BATCH_SIZES = [5, 10, 15];
 
 const segmentedButtonBase =
   "inline-flex min-h-9 flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-1.5 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50";
@@ -71,7 +70,6 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
   const [goal, setGoal] = useState("Speak basic everyday Kannada");
   const [topic, setTopic] = useState("Greetings & Introductions");
   const [level, setLevel] = useState<GenerationLevel>("beginner");
-  const [batchSize, setBatchSize] = useState<number>(10);
   const [preferences, setPreferences] = useState<LearnerPreferences>({
     romanization: true,
     examples: true,
@@ -113,7 +111,7 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
         topic: topic.trim(),
         subjectKey,
         level,
-        batchSize,
+        batchSize: 10,
         provider: "ollama",
         context: mergedContext,
       });
@@ -213,33 +211,6 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
                       )}
                     >
                       <span className="capitalize">{l}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-1.5">
-                <Label id="ai-batch-label">Batch Size</Label>
-                <div
-                  role="group"
-                  aria-labelledby="ai-batch-label"
-                  className="flex rounded-lg border bg-muted p-1"
-                >
-                  {BATCH_SIZES.map((count) => (
-                    <button
-                      key={count}
-                      type="button"
-                      onClick={() => setBatchSize(count)}
-                      disabled={isLoading}
-                      aria-pressed={batchSize === count}
-                      className={cn(
-                        segmentedButtonBase,
-                        batchSize === count
-                          ? "bg-background text-foreground shadow-sm"
-                          : "text-muted-foreground hover:text-foreground",
-                      )}
-                    >
-                      {count}
                     </button>
                   ))}
                 </div>
