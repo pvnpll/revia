@@ -1,4 +1,3 @@
-import type { NextConfig } from "next";
 import withSerwistInit from "@serwist/next";
 
 const withSerwist = withSerwistInit({
@@ -7,7 +6,8 @@ const withSerwist = withSerwistInit({
   disable: process.env.NODE_ENV === "development",
 });
 
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   reactStrictMode: true,
 };
 
