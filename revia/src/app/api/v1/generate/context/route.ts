@@ -3,6 +3,7 @@ import { z, ZodError } from "zod";
 import { getUserIdOrGuestId } from "@/lib/api/auth";
 import { jsonResponse } from "@/lib/api/response";
 import { aiContextService } from "@/lib/services/ai";
+import { prisma } from "@/lib/db/prisma";
 import { learnerContextSchema } from "@/lib/validators/ai";
 
 import { normalizeTopic } from "@/lib/services/ai/topic-normalizer";
@@ -51,11 +52,36 @@ export async function POST(request: NextRequest) {
     
     if (userId.startsWith("guest_")) {
       const existingTopics = await aiContextService.getUserTopics(userId);
-      if (existingTopics.length >= 1 && !existingTopics.some(t => t.topic === subjectKey)) {
+      const isNewTopic = !existingTopics.some(t => t.topic === subjectKey);
+
+      // 1. Check IP tracker only if trying to create a NEW topic
+      const clientIp = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "anonymous";
+      if (isNewTopic && clientIp !== "anonymous") {
+        const tracker = await prisma.guestIpTracker.findUnique({ where: { ip: clientIp } });
+        // Strict 1 topic limit per IP address
+        if (tracker && tracker.count >= 1) {
+          return NextResponse.json(
+            { error: { code: "GUEST_LIMIT", message: "Guest limit reached for this IP address! Please create a free account to continue." } },
+            { status: 403 }
+          );
+        }
+      }
+
+      // 2. Check cookie-based topic limit
+      if (existingTopics.length >= 1 && isNewTopic) {
         return NextResponse.json(
           { error: { code: "GUEST_LIMIT", message: "Guest limit reached! Please sign in to save your progress and learn new subjects." } },
           { status: 403 }
         );
+      }
+      
+      // 3. Track IP for new topics
+      if (isNewTopic && clientIp !== "anonymous") {
+        await prisma.guestIpTracker.upsert({
+          where: { ip: clientIp },
+          update: { count: { increment: 1 } },
+          create: { ip: clientIp, count: 1 },
+        });
       }
     }
 

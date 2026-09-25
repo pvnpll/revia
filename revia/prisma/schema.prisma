@@ -235,3 +235,12 @@ model AiLearnerContext {
   @@index([userId])
   @@map("ai_learner_contexts")
 }
+
+model GuestIpTracker {
+  ip        String   @id
+  count     Int      @default(1)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("guest_ip_tracker")
+}
