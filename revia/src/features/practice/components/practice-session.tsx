@@ -58,8 +58,7 @@ export function PracticeSession({
   onClose,
 }: PracticeSessionProps) {
   const { isAuthenticated, isLoading: authLoading } = useAuthSession();
-  const isGuestBrowse = !authLoading && !isAuthenticated && !readOnly;
-  const shouldFetch = !initialCards;
+    const shouldFetch = !initialCards;
   const canFetch = shouldFetch && Boolean(deckId || isAuthenticated);
   const {
     data: fetchedCards,
@@ -100,11 +99,11 @@ export function PracticeSession({
     }
 
     const cardIds = cardIdsKey.split(",");
-    setQueue(isGuestBrowse ? cardIds : PracticeScheduler.createInitialQueue(cardIds));
+    setQueue(PracticeScheduler.createInitialQueue(cardIds));
     setCurrentIndex(0);
     setPracticedCount(0);
     setInitialized(true);
-  }, [cardIdsKey, canFetch, isFetched, isGuestBrowse]);
+  }, [cardIdsKey, canFetch, isFetched]);
 
   const studyCards = useMemo(() => {
     // Every mode renders the full swipe deck so drag/peek/edge-tap behave
@@ -116,7 +115,7 @@ export function PracticeSession({
   const viewerIndex = currentIndex;
 
   function handleRating(rating: RatingValue) {
-    if (readOnly || isGuestBrowse || queue.length === 0) {
+    if (readOnly || queue.length === 0) {
       return;
     }
 
@@ -136,7 +135,7 @@ export function PracticeSession({
    * endlessly). Ratings still drive the scheduler via handleRating.
    */
 
-  const practiceSubtitle = isGuestBrowse || readOnly
+  const practiceSubtitle = readOnly
     ? undefined
     : `${practicedCount + 1} practiced · endless session`;
 
@@ -221,7 +220,7 @@ export function PracticeSession({
         onRate={handleRating}
         onClose={onClose}
         fullscreen
-        allowFreeNavigation={isGuestBrowse || readOnly}
+        allowFreeNavigation={readOnly}
         readOnly={readOnly}
       />
     </PracticeOverlay>
