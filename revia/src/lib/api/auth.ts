@@ -28,6 +28,20 @@ export async function getOptionalUserId(): Promise<string | null> {
   return user.id;
 }
 
+import { cookies } from "next/headers";
+
+export async function getUserIdOrGuestId(): Promise<string> {
+  const userId = await getOptionalUserId();
+  if (userId) return userId;
+
+  const cookieStore = await cookies();
+  const guestId = cookieStore.get("revia_guest_id")?.value;
+  if (guestId) return guestId;
+
+  // Fallback if API is called directly without cookie (shouldn't happen in normal flow)
+  throw new ApiError(401, "UNAUTHORIZED", "Authentication required");
+}
+
 export async function getUserId(): Promise<string> {
   const userId = await getOptionalUserId();
 

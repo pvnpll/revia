@@ -10,6 +10,7 @@ export function isAuthRoute(pathname: string): boolean {
 export function isGuestRoute(pathname: string): boolean {
   if (pathname === "/explore") return true;
   if (pathname === "/practice") return true;
+  if (pathname === "/ai") return true;
   if (/^\/decks\/[^/]+$/.test(pathname)) return true;
   return false;
 }

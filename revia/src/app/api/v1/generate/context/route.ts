@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z, ZodError } from "zod";
-import { getUserId } from "@/lib/api/auth";
+import { getUserIdOrGuestId } from "@/lib/api/auth";
 import { jsonResponse } from "@/lib/api/response";
 import { aiContextService } from "@/lib/services/ai";
 import { learnerContextSchema } from "@/lib/validators/ai";
@@ -13,7 +13,7 @@ const getQuerySchema = z.object({
 
 export async function GET(request: NextRequest) {
   try {
-    const userId = await getUserId(); // Throws 401 if not logged in
+    const userId = await getUserIdOrGuestId(); // Throws 401 if no user and no guest cookie
     const searchParams = Object.fromEntries(request.nextUrl.searchParams);
     const { topic } = getQuerySchema.parse(searchParams);
 
@@ -43,7 +43,7 @@ const postBodySchema = z.object({
 
 export async function POST(request: NextRequest) {
   try {
-    const userId = await getUserId();
+    const userId = await getUserIdOrGuestId();
     const body = await request.json();
     const { goal, topic } = postBodySchema.parse(body);
 
@@ -70,7 +70,7 @@ const putBodySchema = z.object({
 
 export async function PUT(request: NextRequest) {
   try {
-    const userId = await getUserId();
+    const userId = await getUserIdOrGuestId();
     const body = await request.json();
     const { topic, updates } = putBodySchema.parse(body);
 

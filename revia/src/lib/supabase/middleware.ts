@@ -58,5 +58,14 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(dashboardUrl);
   }
 
+  if (!request.cookies.has("revia_guest_id")) {
+    supabaseResponse.cookies.set("revia_guest_id", "guest_" + crypto.randomUUID(), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 365, // 1 year
+    });
+  }
+
   return supabaseResponse;
 }
