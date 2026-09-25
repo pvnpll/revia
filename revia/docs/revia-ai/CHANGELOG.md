@@ -3,6 +3,14 @@
 All notable releases of the Revia AI Learning Engine follow [Semantic Versioning](https://semver.org/).
 Every release maintains detailed logs and versioning to prevent regressions.
 
+## [v1.9.13] — 2026-09-25 (Published)
+
+**Continuous Streaming Pipeline** — Refactored the AI prefetch logic to generate exactly 1 card in the background every time you swipe (once the buffer reaches 6). Removed the batch size UI selector. This creates a completely seamless infinite-scroll experience and perfectly masks the generation latency.
+
+→ [Full release notes](releases/v1.9.13.md)
+
+---
+
 ## [v1.9.12] — 2026-09-25 (Published)
 
 **Phase 5: Advanced Generation** — Introduced Expert Tutor Explanations, Dynamic Difficulty Scaling, and Curriculum Progression.
