@@ -68,6 +68,7 @@
     "tailwindcss": "^4.1.10",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3",
+    "vercel": "^59.26.0",
     "vitest": "^3.2.4"
   },
   "prisma": {
