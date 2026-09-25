@@ -88,6 +88,23 @@ export function AIModeContent() {
 
 
 
+  function handleStartNewTopic(topic: string) {
+    if (!session) return;
+    
+    // Reset AI state but reuse the session context (subjectKey, preferences, etc.)
+    ai.reset();
+
+    handleInitialGenerate({
+      goal: session.goal,
+      topic: topic,
+      subjectKey: session.subjectKey,
+      level: session.level,
+      batchSize: 10,
+      provider: session.provider,
+      context: session.context,
+    });
+  }
+
   if (session && (session.cards.length > 0 || ai.isStreaming)) {
     // While the first batch is still streaming, show progress instead of
     // dropping back to the form (which looks like a stuck submit).
@@ -138,6 +155,7 @@ export function AIModeContent() {
         }}
         isGeneratingNextBatch={ai.isStreaming}
         nextBatchError={ai.error}
+        onStartNewTopic={handleStartNewTopic}
       />
     );
   }

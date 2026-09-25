@@ -33,6 +33,7 @@ interface AISessionViewerProps {
   onReset: () => void;
   isGeneratingNextBatch: boolean;
   nextBatchError?: Error | null;
+  onStartNewTopic?: (topic: string) => void;
 }
 
 export function AISessionViewer({
@@ -42,6 +43,7 @@ export function AISessionViewer({
   onReset,
   isGeneratingNextBatch,
   nextBatchError,
+  onStartNewTopic,
 }: AISessionViewerProps) {
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [deckSaved, setDeckSaved] = useState(false);
@@ -235,13 +237,13 @@ export function AISessionViewer({
                   variant="outline" 
                   className="shrink-0 h-7 text-[10px] px-2.5 bg-background" 
                   onClick={() => {
-                     setSuggestedTopic(null);
-                     // Ideally we would trigger a full session restart with the new topic here
-                     // For now, we instruct the user
-                     alert(`To start this topic, end the session and enter "${suggestedTopic.topic}"!`);
+                     if (onStartNewTopic) {
+                       onStartNewTopic(suggestedTopic.topic);
+                       setSuggestedTopic(null);
+                     }
                   }}
                 >
-                  Got it
+                  Start Now
                 </Button>
               </div>
             )}
