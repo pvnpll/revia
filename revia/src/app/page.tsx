@@ -1,9 +1,23 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { ArrowRight, Bot, BrainCircuit, Sparkles, Wand2, Zap } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { isSupabaseAuthEnabled } from "@/lib/supabase/config";
+import { createClient } from "@/lib/supabase/server";
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  if (isSupabaseAuthEnabled()) {
+    const supabase = await createClient();
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    if (session) {
+      redirect("/practice");
+    }
+  }
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
