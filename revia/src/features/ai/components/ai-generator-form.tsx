@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Bot, Sparkles, Wand2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -76,6 +76,18 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
   });
   const [validationError, setValidationError] = useState<string | null>(null);
   const [isNormalizing, setIsNormalizing] = useState(false);
+  const [recentSearches, setRecentSearches] = useState<SuggestionPreset[]>([]);
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("revia_ai_recent_searches");
+      if (stored) {
+        setRecentSearches(JSON.parse(stored));
+      }
+    } catch (err) {
+      console.error("Failed to load recent searches", err);
+    }
+  }, []);
 
   function applyPreset(preset: SuggestionPreset) {
     setGoal(preset.goal);
@@ -105,6 +117,20 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
         ...context,
         preferences,
       };
+
+      const newSearch: SuggestionPreset = {
+        title: topic.trim(),
+        goal: goal.trim(),
+        topic: topic.trim(),
+        level,
+      };
+
+      setRecentSearches((prev) => {
+        const filtered = prev.filter(p => p.topic.toLowerCase() !== topic.trim().toLowerCase());
+        const next = [newSearch, ...filtered].slice(0, 4);
+        localStorage.setItem("revia_ai_recent_searches", JSON.stringify(next));
+        return next;
+      });
 
       onGenerate({
         goal: goal.trim(),
@@ -138,10 +164,10 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
 
       <div className="space-y-2">
         <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          Quick Suggestions
+          {recentSearches.length > 0 ? "Recent Topics" : "Quick Suggestions"}
         </p>
         <div className="flex flex-wrap gap-2">
-          {PRESET_SUGGESTIONS.map((preset) => (
+          {(recentSearches.length > 0 ? recentSearches : PRESET_SUGGESTIONS).map((preset) => (
             <button
               key={preset.title}
               type="button"
