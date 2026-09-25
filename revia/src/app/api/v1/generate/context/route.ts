@@ -48,6 +48,17 @@ export async function POST(request: NextRequest) {
     const { goal, topic } = postBodySchema.parse(body);
 
     const subjectKey = await normalizeTopic(goal, topic);
+    
+    if (userId.startsWith("guest_")) {
+      const existingTopics = await aiContextService.getUserTopics(userId);
+      if (existingTopics.length >= 1 && !existingTopics.some(t => t.topic === subjectKey)) {
+        return NextResponse.json(
+          { error: { code: "GUEST_LIMIT", message: "Guest limit reached! Please sign in to save your progress and learn new subjects." } },
+          { status: 403 }
+        );
+      }
+    }
+
     const context = await aiContextService.getContext(userId, subjectKey);
     
     return jsonResponse({ subjectKey, context });

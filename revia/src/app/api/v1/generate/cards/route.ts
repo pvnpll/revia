@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { ZodError } from "zod";
-import { getOptionalUserId } from "@/lib/api/auth";
+import { getUserIdOrGuestId } from "@/lib/api/auth";
 import { AIProviderError } from "@/lib/providers/ai";
 import { aiGenerationService } from "@/lib/services/ai";
 
@@ -31,7 +31,7 @@ function sseMessage(event: string, data: unknown): string {
 }
 
 export async function POST(request: NextRequest) {
-  const userId = await getOptionalUserId();
+  const userId = await getUserIdOrGuestId();
   const clientIp =
     request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "anonymous";
   const rateLimitKey = userId || clientIp;

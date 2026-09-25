@@ -99,6 +99,15 @@ Respond strictly in JSON matching the schema, with 'nextTopic' and 'reasoning'.`
     if (userId) {
       const dbKey = input.subjectKey || input.topic;
       const serverContext = await aiContextService.getContext(userId, dbKey);
+      
+      if (userId.startsWith("guest_") && serverContext.recentlySeen.length >= 30) {
+        throw new AIProviderError(
+          "Guest limit reached! You have generated 30 cards. Please create a free account to continue learning.",
+          "RATE_LIMITED",
+          403
+        );
+      }
+
       input.context = {
         known: Array.from(new Set([...serverContext.known, ...(input.context?.known || [])])),
         struggled: Array.from(new Set([...serverContext.struggled, ...(input.context?.struggled || [])])),
