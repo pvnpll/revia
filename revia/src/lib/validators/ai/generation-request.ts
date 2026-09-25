@@ -19,7 +19,7 @@ export const generationRequestSchema = z.object({
   batchSize: z
     .number()
     .int("Batch size must be an integer")
-    .min(5, "Batch size must be at least 5")
+    .min(1, "Batch size must be at least 1")
     .max(25, "Batch size must be at most 25")
     .optional()
     .default(10),
