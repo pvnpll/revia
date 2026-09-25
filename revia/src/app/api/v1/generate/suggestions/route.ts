@@ -1,4 +1,3 @@
-import { NextRequest } from "next/server";
 import { getUserId } from "@/lib/api/auth";
 import { aiContextService } from "@/lib/services/ai";
 import { jsonResponse } from "@/lib/api/response";
