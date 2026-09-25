@@ -15,7 +15,7 @@ export function AIModeContent() {
   const ai = useAIGenerate();
   // Tracks the total card count for which a next-batch request has already been issued.
   // Prevents consecutive duplicate calls: next request is only allowed once cards.length grows.
-  const lastRequestedCardCountRef = useRef(0);
+  const lastPrefetchIndexRef = useRef(-1);
 
   const hasSession = Boolean(session);
 
@@ -36,7 +36,7 @@ export function AIModeContent() {
   }, [ai.cards, ai.context, ai.meta, hasSession]);
 
   function handleInitialGenerate(params: GenerateCardsApiParams) {
-    lastRequestedCardCountRef.current = 0;
+    lastPrefetchIndexRef.current = -1;
     const newSession: AISessionState = {
       goal: params.goal,
       topic: params.topic,
@@ -55,8 +55,7 @@ export function AIModeContent() {
   const handleNextBatch = useCallback(() => {
     if (!session || ai.isStreaming) return;
 
-    // Immediately record current card length so neither manual clicks nor auto-prefetch can double-fire
-    lastRequestedCardCountRef.current = session.cards.length;
+    
 
     ai.generate(
       {
@@ -74,16 +73,15 @@ export function AIModeContent() {
   }, [session?.goal, session?.topic, session?.subjectKey, session?.level, session?.batchSize, session?.provider, session?.context, ai.isStreaming, ai.generate]);
 
   // Background prefetch: triggers when user has started studying (currentIndex > 0)
-  // and reaches ≤3 remaining cards. Only fires once per batch expansion.
+  // and reaches ≤6 remaining cards. Only fires once per index to prevent duplicate fetches.
   useEffect(() => {
     if (!session || ai.isStreaming) return;
-    // Don't auto-prefetch on initial batch before user has even started reviewing
     if (session.currentIndex === 0) return;
-    // Don't prefetch if we already issued a request for this batch
-    if (session.cards.length <= lastRequestedCardCountRef.current) return;
+    if (session.currentIndex === lastPrefetchIndexRef.current) return;
 
     const cardsRemaining = session.cards.length - 1 - session.currentIndex;
     if (cardsRemaining <= 6 && cardsRemaining >= 0) {
+      lastPrefetchIndexRef.current = session.currentIndex;
       handleNextBatch();
     }
   }, [session, ai.isStreaming, handleNextBatch]);

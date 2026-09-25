@@ -150,7 +150,7 @@ export function AISessionViewer({
     return (
       <AISessionOverlay>
         <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background p-4 text-center">
-          {nextBatchError ? (
+          {(nextBatchError || !isGeneratingNextBatch) ? (
             <div className="flex max-w-sm flex-col items-center gap-4">
               <div className="rounded-full bg-destructive/10 p-4 text-destructive">
                 <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -158,7 +158,7 @@ export function AISessionViewer({
                 </svg>
               </div>
               <h2 className="text-xl font-semibold">Failed to load more cards</h2>
-              <p className="text-sm text-muted-foreground">{nextBatchError.message}</p>
+              <p className="text-sm text-muted-foreground">{nextBatchError?.message || "The AI generated a duplicate card that was filtered out. Please try again."}</p>
               <div className="mt-4 flex gap-3">
                 <Button variant="outline" onClick={onReset}>End Session</Button>
                 <Button onClick={onRequestNextBatch}>Try Again</Button>
