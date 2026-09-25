@@ -76,13 +76,28 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
   });
   const [validationError, setValidationError] = useState<string | null>(null);
   const [isNormalizing, setIsNormalizing] = useState(false);
-  const [dbTopics, setDbTopics] = useState<{ topic: string, updatedAt: string }[]>([]);
+
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(false);
+  const [hasHistory, setHasHistory] = useState(false);
 
   useEffect(() => {
     fetch('/api/v1/generate/context')
       .then(r => r.json())
       .then(data => {
-        if (data && Array.isArray(data.data)) setDbTopics(data.data);
+        if (data && Array.isArray(data.data) && data.data.length > 0) {
+          setHasHistory(true);
+          setIsLoadingSuggestions(true);
+          fetch('/api/v1/generate/suggestions')
+            .then(res => res.json())
+            .then(suggData => {
+              if (suggData && Array.isArray(suggData.data?.suggestions)) {
+                setSuggestions(suggData.data.suggestions);
+              }
+            })
+            .catch(err => console.error("Failed to load suggestions", err))
+            .finally(() => setIsLoadingSuggestions(false));
+        }
       })
       .catch(err => console.error("Failed to load db topics", err));
   }, []);
@@ -150,24 +165,26 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
 
       <div className="space-y-2">
         <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          {dbTopics.length > 0 ? "Your Subjects" : "Quick Suggestions"}
+          {hasHistory ? "AI Recommendations" : "Quick Suggestions"}
         </p>
         <div className="flex flex-wrap gap-2">
-          {dbTopics.length > 0 
-            ? dbTopics.slice(0, 5).map((t) => (
+          {hasHistory 
+            ? isLoadingSuggestions 
+              ? <div className="text-xs text-muted-foreground px-2 py-1 flex items-center gap-2"><div className="h-3 w-3 animate-spin rounded-full border-2 border-primary border-r-transparent" /> Thinking of next topics...</div>
+              : suggestions.map((sugg) => (
                 <button
-                  key={t.topic}
+                  key={sugg}
                   type="button"
                   onClick={() => {
-                    setGoal(t.topic.charAt(0).toUpperCase() + t.topic.slice(1));
+                    setGoal(sugg.charAt(0).toUpperCase() + sugg.slice(1));
                     setTopic("");
                     document.getElementById("ai-topic")?.focus();
                   }}
                   disabled={isLoading}
-                  className="inline-flex items-center gap-1.5 rounded-full border bg-card px-3 py-1.5 text-xs font-medium shadow-sm transition hover:bg-accent active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                  className="inline-flex items-center gap-1.5 rounded-full border bg-card px-3 py-1.5 text-xs font-medium shadow-sm transition hover:bg-accent active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 border-primary/20 bg-primary/5 hover:bg-primary/10"
                 >
                   <Sparkles className="h-3.5 w-3.5 text-primary" aria-hidden />
-                  {t.topic.charAt(0).toUpperCase() + t.topic.slice(1)}
+                  {sugg.charAt(0).toUpperCase() + sugg.slice(1)}
                 </button>
               ))
             : PRESET_SUGGESTIONS.map((preset) => (
