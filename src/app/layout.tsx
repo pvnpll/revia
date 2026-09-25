@@ -16,9 +16,24 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+
+import type { Viewport } from 'next';
+
+export const viewport: Viewport = {
+  themeColor: '#09090b',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 export const metadata: Metadata = {
   title: "Revia",
   description: "Mobile-first personal spaced repetition learning app",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Revia",
+  },
 };
 
 const themeScript = `
