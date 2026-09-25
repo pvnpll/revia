@@ -22,10 +22,10 @@ export default async function LandingPage() {
     <div className="flex min-h-screen flex-col bg-background">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4 md:px-6 flex h-14 items-center justify-between">
-          <div className="flex items-center gap-2 font-bold">
+          <Link href="/" className="flex items-center gap-2 font-bold">
             <Bot className="h-5 w-5 text-primary" />
             <span>Revia</span>
-          </div>
+          </Link>
           <nav className="flex items-center gap-4">
             <Link href="/login" className="text-sm font-medium text-muted-foreground hover:text-foreground">
               Sign In

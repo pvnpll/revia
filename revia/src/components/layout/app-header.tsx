@@ -17,7 +17,7 @@ export function AppHeader() {
         "fixed left-1/2 top-0 z-20 flex h-14 w-full max-w-md -translate-x-1/2 items-center justify-between border-b bg-background/90 px-4 backdrop-blur md:border-x md:border-border",
       )}
     >
-      <Link href={isAuthenticated ? "/practice" : "/explore"} className="flex items-center gap-2">
+      <Link href={isAuthenticated ? "/practice" : "/"} className="flex items-center gap-2">
         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
           <GraduationCap className="h-4 w-4 text-primary" />
         </div>
