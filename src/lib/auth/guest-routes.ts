@@ -8,6 +8,7 @@ export function isAuthRoute(pathname: string): boolean {
 
 /** Routes guests can use without signing in. */
 export function isGuestRoute(pathname: string): boolean {
+  if (pathname.match(/^\/(manifest\.webmanifest|manifest\.json|sw\.js|icon\.png|apple-icon\.png|icon-[0-9x]+\.png)$/)) return true;
   if (pathname === "/explore") return true;
   if (pathname === "/practice") return true;
   if (pathname === "/ai") return true;
