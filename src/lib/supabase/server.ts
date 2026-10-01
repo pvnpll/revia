@@ -10,8 +10,14 @@ export async function createClient() {
   }
 
   const cookieStore = await cookies();
+  const isProd = process.env.NODE_ENV === "production";
 
   return createServerClient(url, anonKey, {
+    cookieOptions: {
+      maxAge: 31536000,
+      secure: isProd,
+      sameSite: "lax",
+    },
     cookies: {
       getAll() {
         return cookieStore.getAll();
@@ -19,7 +25,7 @@ export async function createClient() {
       setAll(cookiesToSet) {
         try {
           cookiesToSet.forEach(({ name, value, options }) => {
-            cookieStore.set(name, value, options);
+            cookieStore.set(name, value, { ...options, maxAge: 31536000, secure: isProd });
           });
         } catch {
           // Called from a Server Component; middleware will refresh the session.

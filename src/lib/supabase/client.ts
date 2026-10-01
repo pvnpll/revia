@@ -8,5 +8,13 @@ export function createClient() {
     throw new Error("Supabase environment variables are not configured");
   }
 
-  return createBrowserClient(url, anonKey);
+  const isProd = process.env.NODE_ENV === "production";
+
+  return createBrowserClient(url, anonKey, {
+    cookieOptions: {
+      maxAge: 31536000,
+      secure: isProd,
+      sameSite: "lax",
+    },
+  });
 }
