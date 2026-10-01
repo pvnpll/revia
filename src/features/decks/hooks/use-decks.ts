@@ -70,6 +70,20 @@ export function useDeleteDeck() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (deckId: string) => deckApi.delete(deckId),
+    onMutate: async (deckId) => {
+      await queryClient.cancelQueries({ queryKey: deckQueryKeys.all });
+      const previousDecks = queryClient.getQueryData(deckQueryKeys.all);
+      queryClient.setQueryData(deckQueryKeys.all, (old: any) => {
+        if (!old) return old;
+        return old.filter((d: any) => d.id !== deckId);
+      });
+      return { previousDecks };
+    },
+    onError: (err, newTodo, context) => {
+      if (context?.previousDecks) {
+        queryClient.setQueryData(deckQueryKeys.all, context.previousDecks);
+      }
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: deckQueryKeys.all });
     },
