@@ -22,39 +22,50 @@ export const statsRepository = {
     const streakLookback = new Date(todayStart);
     streakLookback.setDate(streakLookback.getDate() - 90);
 
-    const [deckCount, totalCards, dueToday, reviewedToday, matureCards, reviewDays] =
-      await Promise.all([
-        prisma.deck.count({ where: { userId, isArchived: false } }),
-        prisma.card.count({
-          where: { deck: { userId, isArchived: false }, isSuspended: false },
-        }),
-        prisma.cardSchedulingState.count({
-          where: {
-            dueAt: { lte: now },
-            card: { isSuspended: false, deck: { userId, isArchived: false } },
-          },
-        }),
-        prisma.reviewLog.count({
-          where: { userId, reviewedAt: { gte: todayStart } },
-        }),
-        prisma.cardSchedulingState.count({
-          where: {
-            intervalDays: { gt: MATURE_INTERVAL_DAYS },
-            card: { isSuspended: false, deck: { userId, isArchived: false } },
-          },
-        }),
-        prisma.$queryRaw<Array<{ day: Date }>>(Prisma.sql`
-          SELECT DISTINCT DATE(reviewed_at) AS day
-          FROM review_logs
-          WHERE user_id = ${userId}
-            AND reviewed_at >= ${streakLookback}
-          ORDER BY day DESC
-        `),
-      ]);
+    const [stats, reviewDays] = await Promise.all([
+      prisma.$queryRaw<
+        Array<{
+          deck_count: bigint;
+          total_cards: bigint;
+          due_today: bigint;
+          reviewed_today: bigint;
+          mature_cards: bigint;
+        }>
+      >`
+        SELECT 
+          (SELECT COUNT(*) FROM decks WHERE user_id = ${userId} AND is_archived = false) as deck_count,
+          (SELECT COUNT(*) FROM cards c JOIN decks d ON c.deck_id = d.id WHERE d.user_id = ${userId} AND d.is_archived = false AND c.is_suspended = false) as total_cards,
+          (SELECT COUNT(*) FROM card_scheduling_states css JOIN cards c ON css.card_id = c.id JOIN decks d ON c.deck_id = d.id WHERE d.user_id = ${userId} AND d.is_archived = false AND c.is_suspended = false AND css.due_at <= ${now}) as due_today,
+          (SELECT COUNT(*) FROM review_logs WHERE user_id = ${userId} AND reviewed_at >= ${todayStart}) as reviewed_today,
+          (SELECT COUNT(*) FROM card_scheduling_states css JOIN cards c ON css.card_id = c.id JOIN decks d ON c.deck_id = d.id WHERE d.user_id = ${userId} AND d.is_archived = false AND c.is_suspended = false AND css.interval_days > ${MATURE_INTERVAL_DAYS}) as mature_cards
+      `,
+      prisma.$queryRaw<Array<{ day: Date }>>`
+        SELECT DISTINCT DATE(reviewed_at) AS day
+        FROM review_logs
+        WHERE user_id = ${userId}
+          AND reviewed_at >= ${streakLookback}
+        ORDER BY day DESC
+      `
+    ]);
 
-    const streak = calculateStreak(reviewDays.map((row) => row.day));
+    const row = stats[0] ?? {
+      deck_count: 0n,
+      total_cards: 0n,
+      due_today: 0n,
+      reviewed_today: 0n,
+      mature_cards: 0n,
+    };
 
-    return { dueToday, reviewedToday, totalCards, matureCards, deckCount, streak };
+    const streak = calculateStreak(reviewDays.map((r) => r.day));
+
+    return {
+      dueToday: Number(row.due_today),
+      reviewedToday: Number(row.reviewed_today),
+      totalCards: Number(row.total_cards),
+      matureCards: Number(row.mature_cards),
+      deckCount: Number(row.deck_count),
+      streak,
+    };
   },
 };
 
