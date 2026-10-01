@@ -1,6 +1,6 @@
 # Revia Documentation Index
 
-**Version:** v1.7.1 (September 2026)
+**Version:** v1.9.14 (September 2026)
 
 ## Start Here
 
@@ -29,12 +29,16 @@
 | [architecture/01-overview.md](./architecture/01-overview.md) | System overview |
 | [architecture/03-database-schema.md](./architecture/03-database-schema.md) | Database design |
 | [architecture/06-review-scheduling.md](./architecture/06-review-scheduling.md) | Scheduler design |
+| [architecture/09-ai-architecture.md](./architecture/09-ai-architecture.md) | AI Generation Engine |
+| [architecture/12-ai-learner-context.md](./architecture/12-ai-learner-context.md) | AI Context Tracking |
 
 ## Product
 
 | Document | Topic |
 |----------|-------|
 | [application/product-doc](./application/product-doc) | Roles, import format, v1 scope |
+| [application/ai-prd.md](./application/ai-prd.md) | AI Features PRD |
+| [application/ai-progress-and-roadmap.md](./application/ai-progress-and-roadmap.md) | AI Roadmap |
 
 ## Policy
 
