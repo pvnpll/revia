@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 import { deckApi } from "@/features/decks/services/deck-api";
 import type { CreateDeckInput, UpdateDeckInput } from "@/lib/validators/deck.schema";
+import type { DeckWithStats } from "@/types/deck";
 
 export const deckQueryKeys = {
   all: ["decks"] as const,
@@ -73,9 +74,9 @@ export function useDeleteDeck() {
     onMutate: async (deckId) => {
       await queryClient.cancelQueries({ queryKey: deckQueryKeys.all });
       const previousDecks = queryClient.getQueryData(deckQueryKeys.all);
-      queryClient.setQueryData(deckQueryKeys.all, (old: any) => {
+      queryClient.setQueryData(deckQueryKeys.all, (old: DeckWithStats[] | undefined) => {
         if (!old) return old;
-        return old.filter((d: any) => d.id !== deckId);
+        return old.filter((d: DeckWithStats) => d.id !== deckId);
       });
       return { previousDecks };
     },

@@ -1,4 +1,3 @@
-import { Prisma } from "@prisma/client";
 
 import { prisma } from "@/lib/db/prisma";
 
@@ -49,11 +48,11 @@ export const statsRepository = {
     ]);
 
     const row = stats[0] ?? {
-      deck_count: 0n,
-      total_cards: 0n,
-      due_today: 0n,
-      reviewed_today: 0n,
-      mature_cards: 0n,
+      deck_count: BigInt(0),
+      total_cards: BigInt(0),
+      due_today: BigInt(0),
+      reviewed_today: BigInt(0),
+      mature_cards: BigInt(0),
     };
 
     const streak = calculateStreak(reviewDays.map((r) => r.day));
