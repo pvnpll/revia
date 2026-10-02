@@ -59,16 +59,16 @@ Result:
 | Vercel project | Production branch | Domain | Root Directory |
 |----------------|-------------------|--------|----------------|
 | `rimev` | `main` | `rimev.vercel.app` | `rimev` |
-| `rimev-ai` | `mainAI` | `rimev-ai.vercel.app` | `rimev` ← **must be set** |
+| `rimev-dev` | `mainAI` | `rimev-dev.vercel.app` | `rimev` ← **must be set** |
 
 Both projects deploy from the same GitHub repo (`pvnpll/rimev`), where the app lives in the `rimev/` subfolder. **`Root Directory` must be `rimev` on every project**, or the build runs against the repo root (which has no `package.json`) and ships nothing — see the troubleshooting row below.
 
-`rimev-ai` is the project used for the `mainAI` / `developAI` branches. Verify it with:
+`rimev-dev` is the project used for the `mainAI` / `developAI` branches. Verify it with:
 
 ```bash
 npx vercel projects ls                       # list linked projects
 curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
-  "https://api.vercel.com/v9/projects/rimev-ai?teamId=$TEAM_ID" \
+  "https://api.vercel.com/v9/projects/rimev-dev?teamId=$TEAM_ID" \
   | python3 -m json.tool | grep -E 'rootDirectory|framework|productionBranch'
 ```
 
@@ -198,8 +198,8 @@ If you ever need a different region, create a new Supabase project there, run `n
 | Email confirmation opens wrong domain | Site URL must be `https://rimev.vercel.app` (with dot) |
 | `email rate limit exceeded` on signup | Supabase free tier caps auth emails (~4/hour). Wait ~1 hour, manually confirm user in Supabase → Users, or run `npm run supabase:fix-production-url` to enable auto-confirm (skips confirmation emails) |
 | Build shows 0ms / site 404 | Set **Root Directory** to `rimev` under [Build and Deployment](https://vercel.com/pvnplls-projects/rimev/settings/build-and-deployment), then redeploy |
-| `rimev-ai` (mainAI) deploys are **READY** and aliased, but the domain returns `404 NOT_FOUND` | `Root Directory` is unset on the `rimev-ai` project, so the build log reads `Build Completed in /vercel/output [605ms]` — nothing was compiled. Set **Root Directory** to `rimev` on **that** project (each Vercel project has its own setting), keep Framework Preset **Next.js**, then redeploy the latest `mainAI` commit |
-| Need to re-trigger a build without pushing a new commit | `curl -X POST -H "Authorization: Bearer $VERCEL_TOKEN" -H 'Content-Type: application/json' -d '{"name":"rimev-ai","deploymentId":"<dpl_id>","target":"production"}' "https://api.vercel.com/v13/deployments?teamId=$TEAM_ID"` |
+| `rimev-dev` (mainAI) deploys are **READY** and aliased, but the domain returns `404 NOT_FOUND` | `Root Directory` is unset on the `rimev-dev` project, so the build log reads `Build Completed in /vercel/output [605ms]` — nothing was compiled. Set **Root Directory** to `rimev` on **that** project (each Vercel project has its own setting), keep Framework Preset **Next.js**, then redeploy the latest `mainAI` commit |
+| Need to re-trigger a build without pushing a new commit | `curl -X POST -H "Authorization: Bearer $VERCEL_TOKEN" -H 'Content-Type: application/json' -d '{"name":"rimev-dev","deploymentId":"<dpl_id>","target":"production"}' "https://api.vercel.com/v13/deployments?teamId=$TEAM_ID"` |
 | Can't find Root Directory | It's under **Settings → Build and Deployment**, not General |
 | `develop` should not go to production | Set Production branch to `main` and Preview branch tracking to `develop` under [Environments](https://vercel.com/pvnplls-projects/rimev/settings/environments) |
 | Slow API on mobile | Confirm `regions: ["bom1"]` in `vercel.json` is deployed |
