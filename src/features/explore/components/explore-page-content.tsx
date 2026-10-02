@@ -253,7 +253,7 @@ export function ExplorePageContent() {
       </section>
       )}
 
-      <p className="pt-2 text-center text-xs text-muted-foreground">Revia v{APP_VERSION}</p>
+      <p className="pt-2 text-center text-xs text-muted-foreground">Rimev v{APP_VERSION}</p>
     </div>
   );
 }

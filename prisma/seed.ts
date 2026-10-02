@@ -24,7 +24,7 @@ async function main() {
       id: "10000000-0000-0000-0000-000000000001",
       userId: user.id,
       title: "Getting Started",
-      description: "Sample deck to explore Revia",
+      description: "Sample deck to explore Rimev",
       subject: "Demo",
       color: "#6366f1",
     },

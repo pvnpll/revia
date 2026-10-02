@@ -1,4 +1,4 @@
-# Supabase MCP — project-scoped config for Revia
+# Supabase MCP — project-scoped config for Rimev
 # Update `.cursor/mcp.json` at the repo root with this URL, then re-authenticate in Cursor Settings → Tools & MCP
 
 {

@@ -1,12 +1,12 @@
 # Vercel + Supabase deployment
 
-Deploy Revia to Vercel with Supabase Auth and Postgres.
+Deploy Rimev to Vercel with Supabase Auth and Postgres.
 
 ## 1. Import to Vercel
 
-1. Push this repo to GitHub: `https://github.com/pvnpll/revia`
+1. Push this repo to GitHub: `https://github.com/pvnpll/rimev`
 2. Open [vercel.com/new](https://vercel.com/new) → Import the repo
-3. **Root Directory:** `revia` ← **required** if your GitHub repo has the app in a `revia/` subfolder (fixes 404 / empty deploys)
+3. **Root Directory:** `rimev` ← **required** if your GitHub repo has the app in a `rimev/` subfolder (fixes 404 / empty deploys)
 4. Framework: **Next.js** (auto-detected)
 5. Do **not** deploy yet — add env vars first (step 2)
 
@@ -14,15 +14,15 @@ Deploy Revia to Vercel with Supabase Auth and Postgres.
 
 It is **not** on the main General page. Use this direct link:
 
-**[revia → Settings → Build and Deployment](https://vercel.com/pvnplls-projects/revia/settings/build-and-deployment)**
+**[rimev → Settings → Build and Deployment](https://vercel.com/pvnplls-projects/rimev/settings/build-and-deployment)**
 
 Then scroll down to the **Root Directory** section:
 
 1. Click **Edit**
-2. Enter `revia`
+2. Enter `rimev`
 3. Click **Save**
 
-If you imported the whole `Build` repo (not just `revia`), this setting is mandatory. Without it, git deploys build the repo root and the site returns **404**.
+If you imported the whole `Build` repo (not just `rimev`), this setting is mandatory. Without it, git deploys build the repo root and the site returns **404**.
 
 ## 1b. Branch environments (main vs develop)
 
@@ -30,11 +30,11 @@ Vercel has three environment types:
 
 | Environment | Purpose | Your setup |
 |-------------|---------|------------|
-| **Production** | Live site (`revialearn.vercel.app`) | `main` branch |
+| **Production** | Live site (`rimev.vercel.app`) | `main` branch |
 | **Preview** | Staging / testing before production | `develop` branch |
 | **Development** | Local `vercel dev` only | your machine |
 
-Open **[Settings → Environments](https://vercel.com/pvnplls-projects/revia/settings/environments)**:
+Open **[Settings → Environments](https://vercel.com/pvnplls-projects/rimev/settings/environments)**:
 
 **Production**
 1. Click the **Production** card
@@ -49,8 +49,8 @@ Open **[Settings → Environments](https://vercel.com/pvnplls-projects/revia/set
 3. Save
 
 Result:
-- Push to `main` → deploys to **Production** → `https://revialearn.vercel.app`
-- Push to `develop` → deploys to **Preview** → `https://revia-git-develop-pvnplls-projects.vercel.app`
+- Push to `main` → deploys to **Production** → `https://rimev.vercel.app`
+- Push to `develop` → deploys to **Preview** → `https://rimev-git-develop-pvnplls-projects.vercel.app`
 
 > **Note:** A separate named "develop environment" (custom domain, separate env vars) requires Vercel **Pro** (Custom Environments). On the free plan, `develop` uses the **Preview** environment, which is the standard workflow.
 
@@ -58,24 +58,24 @@ Result:
 
 | Vercel project | Production branch | Domain | Root Directory |
 |----------------|-------------------|--------|----------------|
-| `revia` | `main` | `revialearn.vercel.app` | `revia` |
-| `revia-ai` | `mainAI` | `revialearn-ai.vercel.app` | `revia` ← **must be set** |
+| `rimev` | `main` | `rimev.vercel.app` | `rimev` |
+| `rimev-ai` | `mainAI` | `rimev-ai.vercel.app` | `rimev` ← **must be set** |
 
-Both projects deploy from the same GitHub repo (`pvnpll/revia`), where the app lives in the `revia/` subfolder. **`Root Directory` must be `revia` on every project**, or the build runs against the repo root (which has no `package.json`) and ships nothing — see the troubleshooting row below.
+Both projects deploy from the same GitHub repo (`pvnpll/rimev`), where the app lives in the `rimev/` subfolder. **`Root Directory` must be `rimev` on every project**, or the build runs against the repo root (which has no `package.json`) and ships nothing — see the troubleshooting row below.
 
-`revia-ai` is the project used for the `mainAI` / `developAI` branches. Verify it with:
+`rimev-ai` is the project used for the `mainAI` / `developAI` branches. Verify it with:
 
 ```bash
 npx vercel projects ls                       # list linked projects
 curl -s -H "Authorization: Bearer $VERCEL_TOKEN" \
-  "https://api.vercel.com/v9/projects/revia-ai?teamId=$TEAM_ID" \
+  "https://api.vercel.com/v9/projects/rimev-ai?teamId=$TEAM_ID" \
   | python3 -m json.tool | grep -E 'rootDirectory|framework|productionBranch'
 ```
 
 Optional automation (requires a Vercel token):
 
 ```bash
-cd revia
+cd rimev
 VERCEL_TOKEN="..." npx tsx scripts/vercel-project-setup.ts
 ```
 
@@ -92,9 +92,9 @@ In Vercel → Project → **Settings → Environment Variables**, add for **Prod
 | `DATABASE_URL` | Transaction pooler (port **6543**) — see below |
 | `DIRECT_URL` | Session pooler (port **5432**) — see below |
 | `SUPABASE_PROJECT_REF` | `ophrrajusdwhuxvnsjrr` |
-| `NEXT_PUBLIC_APP_URL` | `https://revialearn.vercel.app` ← **must include the dot** |
+| `NEXT_PUBLIC_APP_URL` | `https://rimev.vercel.app` ← **must include the dot** |
 
-**Important:** The Site URL must be exactly `https://revialearn.vercel.app` (not `https://revialearnvercel.app`). A missing dot breaks email confirmation links.
+**Important:** The Site URL must be exactly `https://rimev.vercel.app` (not `https://rimevvercel.app`). A missing dot breaks email confirmation links.
 
 **Pooler URLs** (replace `[PASSWORD]` with your DB password):
 
@@ -109,7 +109,7 @@ DIRECT_URL="postgresql://postgres.ophrrajusdwhuxvnsjrr:[PASSWORD]@aws-1-ap-south
 Or auto-generate values + update Supabase auth redirects:
 
 ```bash
-cd revia
+cd rimev
 VERCEL_URL="https://your-app.vercel.app" \
 SUPABASE_ACCESS_TOKEN="sbp_..." \
 SUPABASE_PROJECT_REF="ophrrajusdwhuxvnsjrr" \
@@ -124,15 +124,15 @@ In [Supabase → Authentication → URL Configuration](https://supabase.com/dash
 
 | Setting | Value |
 |---------|-------|
-| **Site URL** | `https://revialearn.vercel.app` |
-| **Redirect URLs** | `https://revialearn.vercel.app/auth/callback` |
+| **Site URL** | `https://rimev.vercel.app` |
+| **Redirect URLs** | `https://rimev.vercel.app/auth/callback` |
 | | `https://*-*.vercel.app/auth/callback` (preview deploys) |
 | | `http://localhost:3000/auth/callback` (local dev) |
 
-If confirmation emails open a broken domain like `revialearnvercel.app`, fix **Site URL** in the dashboard or run:
+If confirmation emails open a broken domain like `rimevvercel.app`, fix **Site URL** in the dashboard or run:
 
 ```bash
-cd revia
+cd rimev
 SUPABASE_ACCESS_TOKEN="sbp_..." SUPABASE_PROJECT_REF="ophrrajusdwhuxvnsjrr" \
   npx tsx scripts/fix-supabase-production-url.ts
 ```
@@ -144,7 +144,7 @@ The setup script above applies these automatically when you pass `VERCEL_URL`.
 Schema is already on Supabase. If you need to re-apply:
 
 ```bash
-cd revia
+cd rimev
 npm run db:push
 ```
 
@@ -155,7 +155,7 @@ npm run db:push
 **From CLI:**
 
 ```bash
-cd revia
+cd rimev
 npx vercel login
 npx vercel link          # link to your Vercel project
 npx vercel --prod        # production deploy
@@ -195,12 +195,12 @@ If you ever need a different region, create a new Supabase project there, run `n
 | Build fails on Prisma | Ensure `postinstall` runs (`prisma generate` in package.json) |
 | 500 after deploy | Check Vercel env vars; `DATABASE_URL` must use port **6543** |
 | Login redirect fails | Add Vercel URL to Supabase redirect URLs |
-| Email confirmation opens wrong domain | Site URL must be `https://revialearn.vercel.app` (with dot) |
+| Email confirmation opens wrong domain | Site URL must be `https://rimev.vercel.app` (with dot) |
 | `email rate limit exceeded` on signup | Supabase free tier caps auth emails (~4/hour). Wait ~1 hour, manually confirm user in Supabase → Users, or run `npm run supabase:fix-production-url` to enable auto-confirm (skips confirmation emails) |
-| Build shows 0ms / site 404 | Set **Root Directory** to `revia` under [Build and Deployment](https://vercel.com/pvnplls-projects/revia/settings/build-and-deployment), then redeploy |
-| `revia-ai` (mainAI) deploys are **READY** and aliased, but the domain returns `404 NOT_FOUND` | `Root Directory` is unset on the `revia-ai` project, so the build log reads `Build Completed in /vercel/output [605ms]` — nothing was compiled. Set **Root Directory** to `revia` on **that** project (each Vercel project has its own setting), keep Framework Preset **Next.js**, then redeploy the latest `mainAI` commit |
-| Need to re-trigger a build without pushing a new commit | `curl -X POST -H "Authorization: Bearer $VERCEL_TOKEN" -H 'Content-Type: application/json' -d '{"name":"revia-ai","deploymentId":"<dpl_id>","target":"production"}' "https://api.vercel.com/v13/deployments?teamId=$TEAM_ID"` |
+| Build shows 0ms / site 404 | Set **Root Directory** to `rimev` under [Build and Deployment](https://vercel.com/pvnplls-projects/rimev/settings/build-and-deployment), then redeploy |
+| `rimev-ai` (mainAI) deploys are **READY** and aliased, but the domain returns `404 NOT_FOUND` | `Root Directory` is unset on the `rimev-ai` project, so the build log reads `Build Completed in /vercel/output [605ms]` — nothing was compiled. Set **Root Directory** to `rimev` on **that** project (each Vercel project has its own setting), keep Framework Preset **Next.js**, then redeploy the latest `mainAI` commit |
+| Need to re-trigger a build without pushing a new commit | `curl -X POST -H "Authorization: Bearer $VERCEL_TOKEN" -H 'Content-Type: application/json' -d '{"name":"rimev-ai","deploymentId":"<dpl_id>","target":"production"}' "https://api.vercel.com/v13/deployments?teamId=$TEAM_ID"` |
 | Can't find Root Directory | It's under **Settings → Build and Deployment**, not General |
-| `develop` should not go to production | Set Production branch to `main` and Preview branch tracking to `develop` under [Environments](https://vercel.com/pvnplls-projects/revia/settings/environments) |
+| `develop` should not go to production | Set Production branch to `main` and Preview branch tracking to `develop` under [Environments](https://vercel.com/pvnplls-projects/rimev/settings/environments) |
 | Slow API on mobile | Confirm `regions: ["bom1"]` in `vercel.json` is deployed |
 | `DEPLOYMENT_NOT_FOUND` on production URL | Redeploy after fixing Root Directory |

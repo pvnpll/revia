@@ -5,7 +5,7 @@ Feature-based architecture. Business logic centralized in `lib/`. UI organized b
 ## Root Layout
 
 ```
-revia/
+rimev/
 ├── docs/architecture/
 ├── prisma/
 │   ├── schema.prisma

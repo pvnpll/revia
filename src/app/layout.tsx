@@ -27,19 +27,19 @@ export const viewport: Viewport = {
   userScalable: false,
 };
 export const metadata: Metadata = {
-  title: "Revia",
+  title: "Rimev",
   description: "Mobile-first personal spaced repetition learning app",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Revia",
+    title: "Rimev",
   },
 };
 
 const themeScript = `
 (function() {
   try {
-    var theme = localStorage.getItem('revia-theme');
+    var theme = localStorage.getItem('rimev-theme');
     if (theme !== 'light') document.documentElement.classList.add('dark');
   } catch (e) {}
 })();

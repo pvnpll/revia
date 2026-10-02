@@ -2,7 +2,7 @@
 
 ## Application Overview
 
-Revia is a subject-agnostic spaced repetition learning platform.
+Rimev is a subject-agnostic spaced repetition learning platform.
 
 **Product model:**
 
@@ -58,7 +58,7 @@ Pages/Components → TanStack Query Hooks → API Route Handlers
 ## Folder Structure
 
 ```text
-revia/
+rimev/
   src/
     app/                    Pages, API routes, auth callback
       (app)/                Protected app routes (mobile shell)
@@ -261,10 +261,10 @@ flowchart LR
 
 | Setting | Value |
 |---------|-------|
-| Vercel Root Directory | `revia` (required) |
+| Vercel Root Directory | `rimev` (required) |
 | Function region | `bom1` (Mumbai) — `vercel.json` |
 | Supabase region | `ap-south-1` |
-| Production URL | `https://revialearn.vercel.app` |
+| Production URL | `https://rimev.vercel.app` |
 | Production branch | `main` |
 | Preview branch | `develop` (recommended) |
 
@@ -280,7 +280,7 @@ Full guide: [DEPLOY-VERCEL.md](../DEPLOY-VERCEL.md)
 ## Local Development
 
 ```bash
-cd revia
+cd rimev
 npm run setup    # Docker Postgres + schema + seed
 npm run dev      # http://localhost:3000
 ```

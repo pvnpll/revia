@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 export type Theme = "light" | "dark";
 
-const STORAGE_KEY = "revia-theme";
+const STORAGE_KEY = "rimev-theme";
 
 interface ThemeContextValue {
   theme: Theme;

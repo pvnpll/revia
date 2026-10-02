@@ -80,7 +80,7 @@ export function FeedbackSettingsPageContent() {
                 placeholder={
                   type === "bug"
                     ? "What happened? Steps to reproduce help a lot."
-                    : "What would make Revia better for you?"
+                    : "What would make Rimev better for you?"
                 }
                 rows={6}
                 required

@@ -35,7 +35,7 @@ export function DashboardContent() {
           <Button asChild size="lg" className="w-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white shadow-sm font-semibold">
             <Link href="/ai">
               <Bot className="h-4 w-4" />
-              Revia AI (Generate & Learn)
+              Rimev AI (Generate & Learn)
             </Link>
           </Button>
           <Button asChild size="lg" className="w-full">

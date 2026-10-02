@@ -1,10 +1,10 @@
-# Revia — Architecture (v2)
+# Rimev — Architecture (v2)
 
 > **v1.0 stable** — API-first, feature-based, scheduler isolated, deployed on Vercel + Supabase.
 
 ## Vision
 
-Revia is a **generic spaced repetition platform**. The scheduler never knows what subject is being learned — only card state, rating, and time.
+Rimev is a **generic spaced repetition platform**. The scheduler never knows what subject is being learned — only card state, rating, and time.
 
 ## Tech Stack
 

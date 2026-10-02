@@ -2,11 +2,11 @@
 
 ## What This App Does
 
-Revia is a mobile-first app for learning and remembering information with digital flashcards.
+Rimev is a mobile-first app for learning and remembering information with digital flashcards.
 
 You organize study material into **decks**, split decks into **lessons**, and add **cards** with a front (question or prompt) and back (answer). The app helps you practice continuously and review due cards on a schedule.
 
-Revia works for any subject — languages, exams, interview prep, professional knowledge, or anything that fits on a flashcard.
+Rimev works for any subject — languages, exams, interview prep, professional knowledge, or anything that fits on a flashcard.
 
 ## Who This Is For
 
@@ -25,7 +25,7 @@ You can keep decks private, publish them to **Explore**, or import public decks 
 
 Reading something once is not enough to remember it. Reviewing everything every day is tiring.
 
-Revia gives you two modes:
+Rimev gives you two modes:
 
 - **Practice** — keep learning without running out of cards; harder cards come back sooner in the same session
 - **Daily Review** — spaced repetition for long-term memory; only cards that are due today
@@ -61,7 +61,7 @@ Three levels of organization:
 
 ```mermaid
 flowchart TD
-  A[Open Revia] --> B[Sign In]
+  A[Open Rimev] --> B[Sign In]
   B --> C[Practice — card ready]
   C --> D[Reveal and Rate 1-5]
   D --> C
@@ -114,7 +114,7 @@ flowchart LR
 - Public/private decks, Explore, import public decks to library
 - Usernames, sign in with username, author credits on shared decks
 - Feedback, light/dark theme
-- Live deployment at [revialearn.vercel.app](https://revialearn.vercel.app)
+- Live deployment at [rimev.vercel.app](https://rimev.vercel.app)
 
 ## What Is Coming Later
 
@@ -129,4 +129,4 @@ See [progress-and-roadmap.md](./progress-and-roadmap.md) for the full phased pla
 
 ## Current App Status In One Sentence
 
-**Revia v1.5 is a mobile learning app: practice endlessly on launch, run Daily Review when cards are due, rename decks and lessons, and manage or share content from your phone.**
+**Rimev v1.5 is a mobile learning app: practice endlessly on launch, run Daily Review when cards are due, rename decks and lessons, and manage or share content from your phone.**

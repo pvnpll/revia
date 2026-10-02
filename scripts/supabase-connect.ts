@@ -1,5 +1,5 @@
 /**
- * Configure Supabase Auth for Revia and write keys to .env.
+ * Configure Supabase Auth for Rimev and write keys to .env.
  *
  * Usage:
  *   SUPABASE_ACCESS_TOKEN=sbp_... SUPABASE_PROJECT_REF=your-ref npx tsx scripts/supabase-connect.ts

@@ -199,7 +199,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
             </>
           ) : (
             <>
-              New to Revia?{" "}
+              New to Rimev?{" "}
               <Link href={`/signup?redirect=${encodeURIComponent(redirectTo)}`} className="text-primary underline-offset-4 hover:underline">
                 Create an account
               </Link>

@@ -8,8 +8,8 @@
  */
 
 const PROJECT_ID = "prj_7vTPFWtSZHRVieJLKR3tku0BQuIx";
-const PROJECT_NAME = "revia";
-const ROOT_DIRECTORY = "revia";
+const PROJECT_NAME = "rimev";
+const ROOT_DIRECTORY = "rimev";
 const PRODUCTION_BRANCH = "main";
 const PREVIEW_BRANCH = "develop";
 
@@ -79,8 +79,8 @@ async function main() {
   console.log(`  Production branch: ${updated.link?.productionBranch ?? PRODUCTION_BRANCH}`);
   console.log("");
   console.log("Branch environments:");
-  console.log(`  Production (${PRODUCTION_BRANCH}) -> https://revialearn.vercel.app`);
-  console.log(`  Preview (${PREVIEW_BRANCH})     -> https://revia-git-${PREVIEW_BRANCH}-pvnplls-projects.vercel.app`);
+  console.log(`  Production (${PRODUCTION_BRANCH}) -> https://rimev.vercel.app`);
+  console.log(`  Preview (${PREVIEW_BRANCH})     -> https://rimev-git-${PREVIEW_BRANCH}-pvnplls-projects.vercel.app`);
   console.log("");
   console.log("Next steps in Vercel dashboard:");
   console.log("  1. Settings -> Environments -> Preview -> Branch Tracking");

@@ -46,7 +46,7 @@ JSON import is supported via Settings → Import Deck.
 - Large decks imported in batches per lesson
 - Generic format works for any subject
 
-**Not in v1:** CSV, Excel, Markdown, PDF, `.revia` package export/import.
+**Not in v1:** CSV, Excel, Markdown, PDF, `.rimev` package export/import.
 
 ---
 
@@ -84,11 +84,11 @@ JSON import is supported via Settings → Import Deck.
 
 # Design Philosophy (v1 — implemented)
 
-Revia is a **mobile-first web application**.
+Rimev is a **mobile-first web application**.
 
 - Large touch targets, floating bottom navigation
 - Full-screen study and review viewers
-- Desktop shows "Revia is mobile-first" guidance
+- Desktop shows "Rimev is mobile-first" guidance
 - Optimized for phone browsers; deployed as PWA-ready web app
 
 ---

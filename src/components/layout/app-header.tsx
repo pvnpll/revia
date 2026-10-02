@@ -21,7 +21,7 @@ export function AppHeader() {
         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
           <GraduationCap className="h-4 w-4 text-primary" />
         </div>
-        <span className="text-lg font-bold tracking-tight">Revia</span>
+        <span className="text-lg font-bold tracking-tight">Rimev</span>
       </Link>
 
       {isLoading ? (

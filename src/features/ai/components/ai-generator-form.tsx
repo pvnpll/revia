@@ -156,7 +156,7 @@ export function AIGeneratorForm({ onGenerate, isLoading, error }: AIGeneratorFor
       <div>
         <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
           <Bot className="h-6 w-6 text-primary" aria-hidden />
-          Revia AI
+          Rimev AI
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Generate adaptive, progressive flashcards with AI

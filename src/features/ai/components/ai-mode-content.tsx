@@ -121,7 +121,7 @@ export function AIModeContent({ isGuest = false }: { isGuest?: boolean }) {
             <CardContent className="flex flex-col items-center gap-3 py-10 text-center">
               <Loader2 className="h-6 w-6 animate-spin text-primary" aria-hidden />
               <p className="text-sm text-muted-foreground">
-                Revia AI is drafting your first batch. This can take a few seconds.
+                Rimev AI is drafting your first batch. This can take a few seconds.
               </p>
               <Button variant="ghost" size="sm" onClick={() => {
                 setSession(null);

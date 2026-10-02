@@ -24,7 +24,7 @@ export default async function LandingPage() {
         <div className="container mx-auto px-4 md:px-6 flex h-14 items-center justify-between">
           <Link href="/" className="flex items-center gap-2 font-bold">
             <Bot className="h-5 w-5 text-primary" />
-            <span>Revia</span>
+            <span>Rimev</span>
           </Link>
           <nav className="flex items-center gap-4">
             <Link href="/login" className="text-sm font-medium text-muted-foreground hover:text-foreground">
@@ -52,7 +52,7 @@ export default async function LandingPage() {
               </span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl">
-              Revia generates personalized flashcards in real-time, instantly adapting to your proficiency level, and logically suggesting your next curriculum topics.
+              Rimev generates personalized flashcards in real-time, instantly adapting to your proficiency level, and logically suggesting your next curriculum topics.
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
               <Button asChild size="lg" className="h-12 px-8 text-base">
@@ -82,7 +82,7 @@ export default async function LandingPage() {
               A curriculum built just for you
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-              No more downloading stale flashcard decks. Tell Revia what you want to learn, and the AI handles the rest.
+              No more downloading stale flashcard decks. Tell Rimev what you want to learn, and the AI handles the rest.
             </p>
           </div>
 
@@ -93,7 +93,7 @@ export default async function LandingPage() {
               </div>
               <h3 className="mb-2 text-xl font-semibold">Continuous Generation</h3>
               <p className="text-muted-foreground leading-relaxed">
-                As you study, Revia silently generates new flashcards in the background. You&apos;ll never run out of material or hit a loading screen.
+                As you study, Rimev silently generates new flashcards in the background. You&apos;ll never run out of material or hit a loading screen.
               </p>
             </div>
 
@@ -103,7 +103,7 @@ export default async function LandingPage() {
               </div>
               <h3 className="mb-2 text-xl font-semibold">Dynamic Difficulty</h3>
               <p className="text-muted-foreground leading-relaxed">
-                Revia tracks exactly which concepts you struggle with. Master the basics, and the AI seamlessly ramps up the vocabulary and grammar complexity.
+                Rimev tracks exactly which concepts you struggle with. Master the basics, and the AI seamlessly ramps up the vocabulary and grammar complexity.
               </p>
             </div>
 
@@ -124,10 +124,10 @@ export default async function LandingPage() {
         <div className="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
           <div className="flex items-center gap-2 font-semibold">
             <Bot className="h-4 w-4 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">Revia AI</span>
+            <span className="text-sm text-muted-foreground">Rimev AI</span>
           </div>
           <p className="text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} Revia. All rights reserved.
+            &copy; {new Date().getFullYear()} Rimev. All rights reserved.
           </p>
         </div>
       </footer>

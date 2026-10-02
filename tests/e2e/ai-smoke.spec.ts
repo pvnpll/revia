@@ -1,6 +1,6 @@
 import { test, expect, Page } from "@playwright/test";
 
-const BASE_URL = "https://revialearn-ai.vercel.app";
+const BASE_URL = "https://rimev-ai.vercel.app";
 const EMAIL = "deadpool123@yopmail.com";
 const PASSWORD = "deadpool@12345";
 
@@ -13,7 +13,7 @@ async function login(page: Page) {
   console.log(`✅ Logged in — on: ${page.url()}`);
 }
 
-test.describe("Revia — authenticated smoke tests", () => {
+test.describe("Rimev — authenticated smoke tests", () => {
 
   test("1. Login + dashboard API", async ({ page }) => {
     await login(page);
@@ -44,7 +44,7 @@ test.describe("Revia — authenticated smoke tests", () => {
 
     const heading = await page.locator("h1").innerText();
     console.log(`📄 h1 text: "${heading}"`);
-    expect(heading).toContain("Revia AI");
+    expect(heading).toContain("Rimev AI");
 
     // Provider selector must be gone
     const hasProviderLabel = await page.locator("text=AI Provider").isVisible();

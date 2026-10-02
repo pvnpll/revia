@@ -1,9 +1,9 @@
 ---
 name: restart-dev-server
-description: Kills existing Revia Next.js dev server processes and starts a fresh instance. Use when the user asks to restart the dev server, kill and restart, or test locally after code changes.
+description: Kills existing Rimev Next.js dev server processes and starts a fresh instance. Use when the user asks to restart the dev server, kill and restart, or test locally after code changes.
 ---
 
-# Restart Revia Dev Server
+# Restart Rimev Dev Server
 
 ## When to use
 
@@ -15,12 +15,12 @@ description: Kills existing Revia Next.js dev server processes and starts a fres
 
 1. Kill anything on ports **3000** and **3001** (Next.js may fall back to 3001 if 3000 is busy)
 2. Wait briefly so the port is released
-3. Start dev from the **revia** app root
+3. Start dev from the **rimev** app root
 
 ```bash
 lsof -ti :3000,:3001 2>/dev/null | xargs kill -9 2>/dev/null
 sleep 2
-cd /Users/pavan/Build/revia && npm run dev
+cd /Users/pavan/Build/rimev && npm run dev
 ```
 
 Run the dev server **in the background** (`block_until_ms: 0`) so the user can keep working.
@@ -40,6 +40,6 @@ Expected: single `next dev --turbopack` process on port 3000.
 ## Notes
 
 - Dev command: `npm run dev` → `next dev --turbopack`
-- App path: `/Users/pavan/Build/revia`
+- App path: `/Users/pavan/Build/rimev`
 - Requires network permission for the dev server shell command
 - Do not delete `.next` unless the user reports a corrupt build — restart is usually enough

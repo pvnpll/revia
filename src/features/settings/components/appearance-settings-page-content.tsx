@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 export function AppearanceSettingsPageContent() {
   return (
-    <SettingsSubpage title="Appearance" description="Choose how Revia looks on your device.">
+    <SettingsSubpage title="Appearance" description="Choose how Rimev looks on your device.">
       <Card>
         <CardContent className="pt-6">
           <ThemeSetting />

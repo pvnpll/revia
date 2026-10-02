@@ -1,13 +1,13 @@
-# Revia AI Learning Engine
+# Rimev AI Learning Engine
 
 ## 1. Overview
 
-Revia AI is an independent AI learning engine that generates adaptive learning content for a learning application.
+Rimev AI is an independent AI learning engine that generates adaptive learning content for a learning application.
 
-The service must be developed independently from the Revia web application so that it can later serve:
+The service must be developed independently from the Rimev web application so that it can later serve:
 
-* Revia Web
-* Revia Mobile
+* Rimev Web
+* Rimev Mobile
 * Other clients in the future
 
 The AI service must expose an API rather than being tightly coupled to any UI.
@@ -301,7 +301,7 @@ Correct architecture:
 
 Client
 ↓
-Revia AI API
+Rimev AI API
 ↓
 AI Provider
 
@@ -438,5 +438,5 @@ The first stable version should be able to:
 7. Accept learner context.
 8. Avoid obvious repetitions.
 9. Generate the next batch using updated context.
-10. Run independently from Revia Web.
+10. Run independently from Rimev Web.
 11. Be consumable by a future mobile application.

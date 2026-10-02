@@ -4,7 +4,7 @@ const envSchema = z.object({
   DATABASE_URL: z
     .string()
     .min(1)
-    .default("postgresql://postgres:postgres@localhost:5432/revia?schema=public"),
+    .default("postgresql://postgres:postgres@localhost:5432/rimev?schema=public"),
   MOCK_USER_ID: z.string().uuid().default("00000000-0000-0000-0000-000000000001"),
   MOCK_USER_EMAIL: z.string().email().default("demo@decklearning.app"),
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),

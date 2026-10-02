@@ -59,8 +59,8 @@ export function SaveDeckModal({ topic, cards, onClose, onSaved }: SaveDeckModalP
       const payload = {
         deck: {
           title: deckTitle.trim(),
-          description: `Generated with Revia AI for topic: ${topic}`,
-          tags: ["revia-ai", topic.toLowerCase().replace(/\s+/g, "-")],
+          description: `Generated with Rimev AI for topic: ${topic}`,
+          tags: ["rimev-ai", topic.toLowerCase().replace(/\s+/g, "-")],
         },
         lessons: [
           {

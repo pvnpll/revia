@@ -9,7 +9,7 @@
 ## One-Command Setup
 
 ```bash
-cd revia
+cd rimev
 npm run setup
 ```
 
@@ -106,9 +106,9 @@ E2E uses iPhone 13 viewport (mobile-first).
 
 See [DEPLOY-VERCEL.md](./DEPLOY-VERCEL.md).
 
-**Critical:** Set Vercel **Root Directory** to `revia`.
+**Critical:** Set Vercel **Root Directory** to `rimev`.
 
-**Production:** `https://revialearn.vercel.app`
+**Production:** `https://rimev.vercel.app`
 
 ## Troubleshooting
 
@@ -117,5 +117,5 @@ See [DEPLOY-VERCEL.md](./DEPLOY-VERCEL.md).
 | 500 on dev | Kill stale `next` processes, `rm -rf .next`, restart |
 | DB connection failed | Check `DATABASE_URL`; use Supabase pooler port 6543 in prod |
 | Login redirect loop | Add callback URL in Supabase auth settings |
-| Site 404 on Vercel | Root Directory must be `revia`; redeploy |
+| Site 404 on Vercel | Root Directory must be `rimev`; redeploy |
 | Slow review on mobile | Ensure `regions: ["bom1"]` in `vercel.json` is deployed |

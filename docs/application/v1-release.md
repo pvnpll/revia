@@ -1,14 +1,14 @@
-# Revia v1.0.0 — Release Snapshot
+# Rimev v1.0.0 — Release Snapshot
 
 **Version:** v1.0.0 (see [release-versioning.md](./release-versioning.md))  
 **Status:** **Published** (14 July 2026)  
-**Production:** [https://revialearn.vercel.app](https://revialearn.vercel.app)
+**Production:** [https://rimev.vercel.app](https://rimev.vercel.app)
 
 ---
 
 ## What v1 Delivers
 
-Revia v1 is a **mobile-first spaced repetition learning app**. A personal user can:
+Rimev v1 is a **mobile-first spaced repetition learning app**. A personal user can:
 
 1. Sign up / sign in (Supabase Auth)
 2. Import or create decks with lessons and cards
@@ -26,7 +26,7 @@ The core learning loop is **functional end-to-end**.
 
 | Component | Detail |
 |-----------|--------|
-| **Hosting** | Vercel — Root Directory must be `revia` |
+| **Hosting** | Vercel — Root Directory must be `rimev` |
 | **Function region** | `bom1` (Mumbai) — see `vercel.json` |
 | **Database** | Supabase Postgres — `ap-south-1` |
 | **Auth** | Supabase (`@supabase/ssr`) |
@@ -93,7 +93,7 @@ Applied in code for mobile UX:
 
 ```
 Build/                  ← Git root
-  revia/                ← Application (Vercel Root Directory)
+  rimev/                ← Application (Vercel Root Directory)
     src/
     prisma/
     docs/

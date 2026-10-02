@@ -1,4 +1,4 @@
-# Revia Documentation Index
+# Rimev Documentation Index
 
 **Version:** v1.9.14 (September 2026)
 

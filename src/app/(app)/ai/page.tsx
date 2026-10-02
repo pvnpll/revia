@@ -4,8 +4,8 @@ import { createClient } from "@/lib/supabase/server";
 import { isSupabaseAuthEnabled } from "@/lib/supabase/config";
 
 export const metadata: Metadata = {
-  title: "Revia AI — Adaptive Flashcards",
-  description: "Generate adaptive spaced repetition flashcards with Revia AI",
+  title: "Rimev AI — Adaptive Flashcards",
+  description: "Generate adaptive spaced repetition flashcards with Rimev AI",
 };
 
 export default async function AIPage() {

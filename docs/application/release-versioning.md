@@ -15,7 +15,7 @@ vMAJOR.MINOR.PATCH
 
 Examples: `v1.0.0`, `v1.1.0`, `v1.0.1`, `v2.0.0`
 
-| Part | When to bump | Examples for Revia |
+| Part | When to bump | Examples for Rimev |
 |------|----------------|-------------------|
 | **MAJOR** | Breaking changes users or integrators must act on | Auth provider swap requiring re-login; API response shape breaks clients; Prisma migration that drops/renames columns without automatic backfill; removing a page users rely on |
 | **MINOR** | New features, backward compatible | Card edit UI; export; statistics page; tags; new import format |
@@ -86,7 +86,7 @@ You may **batch** patch releases (e.g. three bugfix merges → one `v1.0.1`) or 
 ### File layout
 
 ```text
-revia/
+rimev/
   CHANGELOG.md                 # Cumulative, newest first
   docs/
     application/

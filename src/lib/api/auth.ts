@@ -35,7 +35,7 @@ export async function getUserIdOrGuestId(): Promise<string> {
   if (userId) return userId;
 
   const cookieStore = await cookies();
-  const guestId = cookieStore.get("revia_guest_id")?.value;
+  const guestId = cookieStore.get("rimev_guest_id")?.value;
   if (guestId) return guestId;
 
   // Fallback if API is called directly without cookie (shouldn't happen in normal flow)

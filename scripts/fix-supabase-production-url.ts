@@ -1,5 +1,5 @@
 /**
- * Fix Supabase Auth Site URL + redirect allow list for Revia production.
+ * Fix Supabase Auth Site URL + redirect allow list for Rimev production.
  *
  * Usage:
  *   SUPABASE_ACCESS_TOKEN="sbp_..." \
@@ -7,11 +7,11 @@
  *   npx tsx scripts/fix-supabase-production-url.ts
  *
  * Optional override:
- *   APP_URL="https://revialearn.vercel.app"
+ *   APP_URL="https://rimev.vercel.app"
  */
 
 const API_BASE = "https://api.supabase.com/v1";
-const DEFAULT_APP_URL = "https://revialearn.vercel.app";
+const DEFAULT_APP_URL = "https://rimev.vercel.app";
 
 const token = process.env.SUPABASE_ACCESS_TOKEN;
 const projectRef = process.env.SUPABASE_PROJECT_REF;

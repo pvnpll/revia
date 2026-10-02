@@ -1,6 +1,6 @@
-# Revia AI — Changelog
+# Rimev AI — Changelog
 
-All notable releases of the Revia AI Learning Engine follow [Semantic Versioning](https://semver.org/).
+All notable releases of the Rimev AI Learning Engine follow [Semantic Versioning](https://semver.org/).
 Every release maintains detailed logs and versioning to prevent regressions.
 
 ## [v1.9.14] — 2026-09-25 (Published)
@@ -102,7 +102,7 @@ Every release maintains detailed logs and versioning to prevent regressions.
 
 ## [v1.9.6] — 2026-09-24 (Published)
 
-**Revia AI UI Consistency Pass** — Aligned the whole `/ai` flow (page header, settings card, streaming state, session banner, save-deck modal) with regular app UI, and fixed the shared swipe-viewer overlap/scroll issues (slimmer safe-area footers, opacity-only card entry, scroll-safe `m-auto` centering for unrevealed fronts).
+**Rimev AI UI Consistency Pass** — Aligned the whole `/ai` flow (page header, settings card, streaming state, session banner, save-deck modal) with regular app UI, and fixed the shared swipe-viewer overlap/scroll issues (slimmer safe-area footers, opacity-only card entry, scroll-safe `m-auto` centering for unrevealed fronts).
 
 → [Full release notes](releases/v1.9.6.md)
 
@@ -188,7 +188,7 @@ Every release maintains detailed logs and versioning to prevent regressions.
 
 ## [v1.8.3] — 2026-09-20 (Published)
 
-**Revia AI UI Consistency & Session UX Fixes** — Aligned the Revia AI section with the regular app UI (page headers, cards, segmented controls, dialogs, overlays) and fixed session-viewer issues (double scroll, infinite wrap, unstable card ids, missing first-batch loading state, save-modal layering).
+**Rimev AI UI Consistency & Session UX Fixes** — Aligned the Rimev AI section with the regular app UI (page headers, cards, segmented controls, dialogs, overlays) and fixed session-viewer issues (double scroll, infinite wrap, unstable card ids, missing first-batch loading state, save-modal layering).
 
 → [Full release notes](releases/v1.8.3.md)
 

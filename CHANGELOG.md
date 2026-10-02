@@ -1,6 +1,6 @@
 # Changelog
 
-All notable releases of Revia follow [Semantic Versioning](https://semver.org/) and [release-versioning.md](docs/application/release-versioning.md).
+All notable releases of Rimev follow [Semantic Versioning](https://semver.org/) and [release-versioning.md](docs/application/release-versioning.md).
 
 Release notes are **drafted** on each `main` merge; **published** only when explicitly requested.
 

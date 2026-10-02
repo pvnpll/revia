@@ -1,4 +1,4 @@
-# Revia AI — Progress and Roadmap
+# Rimev AI — Progress and Roadmap
 
 **Last updated:** September 2026
 **Branch:** `developAI` → `mainAI`
@@ -55,7 +55,7 @@
 
 ## Phase 3: AI Mode UX
 
-**Goal:** Integrate AI generation into the Revia app UI.
+**Goal:** Integrate AI generation into the Rimev app UI.
 
 | Item | Effort | Value |
 |------|--------|-------|
@@ -117,7 +117,7 @@
 7. Accept learner context
 8. Avoid obvious repetitions
 9. Generate next batch using updated context
-10. Run independently from Revia Web
+10. Run independently from Rimev Web
 11. Be consumable by a future mobile application
 
 ---

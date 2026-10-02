@@ -1,6 +1,6 @@
-# Revia AI Agent Instructions & Guidelines
+# Rimev AI Agent Instructions & Guidelines
 
-**CRITICAL RULES FOR ALL AI AGENTS / MODELS WORKING ON REVIA**
+**CRITICAL RULES FOR ALL AI AGENTS / MODELS WORKING ON RIMEV**
 
 Every time an AI-related change is made, follow this exact versioning, logging, and provider policy. Do not skip steps.
 
@@ -10,16 +10,16 @@ Every time an AI-related change is made, follow this exact versioning, logging, 
 
 All AI-related development (card generation, providers, learner context, AI mode) is maintained on `developAI` and deployed from `mainAI`.
 
-**IMPORTANT**: Maintain AI releases **ONLY** in `revia-ai` (`docs/revia-ai/`). Do NOT update root `package.json`, root `CHANGELOG.md`, or root `docs/releases/`. Do NOT maintain releases in both places.
+**IMPORTANT**: Maintain AI releases **ONLY** in `rimev-ai` (`docs/rimev-ai/`). Do NOT update root `package.json`, root `CHANGELOG.md`, or root `docs/releases/`. Do NOT maintain releases in both places.
 
 Never restart versions from the beginning; continue the release version sequence as-is (e.g. `v1.8.2` → `v1.8.3` for patch, `v1.9.0` for minor):
 
-1. **Bump Version in `docs/revia-ai/VERSION`**:
+1. **Bump Version in `docs/rimev-ai/VERSION`**:
    - Follow Semantic Versioning: `MAJOR.MINOR.PATCH`.
    - Bug fixes / resilience / polish = PATCH (`1.8.2` → `1.8.3`).
    - New features / capabilities = MINOR (`1.8.x` → `1.9.0`).
    - Breaking changes = MAJOR (`1.x` → `2.0.0`).
-2. **Update `docs/revia-ai/CHANGELOG.md`**:
+2. **Update `docs/rimev-ai/CHANGELOG.md`**:
    - Add a new section at the top formatted as:
      ```markdown
      ## [vX.Y.Z] — YYYY-MM-DD (Published)
@@ -28,7 +28,7 @@ Never restart versions from the beginning; continue the release version sequence
      ### Changed / Fixed / Added
      - Bullet points of all changes in this version
      ```
-3. **Create Release Notes in `docs/revia-ai/releases/vX.Y.Z.md`**:
+3. **Create Release Notes in `docs/rimev-ai/releases/vX.Y.Z.md`**:
    - Document Summary, Changes in detail, and Migration/Verification notes.
 4. **Run Verification Before Pushing**:
    - Run `npm run check` (runs `typecheck`, `test`, and `build`). All 38+ tests and page generation must pass with zero errors.

@@ -156,8 +156,8 @@ Do not include markdown code block formatting (e.g. \`\`\`json). Return raw JSON
         headers: {
           Authorization: `Bearer ${this.apiKey}`,
           "Content-Type": "application/json",
-          "HTTP-Referer": "https://revialearn-ai.vercel.app",
-          "X-Title": "Revia AI",
+          "HTTP-Referer": "https://rimev-ai.vercel.app",
+          "X-Title": "Rimev AI",
         },
         body: JSON.stringify(payload),
         signal: AbortSignal.timeout(this.timeoutMs),

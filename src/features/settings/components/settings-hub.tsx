@@ -76,7 +76,7 @@ export function SettingsHub() {
         ))}
       </ul>
 
-      <p className="pb-4 text-center text-xs text-muted-foreground">Revia v{APP_VERSION}</p>
+      <p className="pb-4 text-center text-xs text-muted-foreground">Rimev v{APP_VERSION}</p>
     </div>
   );
 }

@@ -76,7 +76,7 @@
 
 ## Error Responses
 
-All AI endpoints follow the same `{ "data": T }` / `{ "error": { "code", "message" } }` pattern as the main Revia API.
+All AI endpoints follow the same `{ "data": T }` / `{ "error": { "code", "message" } }` pattern as the main Rimev API.
 
 | Code | HTTP Status | Description |
 |------|-------------|-------------|

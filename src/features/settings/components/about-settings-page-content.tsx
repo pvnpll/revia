@@ -6,12 +6,12 @@ import { Card, CardContent } from "@/components/ui/card";
 
 export function AboutSettingsPageContent() {
   return (
-    <SettingsSubpage title="About" description="Learn more about Revia.">
+    <SettingsSubpage title="About" description="Learn more about Rimev.">
       <Card>
         <CardContent className="space-y-2 pt-6 text-sm text-muted-foreground">
           <p>Mobile-first learning app with Practice mode and Daily Review.</p>
           <p>Practice endlessly on open, run Daily Review when cards are due, and manage decks from Settings.</p>
-          <p className="pt-2 text-xs">Revia v{APP_VERSION}</p>
+          <p className="pt-2 text-xs">Rimev v{APP_VERSION}</p>
         </CardContent>
       </Card>
     </SettingsSubpage>

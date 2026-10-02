@@ -41,7 +41,7 @@ Release notes: [docs/releases/](../releases/) · Changelog: [CHANGELOG.md](../..
 
 ## v1.0.0 Summary
 
-Revia **v1.0.0** is **stable and deployed**. The personal learning loop works:
+Rimev **v1.0.0** is **stable and deployed**. The personal learning loop works:
 
 ```text
 Import or create content → Study lessons → Daily review → Track on dashboard
@@ -66,7 +66,7 @@ Import or create content → Study lessons → Daily review → Track on dashboa
 
 ## v1.1.0 Summary
 
-Revia **v1.1.0** adds **public deck publishing** and **Explore**:
+Rimev **v1.1.0** adds **public deck publishing** and **Explore**:
 
 ```text
 Create deck → Set Public → Appears in Explore for others → Browse read-only
@@ -85,7 +85,7 @@ Create deck → Set Public → Appears in Explore for others → Browse read-onl
 
 ## v1.2.0 Summary
 
-Revia **v1.2.0** adds **identity and appearance** improvements:
+Rimev **v1.2.0** adds **identity and appearance** improvements:
 
 ```text
 Sign up → Get random username → Customize in Settings → Shown on public decks
@@ -104,7 +104,7 @@ Sign up → Get random username → Customize in Settings → Shown on public de
 
 ## v1.3.0 Summary
 
-Revia **v1.3.0** improves **sharing and feedback**:
+Rimev **v1.3.0** improves **sharing and feedback**:
 
 ```text
 Explore public deck → Add to library → Study with your own progress → Author credited
@@ -123,7 +123,7 @@ Explore public deck → Add to library → Study with your own progress → Auth
 
 ## v1.4.0 Summary
 
-Revia **v1.4.0** splits learning into **Practice** and **Daily Review**:
+Rimev **v1.4.0** splits learning into **Practice** and **Daily Review**:
 
 ```text
 Open app → Practice card immediately → Rate 1–5 → Card re-queues adaptively
@@ -150,7 +150,7 @@ Dashboard → Daily Review (due cards only) → Updates SRS schedule
 
 ## v1.5.0 Summary
 
-Revia **v1.5.0** adds **content editing** and **import reliability**:
+Rimev **v1.5.0** adds **content editing** and **import reliability**:
 
 ```text
 Deck detail → Pencil icon → Rename deck or lesson
@@ -239,11 +239,11 @@ Settings → Import → Upload file → Import JSON (confirm)
 
 - Floating bottom nav (Dashboard, Practice, Decks, Explore)
 - Desktop gate ("mobile-first" message)
-- Revia branding and theme system
+- Rimev branding and theme system
 
 ### Phase 12 — Deploy + performance
 
-- Vercel production (`revialearn.vercel.app`)
+- Vercel production (`rimev.vercel.app`)
 - Supabase Postgres + Auth (`ap-south-1`)
 - Vercel function region `bom1` (Mumbai)
 - Query prefetching, optimistic review, DB query optimizations
@@ -295,7 +295,7 @@ These exist in code partially but are **not required for v1 stability**:
 |------|--------|-------|
 | `GET /api/decks/:id/export` — JSON | Small | High |
 | Export all decks | Medium | Medium |
-| Future `.revia` package format | Large | Low (v2+) |
+| Future `.rimev` package format | Large | Low (v2+) |
 
 **Depends on:** Nothing.
 

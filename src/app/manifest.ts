@@ -2,8 +2,8 @@ import { MetadataRoute } from 'next'
  
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Revia',
-    short_name: 'Revia',
+    name: 'Rimev',
+    short_name: 'Rimev',
     description: 'The AI Spaced Repetition Engine',
     start_url: '/',
     display: 'standalone',

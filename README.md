@@ -1,8 +1,8 @@
-# Revia
+# Rimev
 
 A mobile-first, subject-agnostic spaced repetition learning platform.
 
-**v1.5** — Practice, Daily Review, deck editing at [revialearn.vercel.app](https://revialearn.vercel.app)
+**v1.5** — Practice, Daily Review, deck editing at [rimev.vercel.app](https://rimev.vercel.app)
 
 ## What You Can Do
 
@@ -30,7 +30,7 @@ A mobile-first, subject-agnostic spaced repetition learning platform.
 ## Quick Start
 
 ```bash
-cd revia
+cd rimev
 npm run setup    # Docker Postgres + schema + seed
 npm run dev      # http://localhost:3000
 ```
@@ -69,8 +69,8 @@ See [progress-and-roadmap.md](./docs/application/progress-and-roadmap.md) for up
 ## Deploy
 
 ```bash
-cd revia
-# Vercel Root Directory must be set to "revia"
+cd rimev
+# Vercel Root Directory must be set to "rimev"
 npx vercel --prod
 ```
 
@@ -95,5 +95,5 @@ Next.js 15 · React 19 · TypeScript · Tailwind · shadcn/ui · Prisma · Postg
 
 ```
 Build/          ← Git root
-  revia/        ← Application (set as Vercel Root Directory)
+  rimev/        ← Application (set as Vercel Root Directory)
 ```

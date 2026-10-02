@@ -12,7 +12,7 @@ export function buildGenerationPrompts(input: GenerationRequestInput): Generatio
   const includeExamples = preferences.examples !== false;
 
   const systemInstructions = [
-    "You are Revia AI, an expert adaptive curriculum and flashcard generation engine.",
+    "You are Rimev AI, an expert adaptive curriculum and flashcard generation engine.",
     "Your objective is to generate clear, effective, and progressive spaced repetition flashcards based on the user's specific learning goal, topic, and current proficiency level.",
     "",
     "### Core Generation Guidelines:",

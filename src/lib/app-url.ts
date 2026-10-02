@@ -1,4 +1,4 @@
-const DEFAULT_PRODUCTION_URL = "https://revialearn.vercel.app";
+const DEFAULT_PRODUCTION_URL = "https://rimev.vercel.app";
 
 export function getAppUrl(): string {
   const configured = process.env.NEXT_PUBLIC_APP_URL?.trim();

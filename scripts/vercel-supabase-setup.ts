@@ -22,7 +22,7 @@ const projectRef = process.env.SUPABASE_PROJECT_REF;
 
 if (!token || !projectRef || !vercelUrlRaw) {
   console.error("Required environment variables:");
-  console.error("  VERCEL_URL              — e.g. https://revia.vercel.app");
+  console.error("  VERCEL_URL              — e.g. https://rimev.vercel.app");
   console.error("  SUPABASE_ACCESS_TOKEN   — https://supabase.com/dashboard/account/tokens");
   console.error("  SUPABASE_PROJECT_REF    — Supabase project ID");
   process.exit(1);
@@ -117,7 +117,7 @@ async function main() {
   console.log(`SUPABASE_PROJECT_REF=${projectRef}`);
   console.log("");
   console.log("Vercel import settings:");
-  console.log("  Root Directory: revia");
+  console.log("  Root Directory: rimev");
   console.log("  Framework: Next.js");
   console.log("");
   console.log("After first deploy:");

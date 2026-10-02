@@ -1,9 +1,9 @@
 ---
 name: release-and-deploy
-description: Ships a new Revia semver release from develop to production on Vercel. Use when the user asks to release, ship, tag, push to production, deploy, or publish a new version (e.g. v1.6.0).
+description: Ships a new Rimev semver release from develop to production on Vercel. Use when the user asks to release, ship, tag, push to production, deploy, or publish a new version (e.g. v1.6.0).
 ---
 
-# Release and Deploy Revia
+# Release and Deploy Rimev
 
 ## When to use
 
@@ -20,27 +20,27 @@ description: Ships a new Revia semver release from develop to production on Verc
 
 ### 1. Prepare release docs
 
-1. Bump `revia/package.json` `"version"` to match tag (e.g. `1.6.0`)
-2. Create `revia/docs/releases/vX.Y.Z.md` (Summary, Added/Changed/Fixed, production URL, tag)
-3. Prepend entry to `revia/CHANGELOG.md`
-4. Update `revia/docs/README.md`, `docs/application/release-versioning.md`, `docs/application/progress-and-roadmap.md` — current version and release map
+1. Bump `rimev/package.json` `"version"` to match tag (e.g. `1.6.0`)
+2. Create `rimev/docs/releases/vX.Y.Z.md` (Summary, Added/Changed/Fixed, production URL, tag)
+3. Prepend entry to `rimev/CHANGELOG.md`
+4. Update `rimev/docs/README.md`, `docs/application/release-versioning.md`, `docs/application/progress-and-roadmap.md` — current version and release map
 5. Update `docs/application/layman-guide.md` if user-facing behavior changed
 
-Production URL: **https://revialearn.vercel.app**
+Production URL: **https://rimev.vercel.app**
 
 ### 2. Verify
 
 ```bash
-cd revia && npm run check
+cd rimev && npm run check
 ```
 
 ### 3. Commit on develop
 
 ```bash
 cd /Users/pavan/Build
-git add revia/
+git add rimev/
 git commit -m "$(cat <<'EOF'
-Ship Revia vX.Y.Z: short summary.
+Ship Rimev vX.Y.Z: short summary.
 
 EOF
 )"
@@ -70,11 +70,11 @@ Vercel auto-deploys `main` to production. Preview deploys use `develop`.
 
 ### 6. Confirm with user
 
-- Production: https://revialearn.vercel.app
+- Production: https://rimev.vercel.app
 - Tag: `vX.Y.Z`
-- Release notes: `revia/docs/releases/vX.Y.Z.md`
+- Release notes: `rimev/docs/releases/vX.Y.Z.md`
 
-## Version examples (Revia)
+## Version examples (Rimev)
 
 | Change | Bump |
 |--------|------|
